@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reliefmate/login.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -25,9 +26,10 @@ class _SignupState extends State<Signup> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 100.0, horizontal: 0),
+          padding: const EdgeInsets.all(10.0),
           child: Center(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
                   'Create Account',
@@ -79,6 +81,17 @@ class _SignupState extends State<Signup> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
+                      labelText: 'Enter Phone Number',
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                       labelText: 'Enter Password',
                     ),
                   ),
@@ -106,18 +119,26 @@ class _SignupState extends State<Signup> {
                     ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Center(
-                    child: Text(
-                      'Already Have Account',
-                      style: TextStyle(
-                        fontFamily: 'worksans',
-                        fontSize: 20,
-                        color: Colors.redAccent,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                        decorationThickness: 3,
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const Login();
+                      }));
+                    },
+                    child: const Center(
+                      child: Text(
+                        'Already Have Account',
+                        style: TextStyle(
+                          fontFamily: 'worksans',
+                          fontSize: 20,
+                          color: Colors.redAccent,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
+                          decorationThickness: 3,
+                        ),
                       ),
                     ),
                   ),

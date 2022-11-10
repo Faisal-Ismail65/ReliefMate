@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reliefmate/signup.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -25,9 +26,11 @@ class _LoginState extends State<Login> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 100.0, horizontal: 0),
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0),
           child: Center(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Text(
                   'Login',
@@ -84,18 +87,26 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Center(
-                    child: Text(
-                      'Create Account',
-                      style: TextStyle(
-                        fontFamily: 'worksans',
-                        fontSize: 20,
-                        color: Colors.redAccent,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                        decorationThickness: 3,
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const Signup();
+                      }));
+                    },
+                    child: const Center(
+                      child: Text(
+                        'Create Account',
+                        style: TextStyle(
+                          fontFamily: 'worksans',
+                          fontSize: 20,
+                          color: Colors.redAccent,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
+                          decorationThickness: 3,
+                        ),
                       ),
                     ),
                   ),

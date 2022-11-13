@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reliefmate/home.dart';
 import 'package:reliefmate/signup.dart';
 
 class Login extends StatefulWidget {
@@ -66,22 +67,30 @@ class _LoginState extends State<Login> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
-                  child: Container(
-                    height: 60.0,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.redAccent,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                          fontFamily: 'worksans',
-                          letterSpacing: 2,
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: ((context) {
+                        return const Home();
+                      })));
+                    },
+                    child: Container(
+                      height: 60.0,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.redAccent,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'Login',
+                          style: TextStyle(
+                            fontFamily: 'worksans',
+                            letterSpacing: 2,
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
@@ -89,15 +98,15 @@ class _LoginState extends State<Login> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return const Signup();
-                      }));
-                    },
-                    child: const Center(
-                      child: Text(
+                  child: Center(
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return const Signup();
+                        }));
+                      },
+                      child: const Text(
                         'Create Account',
                         style: TextStyle(
                           fontFamily: 'worksans',

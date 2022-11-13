@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:reliefmate/login.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -15,7 +14,7 @@ class _SignupState extends State<Signup> {
       appBar: AppBar(
         backgroundColor: Colors.redAccent,
         title: const Text(
-          'ReliefMate',
+          'Register',
           style: TextStyle(
             fontSize: 30,
             fontFamily: 'worksans',
@@ -121,15 +120,12 @@ class _SignupState extends State<Signup> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return const Login();
-                      }));
-                    },
-                    child: const Center(
-                      child: Text(
+                  child: Center(
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text(
                         'Already Have Account',
                         style: TextStyle(
                           fontFamily: 'worksans',

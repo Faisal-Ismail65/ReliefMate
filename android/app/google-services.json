@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "39910508437",
+    "project_id": "reliefmate",
+    "storage_bucket": "reliefmate.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39910508437:android:4a89aa9e70fc4857a0589c",
+        "android_client_info": {
+          "package_name": "com.example.reliefmate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "39910508437-59cpvi6ieo44menbknipjp90mfd25vbi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQBcT7c7bUJepE7Lc2wJvalQDrgf1xY3Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "39910508437-59cpvi6ieo44menbknipjp90mfd25vbi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

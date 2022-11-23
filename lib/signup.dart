@@ -123,7 +123,8 @@ class _SignupState extends State<Signup> {
                   child: Center(
                     child: TextButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context)
+                            .pushNamedAndRemoveUntil('login', (route) => false);
                       },
                       child: const Text(
                         'Already Have Account',

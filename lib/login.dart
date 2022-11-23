@@ -69,10 +69,8 @@ class _LoginState extends State<Login> {
                   padding: const EdgeInsets.all(15.0),
                   child: InkWell(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: ((context) {
-                        return const Home();
-                      })));
+                      Navigator.of(context)
+                          .pushNamedAndRemoveUntil('home', (route) => false);
                     },
                     child: Container(
                       height: 60.0,
@@ -101,10 +99,8 @@ class _LoginState extends State<Login> {
                   child: Center(
                     child: TextButton(
                       onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return const Signup();
-                        }));
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            'signup', (route) => false);
                       },
                       child: const Text(
                         'Create Account',

@@ -97,16 +97,20 @@ class _SignupState extends State<Signup> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
-                  child: Container(
-                    height: 60.0,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.redAccent,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamedAndRemoveUntil('home', (route) => false);
+                    },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.redAccent,
+                        minimumSize: const Size(double.infinity, 60),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        )),
                     child: const Center(
                       child: Text(
-                        'SignUp',
+                        'Register',
                         style: TextStyle(
                           fontFamily: 'worksans',
                           letterSpacing: 2,

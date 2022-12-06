@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reliefmate/constants/routes.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -67,8 +68,10 @@ class _LoginState extends State<Login> {
                   padding: const EdgeInsets.all(15.0),
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context)
-                          .pushNamedAndRemoveUntil('home', (route) => false);
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        bottomBarView,
+                        (route) => false,
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.redAccent,
@@ -96,7 +99,7 @@ class _LoginState extends State<Login> {
                     child: TextButton(
                       onPressed: () {
                         Navigator.of(context).pushNamedAndRemoveUntil(
-                            'signup', (route) => false);
+                            signupView, (route) => false);
                       },
                       child: const Text(
                         'Create Account',

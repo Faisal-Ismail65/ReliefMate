@@ -14,7 +14,7 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         backgroundColor: Colors.redAccent,
         title: const Text(
-          'ReliefMate',
+          'FYP',
           style: TextStyle(
             fontSize: 30,
             fontFamily: 'worksans',
@@ -30,8 +30,8 @@ class _HomeState extends State<Home> {
             const DrawerHeader(
               padding: EdgeInsets.all(0),
               child: UserAccountsDrawerHeader(
-                accountName: Text('Faisal Ismail'),
-                accountEmail: Text('faisalismail@gmail.com'),
+                accountName: Text('Muhammad Younis'),
+                accountEmail: Text('muhammadyounis@gmail.com'),
                 currentAccountPicture: CircleAvatar(),
                 decoration: BoxDecoration(
                   color: Colors.redAccent,
@@ -57,7 +57,7 @@ class _HomeState extends State<Home> {
               title: TextButton(
                 onPressed: () {},
                 child: const Text(
-                  'Donate',
+                  'About',
                   style: TextStyle(
                     fontSize: 20,
                     color: Colors.redAccent,
@@ -84,7 +84,31 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      body: const Text('This is Home'),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        unselectedItemColor: Colors.black,
+        selectedItemColor: Colors.redAccent,
+        items: [
+          BottomNavigationBarItem(
+              icon: IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.home),
+              ),
+              label: 'Home'),
+          BottomNavigationBarItem(
+              icon: IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.search),
+              ),
+              label: 'Search'),
+          BottomNavigationBarItem(
+              icon: IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.person),
+              ),
+              label: 'Profile'),
+        ],
+      ),
     );
   }
 }

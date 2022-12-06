@@ -14,7 +14,7 @@ class _LoginState extends State<Login> {
       appBar: AppBar(
         backgroundColor: Colors.redAccent,
         title: const Text(
-          'FYP',
+          'ReliefMate',
           style: TextStyle(
             fontSize: 30,
             fontFamily: 'worksans',

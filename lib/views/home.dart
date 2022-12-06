@@ -8,6 +8,19 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  int _currentIndex = 0;
+  final tabs = [
+    const Center(
+      child: Text('Home'),
+    ),
+    const Center(
+      child: Text('Search'),
+    ),
+    const Center(
+      child: Text('Profile'),
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,8 +43,8 @@ class _HomeState extends State<Home> {
             const DrawerHeader(
               padding: EdgeInsets.all(0),
               child: UserAccountsDrawerHeader(
-                accountName: Text('Muhammad Younis'),
-                accountEmail: Text('muhammadyounis@gmail.com'),
+                accountName: Text('FaisalIsmail'),
+                accountEmail: Text('faisalismail@gmail.com'),
                 currentAccountPicture: CircleAvatar(),
                 decoration: BoxDecoration(
                   color: Colors.redAccent,
@@ -84,10 +97,13 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
+      body: tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         unselectedItemColor: Colors.black,
         selectedItemColor: Colors.redAccent,
+        currentIndex: _currentIndex,
+        iconSize: 30,
         items: [
           BottomNavigationBarItem(
               icon: IconButton(
@@ -108,6 +124,11 @@ class _HomeState extends State<Home> {
               ),
               label: 'Profile'),
         ],
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
       ),
     );
   }

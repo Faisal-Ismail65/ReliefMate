@@ -1,14 +1,36 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:reliefmate/constants/routes.dart';
+import 'package:reliefmate/services/auth/auth_exceptions.dart';
+import 'package:reliefmate/services/auth/auth_service.dart';
+import 'package:reliefmate/utilities/dialogs/error_dialog.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _LoginState extends State<Login> {
+class _RegisterViewState extends State<RegisterView> {
+  late final TextEditingController _email;
+  late final TextEditingController _password;
+
+  @override
+  void initState() {
+    _email = TextEditingController();
+    _password = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,17 +45,19 @@ class _LoginState extends State<Login> {
           ),
         ),
         centerTitle: true,
+        elevation: 0.0,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0),
+          padding: const EdgeInsets.symmetric(
+            vertical: 10.0,
+            horizontal: 0,
+          ),
           child: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Text(
-                  'Login',
+                  'Create Account',
                   style: TextStyle(
                     letterSpacing: 2,
                     fontSize: 30,
@@ -45,33 +69,70 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: TextField(
+                    enableSuggestions: false,
+                    autocorrect: false,
+                    keyboardType: TextInputType.emailAddress,
+                    controller: _email,
                     decoration: InputDecoration(
+                      labelText: 'Enter Email',
+                      suffixIcon: const Icon(Icons.email),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      labelText: 'Enter Email',
                     ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: TextField(
+                    obscureText: true,
+                    enableSuggestions: false,
+                    autocorrect: false,
+                    controller: _password,
                     decoration: InputDecoration(
+                      labelText: 'Enter Password',
+                      suffixIcon: const Icon(Icons.password),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      labelText: 'Enter Password',
                     ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        bottomBarView,
-                        (route) => false,
-                      );
+                    onPressed: () async {
+                      final email = _email.text;
+                      final password = _password.text;
+                      try {
+                        await AuthService.firebase().createUser(
+                          email: email,
+                          password: password,
+                        );
+                        await AuthService.firebase().sendEmailVerification();
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            bottomBarView, (route) => false);
+                      } on WeakPasswordAuthException {
+                        await showErrorDialog(
+                          context,
+                          'Weak Password',
+                        );
+                      } on EmailAlreadyInUseAuthException {
+                        await showErrorDialog(
+                          context,
+                          'Email Already In Use!',
+                        );
+                      } on InvalidEmailAuthException {
+                        await showErrorDialog(
+                          context,
+                          'Invalid Email Entered!',
+                        );
+                      } on GenericAuthException {
+                        await showErrorDialog(
+                          context,
+                          'Failed To Register!',
+                        );
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.redAccent,
@@ -81,7 +142,7 @@ class _LoginState extends State<Login> {
                         )),
                     child: const Center(
                       child: Text(
-                        'Login',
+                        'Register',
                         style: TextStyle(
                           fontFamily: 'worksans',
                           letterSpacing: 2,
@@ -99,10 +160,12 @@ class _LoginState extends State<Login> {
                     child: TextButton(
                       onPressed: () {
                         Navigator.of(context).pushNamedAndRemoveUntil(
-                            signupView, (route) => false);
+                          loginView,
+                          (route) => false,
+                        );
                       },
                       child: const Text(
-                        'Create Account',
+                        'Already Have Account',
                         style: TextStyle(
                           fontFamily: 'worksans',
                           fontSize: 20,

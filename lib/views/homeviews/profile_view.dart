@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:reliefmate/services/auth/auth_service.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -8,24 +11,16 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+  String get _userEmail => AuthService.firebase().currentUser!.email;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.redAccent,
-        title: const Text(
-          'ReliefMate',
-          style: TextStyle(
-            fontSize: 30,
-            fontFamily: 'worksans',
-            letterSpacing: 2,
-          ),
-        ),
-        centerTitle: true,
-      ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -39,17 +34,10 @@ class _ProfileViewState extends State<ProfileView> {
                   ),
                 ),
                 Column(
-                  children: const [
+                  children: [
                     Text(
-                      'Faisal Ismail',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                      ),
-                    ),
-                    Text(
-                      'faisalismail@gmail.com',
-                      style: TextStyle(
+                      _userEmail,
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
                       ),

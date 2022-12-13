@@ -28,9 +28,16 @@ class _ProfileViewState extends State<ProfileView> {
                 Container(
                   width: 130,
                   height: 130,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.redAccent,
+                      width: 3,
+                    ),
                     shape: BoxShape.circle,
-                    color: Colors.redAccent,
+                  ),
+                  child: const Icon(
+                    Icons.person,
+                    size: 50,
                   ),
                 ),
                 Column(

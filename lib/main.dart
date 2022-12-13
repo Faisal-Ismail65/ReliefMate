@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:reliefmate/constants/routes.dart';
 import 'package:reliefmate/services/auth/auth_service.dart';
+import 'package:reliefmate/views/homeviews/apply_for_relief.dart';
+import 'package:reliefmate/views/homeviews/blogs_view.dart';
 import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
 import 'package:reliefmate/views/authviews/login_view.dart';
 import 'package:reliefmate/views/authviews/register_view.dart';
+import 'package:reliefmate/views/homeviews/home_view.dart';
+import 'package:reliefmate/views/homeviews/profile_view.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -13,6 +17,10 @@ void main() {
       loginView: (context) => const LoginView(),
       signupView: (context) => const RegisterView(),
       bottomBarView: (context) => const BottomBarView(),
+      blogsView: (context) => const BlogsVew(),
+      homeView: (context) => const HomeView(),
+      profileView: (context) => const ProfileView(),
+      applyForRelief: (context) => const ApplyForRelief(),
     },
   ));
 }

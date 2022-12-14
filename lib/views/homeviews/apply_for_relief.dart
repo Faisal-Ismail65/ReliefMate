@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ApplyForRelief extends StatefulWidget {
   const ApplyForRelief({super.key});
@@ -8,6 +12,20 @@ class ApplyForRelief extends StatefulWidget {
 }
 
 class _ApplyForReliefState extends State<ApplyForRelief> {
+  File? _image;
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+      File? img = File(image.path);
+      setState(() {
+        _image = img;
+      });
+    } on PlatformException catch (e) {
+      print("failed to pick image $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,15 +76,22 @@ class _ApplyForReliefState extends State<ApplyForRelief> {
                     ),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
-                    Icons.person,
-                    size: 50,
-                  ),
+                  child: _image == null
+                      ? const Icon(
+                          Icons.person,
+                          size: 50,
+                        )
+                      : CircleAvatar(
+                          backgroundImage: FileImage(_image!),
+                          radius: 200,
+                        ),
                 ),
               ),
               Center(
                 child: TextButton(
-                    onPressed: () {}, child: const Text('Edit Image')),
+                  onPressed: () => pickImage(),
+                  child: const Text('Edit Image'),
+                ),
               ),
               TextFormField(
                 decoration: InputDecoration(

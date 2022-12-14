@@ -95,11 +95,9 @@ class BottomBarView extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                Scaffold.of(context).openDrawer();
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
-                      Navigator.of(context).pop();
                       return const ApplyForRelief();
                     },
                   ),

@@ -1,6 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:reliefmate/constants/routes.dart';
 import 'package:reliefmate/services/auth/auth_exceptions.dart';
 import 'package:reliefmate/services/auth/auth_service.dart';
@@ -16,6 +18,7 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   late final TextEditingController _email;
   late final TextEditingController _password;
+  bool showPassword = false;
 
   @override
   void initState() {
@@ -36,13 +39,20 @@ class _LoginViewState extends State<LoginView> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.redAccent,
-        title: const Text(
-          'ReliefMate',
-          style: TextStyle(
-            fontSize: 30,
-            fontFamily: 'worksans',
-            letterSpacing: 2,
-          ),
+        title: AnimatedTextKit(
+          animatedTexts: [
+            TypewriterAnimatedText('ReliefMate',
+                textStyle: GoogleFonts.laBelleAurore(
+                  fontSize: 30,
+                )),
+            TypewriterAnimatedText(
+              'ReliefMate',
+              textStyle: GoogleFonts.pacifico(
+                fontSize: 30,
+              ),
+            ),
+          ],
+          totalRepeatCount: 3,
         ),
         centerTitle: true,
         elevation: 0.0,
@@ -84,18 +94,44 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
-                  child: TextField(
-                    obscureText: true,
-                    enableSuggestions: false,
-                    autocorrect: false,
-                    controller: _password,
-                    decoration: InputDecoration(
-                      labelText: 'Enter Password',
-                      suffixIcon: const Icon(Icons.password),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
+                  child: Column(
+                    children: [
+                      TextField(
+                        obscureText: !showPassword,
+                        enableSuggestions: false,
+                        autocorrect: false,
+                        controller: _password,
+                        decoration: InputDecoration(
+                          labelText: 'Enter Password',
+                          suffixIcon: const Icon(Icons.password),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
                       ),
-                    ),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: showPassword,
+                            onChanged: (value) {
+                              setState(() {
+                                if (showPassword) {
+                                  showPassword = false;
+                                } else {
+                                  showPassword = true;
+                                }
+                              });
+                            },
+                          ),
+                          const Text(
+                            'Show Password',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
                 Padding(

@@ -16,7 +16,7 @@ void main() {
     routes: {
       loginView: (context) => const LoginView(),
       signupView: (context) => const RegisterView(),
-      bottomBarView: (context) => BottomBarView(),
+      bottomBarView: (context) => const BottomBarView(),
       blogsView: (context) => const BlogsVew(),
       homeView: (context) => const HomeView(),
       profileView: (context) => const ProfileView(),
@@ -37,7 +37,7 @@ class HomePage extends StatelessWidget {
           case ConnectionState.done:
             final user = AuthService.firebase().currentUser;
             if (user != null) {
-              return BottomBarView();
+              return const BottomBarView();
             }
             return const LoginView();
           default:

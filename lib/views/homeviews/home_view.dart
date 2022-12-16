@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reliefmate/services/cloud/cloud_profile.dart';
 import 'package:reliefmate/services/cloud/frebase_cloud_storage.dart';
+import 'package:reliefmate/views/homeviews/profile_list_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -31,35 +32,7 @@ class _HomeViewState extends State<HomeView> {
                 case ConnectionState.active:
                   if (snapshot.hasData) {
                     final allUsers = snapshot.data as Iterable<CloudProfile>;
-                    return ListView.builder(
-                      itemCount: allUsers.length,
-                      itemBuilder: (context, index) {
-                        final user = allUsers.elementAt(index);
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: ListTile(
-                            hoverColor: Colors.red,
-                            leading: Container(
-                              width: 100,
-                              height: 100,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.redAccent,
-                                  width: 1,
-                                ),
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.person,
-                                size: 50,
-                              ),
-                            ),
-                            title: Text(user.name),
-                            trailing: Text(user.address),
-                          ),
-                        );
-                      },
-                    );
+                    return ProfileListView(users: allUsers);
                   } else {
                     return const CircularProgressIndicator();
                   }

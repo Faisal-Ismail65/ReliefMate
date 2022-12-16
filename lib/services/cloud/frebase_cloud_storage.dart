@@ -1,9 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:reliefmate/services/cloud/cloud_profile.dart';
 import 'package:reliefmate/services/cloud/cloud_profile_constants.dart';
+import 'package:reliefmate/services/cloud/cloud_storage_exceptions.dart';
 
 class FirebaseCloudStorage {
   final users = FirebaseFirestore.instance.collection('users');
+
+  Future<void> getUser({required String userId}) async {
+    try {
+      return await users
+          .where(
+            userIdFieldName,
+            isEqualTo: userId,
+          )
+          .get()
+          .then((value) => null);
+    } catch (e) {
+      throw CouldNotGetUserProfileException();
+    }
+  }
 
   Stream<Iterable<CloudProfile>> getAllUsers() => users
       .snapshots()

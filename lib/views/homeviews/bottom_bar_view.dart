@@ -4,14 +4,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:reliefmate/constants/routes.dart';
 import 'package:reliefmate/services/auth/auth_service.dart';
+import 'package:reliefmate/services/cloud/frebase_cloud_storage.dart';
 import 'package:reliefmate/utilities/dialogs/logout_dialog.dart';
 import 'package:reliefmate/views/homeviews/apply_for_relief.dart';
 import 'package:reliefmate/views/homeviews/blogs_view.dart';
 import 'package:reliefmate/views/homeviews/home_view.dart';
 import 'package:reliefmate/views/homeviews/profile_view.dart';
 
-class BottomBarView extends StatelessWidget {
+class BottomBarView extends StatefulWidget {
   const BottomBarView({super.key});
+
+  @override
+  State<BottomBarView> createState() => _BottomBarViewState();
+}
+
+class _BottomBarViewState extends State<BottomBarView> {
   String get _userEmail => AuthService.firebase().currentUser!.email;
 
   @override
@@ -61,7 +68,7 @@ class BottomBarView extends StatelessWidget {
             DrawerHeader(
               padding: const EdgeInsets.all(0),
               child: UserAccountsDrawerHeader(
-                accountName: const Text('Faisal Ismail'),
+                accountName: const Text(''),
                 accountEmail: Text(_userEmail),
                 currentAccountPicture: const CircleAvatar(
                   backgroundColor: Colors.white,

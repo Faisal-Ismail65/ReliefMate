@@ -16,6 +16,8 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   String get _userEmail => AuthService.firebase().currentUser!.email;
+  String get _userId => AuthService.firebase().currentUser!.id;
+
   File? _image;
   Future pickImage() async {
     try {

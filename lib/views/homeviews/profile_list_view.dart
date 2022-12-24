@@ -35,7 +35,10 @@ class ProfileListView extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    child: const Icon(Icons.person),
+                    child: const CircleAvatar(
+                      radius: 200,
+                      backgroundColor: Colors.white,
+                    ),
                   ),
                 ),
                 Container(

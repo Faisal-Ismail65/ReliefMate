@@ -7,6 +7,7 @@ import 'package:reliefmate/constants/routes.dart';
 import 'package:reliefmate/services/auth/auth_exceptions.dart';
 import 'package:reliefmate/services/auth/auth_service.dart';
 import 'package:reliefmate/utilities/dialogs/error_dialog.dart';
+import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -146,8 +147,10 @@ class _RegisterViewState extends State<RegisterView> {
                           password: password,
                         );
                         await AuthService.firebase().sendEmailVerification();
+
                         Navigator.of(context).pushNamedAndRemoveUntil(
                             bottomBarView, (route) => false);
+                        showSnackBar(context, 'Registered Successfully');
                       } on WeakPasswordAuthException {
                         await showErrorDialog(
                           context,

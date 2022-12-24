@@ -2,10 +2,11 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:reliefmate/constants/routes.dart';
 import 'package:reliefmate/services/auth/auth_service.dart';
-import 'package:reliefmate/services/cloud/frebase_cloud_storage.dart';
 import 'package:reliefmate/utilities/dialogs/logout_dialog.dart';
+import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 import 'package:reliefmate/views/homeviews/apply_for_relief.dart';
 import 'package:reliefmate/views/homeviews/blogs_view.dart';
 import 'package:reliefmate/views/homeviews/home_view.dart';
@@ -20,6 +21,8 @@ class BottomBarView extends StatefulWidget {
 
 class _BottomBarViewState extends State<BottomBarView> {
   String get _userEmail => AuthService.firebase().currentUser!.email;
+  final users = FirebaseFirestore.instance.collection('users');
+  String get _userId => AuthService.firebase().currentUser!.id;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +72,7 @@ class _BottomBarViewState extends State<BottomBarView> {
               padding: const EdgeInsets.all(0),
               child: UserAccountsDrawerHeader(
                 accountName: const Text(''),
-                accountEmail: Text(_userEmail),
+                accountEmail: Text(_userId),
                 currentAccountPicture: const CircleAvatar(
                   backgroundColor: Colors.white,
                   child: Icon(
@@ -165,6 +168,7 @@ class _BottomBarViewState extends State<BottomBarView> {
                   Navigator.of(context)
                       .pushNamedAndRemoveUntil(loginView, (_) => false);
                 }
+                showSnackBar(context, 'Logged Out Successfully');
               },
               child: const ListTile(
                 leading: Icon(Icons.logout),

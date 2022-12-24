@@ -1,4 +1,4 @@
-import 'package:reliefmate/services/auth/auth_user.dart';
+import 'package:reliefmate/models/auth_user.dart';
 
 abstract class AuthProvider {
   Future<void> initialize();

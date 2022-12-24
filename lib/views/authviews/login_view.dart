@@ -7,6 +7,7 @@ import 'package:reliefmate/constants/routes.dart';
 import 'package:reliefmate/services/auth/auth_exceptions.dart';
 import 'package:reliefmate/services/auth/auth_service.dart';
 import 'package:reliefmate/utilities/dialogs/error_dialog.dart';
+import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -19,6 +20,7 @@ class _LoginViewState extends State<LoginView> {
   late final TextEditingController _email;
   late final TextEditingController _password;
   bool showPassword = false;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -146,10 +148,12 @@ class _LoginViewState extends State<LoginView> {
                           email: email,
                           password: password,
                         );
+
                         Navigator.of(context).pushNamedAndRemoveUntil(
                           bottomBarView,
                           (route) => false,
                         );
+                        showSnackBar(context, 'Logged In Succesffully');
                       } on UserNotFoundAuthException {
                         await showErrorDialog(
                           context,
@@ -173,17 +177,23 @@ class _LoginViewState extends State<LoginView> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         )),
-                    child: const Center(
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                          fontFamily: 'worksans',
-                          letterSpacing: 2,
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                    child: Center(
+                      child: isLoading
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            )
+                          : const Text(
+                              'Login',
+                              style: TextStyle(
+                                fontFamily: 'worksans',
+                                letterSpacing: 2,
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                     ),
                   ),
                 ),

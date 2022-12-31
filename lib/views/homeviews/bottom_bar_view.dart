@@ -72,7 +72,7 @@ class _BottomBarViewState extends State<BottomBarView> {
               padding: const EdgeInsets.all(0),
               child: UserAccountsDrawerHeader(
                 accountName: const Text(''),
-                accountEmail: Text(_userId),
+                accountEmail: Text(_userEmail),
                 currentAccountPicture: const CircleAvatar(
                   backgroundColor: Colors.white,
                   child: Icon(

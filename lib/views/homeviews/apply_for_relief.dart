@@ -2,11 +2,15 @@
 
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:reliefmate/constants/routes.dart';
 import 'package:reliefmate/services/auth/auth_service.dart';
 import 'package:reliefmate/services/cloud/frebase_cloud_storage.dart';
+import 'package:reliefmate/services/profile/firestore_methods.dart';
+import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 
 class ApplyForRelief extends StatefulWidget {
   const ApplyForRelief({super.key});
@@ -22,7 +26,9 @@ class _ApplyForReliefState extends State<ApplyForRelief> {
   late final TextEditingController _cnic;
   late final TextEditingController _phoneNumber;
   late final TextEditingController _address;
-  final userId = AuthService.firebase().currentUser!.id;
+  String get _userEmail => AuthService.firebase().currentUser!.email;
+  String get _userId => AuthService.firebase().currentUser!.id;
+  final _user = AuthService.firebase().currentUser;
 
   // Future pickImage() async {
   //   try {
@@ -36,6 +42,21 @@ class _ApplyForReliefState extends State<ApplyForRelief> {
   //     print("failed to pick image $e");
   //   }
   // }
+  void createProfile() async {
+    String res = await FirestoreMethods().createProfile(
+      uid: _userId,
+      email: _userEmail,
+      name: _name.text,
+      cnic: _cnic.text,
+      phoneNumber: _phoneNumber.text,
+      address: _address.text,
+    );
+
+    if (res == 'Success') {
+      Navigator.of(context).pop();
+      showSnackBar(context, 'Your Profile Is Created Succesfully');
+    }
+  }
 
   @override
   void initState() {
@@ -82,21 +103,22 @@ class _ApplyForReliefState extends State<ApplyForRelief> {
         elevation: 0.0,
         actions: [
           IconButton(
-            onPressed: () async {
-              final userId = AuthService.firebase().currentUser!.id;
-              final name = _name.text;
-              final cnic = _cnic.text;
-              final phoneNumber = _phoneNumber.text;
-              final address = _address.text;
-              await _cloudService.createProfile(
-                userId: userId,
-                name: name,
-                cnic: cnic,
-                phoneNumber: phoneNumber,
-                address: address,
-              );
-              Navigator.of(context).pop();
-            },
+            onPressed: createProfile,
+            // () async {
+            //   final userId = AuthService.firebase().currentUser!.id;
+            //   final name = _name.text;
+            //   final cnic = _cnic.text;
+            //   final phoneNumber = _phoneNumber.text;
+            //   final address = _address.text;
+            //   await _cloudService.createProfile(
+            //     userId: userId,
+            //     name: name,
+            //     cnic: cnic,
+            //     phoneNumber: phoneNumber,
+            //     address: address,
+            //   );
+            //   Navigator.of(context).pop();
+            // },
             icon: const Icon(
               Icons.done,
               size: 30,

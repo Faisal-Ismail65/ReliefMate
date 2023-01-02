@@ -9,8 +9,10 @@ import 'package:reliefmate/utilities/dialogs/logout_dialog.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 import 'package:reliefmate/views/homeviews/apply_for_relief.dart';
 import 'package:reliefmate/views/homeviews/blogs_view.dart';
+import 'package:reliefmate/views/homeviews/edit_profile.dart';
 import 'package:reliefmate/views/homeviews/home_view.dart';
 import 'package:reliefmate/views/homeviews/profile_view.dart';
+import 'package:reliefmate/views/homeviews/settings_view.dart';
 
 class BottomBarView extends StatefulWidget {
   const BottomBarView({super.key});
@@ -47,7 +49,7 @@ class _BottomBarViewState extends State<BottomBarView> {
       userData = userSnap.data()!;
       setState(() {});
     } catch (e) {
-      showSnackBar(context, '$e.toString()');
+      print(e.toString());
     }
     setState(() {
       isLoading = false;
@@ -84,30 +86,6 @@ class _BottomBarViewState extends State<BottomBarView> {
         ),
         centerTitle: true,
         elevation: 0.0,
-        // actions: [
-        //   PopupMenuButton<MenuAction>(
-        //     onSelected: (value) async {
-        //       switch (value) {
-        //         case MenuAction.logout:
-        //           final shouldLogout = await showLogOutDialog(context);
-        //           if (shouldLogout) {
-        //             await AuthService.firebase().logOut();
-        //             Navigator.of(context)
-        //                 .pushNamedAndRemoveUntil(loginView, (_) => false);
-        //           }
-        //           break;
-        //       }
-        //     },
-        //     itemBuilder: (context) {
-        //       return const [
-        //         PopupMenuItem<MenuAction>(
-        //           value: MenuAction.logout,
-        //           child: Text('Logout'),
-        //         ),
-        //       ];
-        //     },
-        //   )
-        // ],
       ),
       drawer: Drawer(
         width: 230,
@@ -135,23 +113,6 @@ class _BottomBarViewState extends State<BottomBarView> {
                       ),
                 decoration: const BoxDecoration(
                   color: Colors.redAccent,
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: const ListTile(
-                leading: Icon(Icons.home),
-                title: Text(
-                  'Home',
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.redAccent,
-                    fontFamily: 'worksans',
-                    fontWeight: FontWeight.bold,
-                  ),
                 ),
               ),
             ),
@@ -188,7 +149,7 @@ class _BottomBarViewState extends State<BottomBarView> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) {
-                                return const ApplyForRelief();
+                                return EditProfile(userData: userData);
                               },
                             ),
                           );
@@ -208,7 +169,13 @@ class _BottomBarViewState extends State<BottomBarView> {
                       ),
             InkWell(
               onTap: () {
-                Navigator.pop(context);
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const SettingView();
+                    },
+                  ),
+                );
               },
               child: const ListTile(
                 leading: Icon(Icons.settings),

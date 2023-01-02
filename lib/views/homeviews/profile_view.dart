@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:reliefmate/constants/routes.dart';
 import 'package:reliefmate/services/auth/auth_service.dart';
 import 'package:reliefmate/services/profile/firestore_methods.dart';
 import 'package:reliefmate/utilities/utils/utils.dart';
@@ -35,6 +36,7 @@ class _ProfileViewState extends State<ProfileView> {
     setState(() {
       _image = img;
     });
+    uploadProfileImage();
   }
 
   void uploadProfileImage() async {
@@ -51,7 +53,6 @@ class _ProfileViewState extends State<ProfileView> {
     if (res == 'Success') {
       showSnackBar(context, 'Image is Uploaded Succesfully');
     }
-    showSnackBar(context, res);
   }
 
   getProfilePic() async {
@@ -64,9 +65,10 @@ class _ProfileViewState extends State<ProfileView> {
           .doc(_userId)
           .get();
       userProfile = userProfileSnap.data()!;
+
       setState(() {});
     } catch (e) {
-      showSnackBar(context, e.toString());
+      print(e.toString());
     }
   }
 
@@ -84,7 +86,7 @@ class _ProfileViewState extends State<ProfileView> {
       userData = userSnap.data()!;
       setState(() {});
     } catch (e) {
-      showSnackBar(context, '$e.toString()');
+      print(e.toString());
     }
     setState(() {
       isLoading = false;
@@ -139,10 +141,6 @@ class _ProfileViewState extends State<ProfileView> {
                           TextButton(
                             onPressed: selectImage,
                             child: const Text('Edit Image'),
-                          ),
-                          TextButton(
-                            onPressed: uploadProfileImage,
-                            child: const Text('Save Image'),
                           ),
                         ],
                       ),

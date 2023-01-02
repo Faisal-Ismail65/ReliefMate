@@ -53,14 +53,14 @@ class _ProfileCardState extends State<ProfileCard> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
               child: Container(
-                width: 130,
-                height: 180,
+                width: 100,
+                height: 120,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: userProfile['photoUrl'] == null
                     ? const CircleAvatar(
-                        radius: 200,
+                        radius: 100,
                         backgroundColor: Colors.white,
                         child: Icon(
                           Icons.person,

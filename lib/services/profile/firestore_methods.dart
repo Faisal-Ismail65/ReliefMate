@@ -39,6 +39,30 @@ class FirestoreMethods {
     return res;
   }
 
+  Future<String> updateProfile({
+    required String uid,
+    required String name,
+    required String cnic,
+    required String phoneNumber,
+    required String address,
+  }) async {
+    String res = 'Some Error Occured';
+    try {
+      await _firestore.collection('users').doc(uid).update({
+        'name': name,
+        'cnic': cnic,
+        'phoneNumber': phoneNumber,
+        'address': address,
+      });
+      res = 'Success';
+    } on CouldNotUpdateUserProfileException {
+      throw CouldNotUpdateUserProfileException();
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
+
   Future<String> uploadProfileImage({
     required Uint8List file,
     required String uid,

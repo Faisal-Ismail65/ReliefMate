@@ -1,48 +1,46 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
 import 'package:reliefmate/services/auth/auth_service.dart';
 import 'package:reliefmate/services/profile/firestore_methods.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 
-class ApplyForRelief extends StatefulWidget {
-  const ApplyForRelief({super.key});
+class EditProfile extends StatefulWidget {
+  final userData;
+  const EditProfile({super.key, required this.userData});
 
   @override
-  State<ApplyForRelief> createState() => _ApplyForReliefState();
+  State<EditProfile> createState() => _EditProfileState();
 }
 
-class _ApplyForReliefState extends State<ApplyForRelief> {
-  late final TextEditingController _name;
-  late final TextEditingController _cnic;
-  late final TextEditingController _phoneNumber;
-  late final TextEditingController _address;
-  String get _userEmail => AuthService.firebase().currentUser!.email;
+class _EditProfileState extends State<EditProfile> {
+  final TextEditingController _name = TextEditingController();
+  final TextEditingController _cnic = TextEditingController();
+  final TextEditingController _phoneNumber = TextEditingController();
+  final TextEditingController _address = TextEditingController();
   String get _userId => AuthService.firebase().currentUser!.id;
 
-  void createProfile() async {
-    String res = await FirestoreMethods().createProfile(
+  @override
+  void initState() {
+    _name.text = widget.userData['name'];
+    _cnic.text = widget.userData['cnic'];
+    _phoneNumber.text = widget.userData['phoneNumber'];
+    _address.text = widget.userData['address'];
+    super.initState();
+  }
+
+  void editProfile() async {
+    String res = await FirestoreMethods().updateProfile(
       uid: _userId,
-      email: _userEmail,
       name: _name.text,
       cnic: _cnic.text,
       phoneNumber: _phoneNumber.text,
       address: _address.text,
     );
-
     if (res == 'Success') {
       Navigator.of(context).pop();
-      showSnackBar(context, 'Your Profile Is Created Succesfully');
+      showSnackBar(context, 'Your Profile Is Edited Succesfully');
     }
-  }
-
-  @override
-  void initState() {
-    _name = TextEditingController();
-    _cnic = TextEditingController();
-    _phoneNumber = TextEditingController();
-    _address = TextEditingController();
-    super.initState();
   }
 
   @override
@@ -69,7 +67,7 @@ class _ApplyForReliefState extends State<ApplyForRelief> {
         ),
         backgroundColor: Colors.redAccent,
         title: const Text(
-          'Create Profile',
+          'Edit Profile',
           style: TextStyle(
             fontSize: 30,
             fontFamily: 'worksans',
@@ -80,7 +78,7 @@ class _ApplyForReliefState extends State<ApplyForRelief> {
         elevation: 0.0,
         actions: [
           IconButton(
-            onPressed: createProfile,
+            onPressed: editProfile,
             icon: const Icon(
               Icons.done,
               size: 30,

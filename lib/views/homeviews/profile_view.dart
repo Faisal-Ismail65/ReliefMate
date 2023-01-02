@@ -1,13 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:reliefmate/main.dart';
 import 'package:reliefmate/services/auth/auth_service.dart';
+import 'package:reliefmate/services/profile/firestore_methods.dart';
+import 'package:reliefmate/utilities/utils/utils.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 
 class ProfileView extends StatefulWidget {
@@ -19,26 +18,55 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   String get _userId => AuthService.firebase().currentUser!.id;
+  Uint8List? _image;
   var userData = {};
+  var userProfile = {};
   bool isLoading = false;
 
   @override
   void initState() {
+    getProfilePic();
     getData();
     super.initState();
   }
 
-  File? _image;
-  Future pickImage() async {
+  void selectImage() async {
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = img;
+    });
+  }
+
+  void uploadProfileImage() async {
+    setState(() {
+      isLoading = true;
+    });
+    String res = await FirestoreMethods().uploadProfileImage(
+      file: _image!,
+      uid: _userId,
+    );
+    setState(() {
+      isLoading = false;
+    });
+    if (res == 'Success') {
+      showSnackBar(context, 'Image is Uploaded Succesfully');
+    }
+    showSnackBar(context, res);
+  }
+
+  getProfilePic() async {
+    setState(() {
+      isLoading = true;
+    });
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-      File? img = File(image.path);
-      setState(() {
-        _image = img;
-      });
-    } on PlatformException catch (e) {
-      print("failed to pick image $e");
+      var userProfileSnap = await FirebaseFirestore.instance
+          .collection('profilePics')
+          .doc(_userId)
+          .get();
+      userProfile = userProfileSnap.data()!;
+      setState(() {});
+    } catch (e) {
+      showSnackBar(context, e.toString());
     }
   }
 
@@ -52,10 +80,11 @@ class _ProfileViewState extends State<ProfileView> {
           .collection('users')
           .doc(_userId)
           .get();
+
       userData = userSnap.data()!;
       setState(() {});
     } catch (e) {
-      showSnackBar(context, e.toString());
+      showSnackBar(context, '$e.toString()');
     }
     setState(() {
       isLoading = false;
@@ -90,19 +119,30 @@ class _ProfileViewState extends State<ProfileView> {
                               ),
                               shape: BoxShape.circle,
                             ),
-                            child: _image == null
-                                ? const Icon(
-                                    Icons.person,
-                                    size: 50,
-                                  )
-                                : CircleAvatar(
-                                    backgroundImage: FileImage(_image!),
+                            child: userProfile['photoUrl'] != null
+                                ? CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(userProfile['photoUrl']),
                                     radius: 200,
-                                  ),
+                                  )
+                                : _image != null
+                                    ? CircleAvatar(
+                                        backgroundImage: MemoryImage(_image!),
+                                        radius: 200,
+                                      )
+                                    : const Icon(
+                                        Icons.person,
+                                        size: 50,
+                                        color: Colors.redAccent,
+                                      ),
                           ),
                           TextButton(
-                            onPressed: () => pickImage(),
+                            onPressed: selectImage,
                             child: const Text('Edit Image'),
+                          ),
+                          TextButton(
+                            onPressed: uploadProfileImage,
+                            child: const Text('Save Image'),
                           ),
                         ],
                       ),
@@ -113,49 +153,135 @@ class _ProfileViewState extends State<ProfileView> {
                     height: 50,
                     thickness: 2,
                   ),
-                  Center(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          ' Name: ${userData['name']}',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30,
-                              color: Colors.redAccent),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            const TextSpan(
+                              text: 'Name:  ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.redAccent,
+                              ),
+                            ),
+                            TextSpan(
+                              text: '${userData['name'] ?? ''}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(
-                          height: 10,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            const TextSpan(
+                              text: 'Email:  ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.redAccent,
+                              ),
+                            ),
+                            TextSpan(
+                              text: '${userData['email'] ?? ''}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          'Email: ${userData['email']}',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30,
-                              color: Colors.redAccent),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            const TextSpan(
+                              text: 'PhoneNo:  ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.redAccent,
+                              ),
+                            ),
+                            TextSpan(
+                              text: '${userData['phoneNumber'] ?? ''}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(
-                          height: 10,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            const TextSpan(
+                              text: 'CNIC:  ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.redAccent,
+                              ),
+                            ),
+                            TextSpan(
+                              text: '${userData['cnic'] ?? ''}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          'CNIC: ${userData['cnic']}',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30,
-                              color: Colors.redAccent),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            const TextSpan(
+                              text: 'Address:  ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.redAccent,
+                              ),
+                            ),
+                            TextSpan(
+                              text: '${userData['address'] ?? ''}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          'Address: ${userData['address']}',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30,
-                              color: Colors.redAccent),
-                        ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ],
                   ),
                 ],
               ),

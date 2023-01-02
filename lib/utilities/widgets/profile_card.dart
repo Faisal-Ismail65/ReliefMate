@@ -1,8 +1,40 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class ProfileCard extends StatelessWidget {
+class ProfileCard extends StatefulWidget {
   final snap;
   const ProfileCard({super.key, required this.snap});
+
+  @override
+  State<ProfileCard> createState() => _ProfileCardState();
+}
+
+class _ProfileCardState extends State<ProfileCard> {
+  var userProfile = {};
+  bool isLoading = false;
+  @override
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  getData() async {
+    setState(() {
+      isLoading = true;
+    });
+    var userProfileSnap = await FirebaseFirestore.instance
+        .collection('profilePics')
+        .doc(widget.snap['uid'])
+        .get();
+
+    userProfile = userProfileSnap.data()!;
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +58,19 @@ class ProfileCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: const CircleAvatar(
-                  radius: 200,
-                  backgroundColor: Colors.white,
-                ),
+                child: userProfile['photoUrl'] == null
+                    ? const CircleAvatar(
+                        radius: 200,
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          Icons.person,
+                          size: 50,
+                          color: Colors.redAccent,
+                        ),
+                      )
+                    : CircleAvatar(
+                        backgroundImage: NetworkImage(userProfile['photoUrl']),
+                      ),
               ),
             ),
             Container(
@@ -45,7 +86,7 @@ class ProfileCard extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 5),
                     child: Text(
-                      ' Name : ${snap['name']} ',
+                      ' Name : ${widget.snap['name']} ',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -55,17 +96,7 @@ class ProfileCard extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 5),
                     child: Text(
-                      'Phone Number :  ${snap['phoneNumber']} ',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: Text(
-                      'Address :  ${snap['address']} ',
+                      'Address :  ${widget.snap['address']} ',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 20,

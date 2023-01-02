@@ -23,6 +23,51 @@ class _BottomBarViewState extends State<BottomBarView> {
   String get _userEmail => AuthService.firebase().currentUser!.email;
   final users = FirebaseFirestore.instance.collection('users');
   String get _userId => AuthService.firebase().currentUser!.id;
+  var userProfile = {};
+  var userData = {};
+  bool isLoading = false;
+  @override
+  void initState() {
+    getData();
+    getProfilePic();
+    super.initState();
+  }
+
+  getData() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      var userSnap = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_userId)
+          .get();
+
+      userData = userSnap.data()!;
+      setState(() {});
+    } catch (e) {
+      showSnackBar(context, '$e.toString()');
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  getProfilePic() async {
+    setState(() {
+      isLoading = true;
+    });
+    var userProfileSnap = await FirebaseFirestore.instance
+        .collection('profilePics')
+        .doc(_userId)
+        .get();
+
+    userProfile = userProfileSnap.data()!;
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,14 +118,21 @@ class _BottomBarViewState extends State<BottomBarView> {
               child: UserAccountsDrawerHeader(
                 accountName: const Text(''),
                 accountEmail: Text(_userEmail),
-                currentAccountPicture: const CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: Icon(
-                    Icons.person,
-                    size: 40,
-                    color: Colors.black,
-                  ),
-                ),
+                currentAccountPicture: userProfile['photoUrl'] == null
+                    ? const CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          Icons.person,
+                          size: 40,
+                          color: Colors.black,
+                        ),
+                      )
+                    : CircleAvatar(
+                        radius: 50,
+                        backgroundImage: NetworkImage(
+                          userProfile['photoUrl'],
+                        ),
+                      ),
                 decoration: const BoxDecoration(
                   color: Colors.redAccent,
                 ),
@@ -103,29 +155,57 @@ class _BottomBarViewState extends State<BottomBarView> {
                 ),
               ),
             ),
-            InkWell(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const ApplyForRelief();
-                    },
-                  ),
-                );
-              },
-              child: const ListTile(
-                leading: Icon(Icons.person_add),
-                title: Text(
-                  'Apply for Relief',
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.redAccent,
-                    fontFamily: 'worksans',
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
+            isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : userData['uid'] == null
+                    ? InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const ApplyForRelief();
+                              },
+                            ),
+                          );
+                        },
+                        child: const ListTile(
+                          leading: Icon(Icons.person_add),
+                          title: Text(
+                            'Apply for Relief',
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.redAccent,
+                              fontFamily: 'worksans',
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      )
+                    : InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const ApplyForRelief();
+                              },
+                            ),
+                          );
+                        },
+                        child: const ListTile(
+                          leading: Icon(Icons.person_add),
+                          title: Text(
+                            'Edit Profile',
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.redAccent,
+                              fontFamily: 'worksans',
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
             InkWell(
               onTap: () {
                 Navigator.pop(context);

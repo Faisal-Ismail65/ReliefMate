@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:reliefmate/services/cloud/cloud_profile.dart';
-import 'package:reliefmate/services/cloud/frebase_cloud_storage.dart';
-import 'package:reliefmate/views/homeviews/profile_card.dart';
+
+import 'package:reliefmate/utilities/widgets/profile_card.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -12,14 +11,6 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  late final FirebaseCloudStorage _cloudStorage;
-
-  @override
-  void initState() {
-    _cloudStorage = FirebaseCloudStorage();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

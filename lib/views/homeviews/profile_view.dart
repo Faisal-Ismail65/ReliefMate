@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:reliefmate/constants/routes.dart';
 import 'package:reliefmate/services/auth/auth_service.dart';
 import 'package:reliefmate/services/profile/firestore_methods.dart';
 import 'package:reliefmate/utilities/utils/utils.dart';
@@ -154,23 +153,29 @@ class _ProfileViewState extends State<ProfileView> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      RichText(
-                        text: TextSpan(
+                      const Text(
+                        ' Name',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.redAccent, width: 2),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
                           children: [
-                            const TextSpan(
-                              text: 'Name:  ',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.redAccent,
-                              ),
-                            ),
-                            TextSpan(
-                              text: '${userData['name'] ?? ''}',
+                            Text(
+                              '${userData['name'] ?? ''}',
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
-                                color: Colors.black,
                               ),
                             ),
                           ],
@@ -179,23 +184,29 @@ class _ProfileViewState extends State<ProfileView> {
                       const SizedBox(
                         height: 10,
                       ),
-                      RichText(
-                        text: TextSpan(
+                      const Text(
+                        ' Email',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.redAccent, width: 2),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
                           children: [
-                            const TextSpan(
-                              text: 'Email:  ',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.redAccent,
-                              ),
-                            ),
-                            TextSpan(
-                              text: '${userData['email'] ?? ''}',
+                            Text(
+                              '${userData['email'] ?? ''}',
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
-                                color: Colors.black,
                               ),
                             ),
                           ],
@@ -204,23 +215,29 @@ class _ProfileViewState extends State<ProfileView> {
                       const SizedBox(
                         height: 10,
                       ),
-                      RichText(
-                        text: TextSpan(
+                      const Text(
+                        ' CNIC',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.redAccent, width: 2),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
                           children: [
-                            const TextSpan(
-                              text: 'PhoneNo:  ',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.redAccent,
-                              ),
-                            ),
-                            TextSpan(
-                              text: '${userData['phoneNumber'] ?? ''}',
+                            Text(
+                              '${userData['cnic'] ?? ''}',
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
-                                color: Colors.black,
                               ),
                             ),
                           ],
@@ -229,23 +246,29 @@ class _ProfileViewState extends State<ProfileView> {
                       const SizedBox(
                         height: 10,
                       ),
-                      RichText(
-                        text: TextSpan(
+                      const Text(
+                        ' Phone No',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.redAccent, width: 2),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
                           children: [
-                            const TextSpan(
-                              text: 'CNIC:  ',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.redAccent,
-                              ),
-                            ),
-                            TextSpan(
-                              text: '${userData['cnic'] ?? ''}',
+                            Text(
+                              '${userData['phoneNumber'] ?? ''}',
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
-                                color: Colors.black,
                               ),
                             ),
                           ],
@@ -254,23 +277,29 @@ class _ProfileViewState extends State<ProfileView> {
                       const SizedBox(
                         height: 10,
                       ),
-                      RichText(
-                        text: TextSpan(
+                      const Text(
+                        ' Address',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.redAccent, width: 2),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
                           children: [
-                            const TextSpan(
-                              text: 'Address:  ',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.redAccent,
-                              ),
-                            ),
-                            TextSpan(
-                              text: '${userData['address'] ?? ''}',
+                            Text(
+                              '${userData['address'] ?? ''}',
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
-                                color: Colors.black,
                               ),
                             ),
                           ],

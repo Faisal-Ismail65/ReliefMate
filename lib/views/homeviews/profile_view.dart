@@ -78,7 +78,7 @@ class _ProfileViewState extends State<ProfileView> {
 
     try {
       var userSnap = await FirebaseFirestore.instance
-          .collection('users')
+          .collection('profiles')
           .doc(_userId)
           .get();
 
@@ -147,7 +147,7 @@ class _ProfileViewState extends State<ProfileView> {
                   ),
                   const Divider(
                     color: Colors.redAccent,
-                    height: 50,
+                    height: 10,
                     thickness: 2,
                   ),
                   Column(

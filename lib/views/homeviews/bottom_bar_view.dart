@@ -23,7 +23,7 @@ class BottomBarView extends StatefulWidget {
 
 class _BottomBarViewState extends State<BottomBarView> {
   String get _userEmail => AuthService.firebase().currentUser!.email;
-  final users = FirebaseFirestore.instance.collection('users');
+  final users = FirebaseFirestore.instance.collection('profiles');
   String get _userId => AuthService.firebase().currentUser!.id;
   var userProfile = {};
   var userData = {};
@@ -42,7 +42,7 @@ class _BottomBarViewState extends State<BottomBarView> {
 
     try {
       var userSnap = await FirebaseFirestore.instance
-          .collection('users')
+          .collection('profiles')
           .doc(_userId)
           .get();
 

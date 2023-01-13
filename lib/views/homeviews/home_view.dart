@@ -17,7 +17,8 @@ class _HomeViewState extends State<HomeView> {
       body: Padding(
           padding: const EdgeInsets.only(top: 15.0),
           child: StreamBuilder(
-            stream: FirebaseFirestore.instance.collection('users').snapshots(),
+            stream:
+                FirebaseFirestore.instance.collection('profiles').snapshots(),
             builder: (context,
                 AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
               switch (snapshot.connectionState) {

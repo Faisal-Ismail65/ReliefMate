@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reliefmate/constants/routes.dart';
@@ -22,6 +22,23 @@ class _LoginViewState extends State<LoginView> {
   late final TextEditingController _password;
   bool showPassword = false;
   bool isLoading = false;
+
+  void loginUser() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      var userSnap = await FirebaseFirestore.instance
+          .collection('profiles')
+          .where('email', isEqualTo: _email.text)
+          .get();
+    } catch (e) {
+      print(e.toString());
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   void initState() {
@@ -149,9 +166,6 @@ class _LoginViewState extends State<LoginView> {
                           email: email,
                           password: password,
                         );
-                        await FirebaseAuth.instance.currentUser
-                            ?.sendEmailVerification();
-
                         Navigator.of(context).pushNamedAndRemoveUntil(
                           bottomBarView,
                           (route) => false,

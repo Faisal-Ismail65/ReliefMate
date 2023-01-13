@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:reliefmate/firebase_options.dart';
 import 'package:reliefmate/models/auth_user.dart';
@@ -5,7 +6,7 @@ import 'package:reliefmate/services/auth/auth_provider.dart';
 import 'package:reliefmate/services/auth/auth_exceptions.dart';
 
 import 'package:firebase_auth/firebase_auth.dart'
-    show FirebaseAuth, FirebaseAuthException;
+    show FirebaseAuth, FirebaseAuthException, UserCredential;
 
 class FirebaseAuthProvider implements AuthProvider {
   @override
@@ -21,10 +22,20 @@ class FirebaseAuthProvider implements AuthProvider {
     required String password,
   }) async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential cred =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(cred.user!.uid)
+          .set({
+        'email': email,
+        'password': password,
+        'type': 'user',
+        'uid': cred.user!.uid,
+      });
       final user = currentUser;
       if (user != null) {
         return user;

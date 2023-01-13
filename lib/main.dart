@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reliefmate/constants/routes.dart';
 import 'package:reliefmate/services/auth/auth_service.dart';
+import 'package:reliefmate/views/adminviews/admin_view.dart';
 import 'package:reliefmate/views/homeviews/apply_for_relief.dart';
 import 'package:reliefmate/views/homeviews/blogs_view.dart';
 import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
@@ -21,6 +22,7 @@ void main() {
       homeView: (context) => const HomeView(),
       profileView: (context) => const ProfileView(),
       applyForRelief: (context) => const ApplyForRelief(),
+      adminView: (context) => const AdminView(),
     },
   ));
 }

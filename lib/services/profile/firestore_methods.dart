@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:reliefmate/models/user_profile.dart';
-import 'package:reliefmate/services/cloud/cloud_storage_exceptions.dart';
+import 'package:reliefmate/services/profile/cloud_storage_exceptions.dart';
+
 import 'package:reliefmate/services/profile/storage_methods.dart';
 
 class FirestoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final users = FirebaseFirestore.instance.collection('users');
 
   Future<String> createProfile({
     required String uid,
@@ -28,7 +28,10 @@ class FirestoreMethods {
         address: address,
       );
 
-      await _firestore.collection('users').doc(uid).set(userProfile.toJson());
+      await _firestore
+          .collection('profiles')
+          .doc(uid)
+          .set(userProfile.toJson());
       res = 'Success';
     } on CouldNotCreateUserProfileException {
       throw CouldNotCreateUserProfileException();
@@ -48,7 +51,7 @@ class FirestoreMethods {
   }) async {
     String res = 'Some Error Occured';
     try {
-      await _firestore.collection('users').doc(uid).update({
+      await _firestore.collection('profiles').doc(uid).update({
         'name': name,
         'cnic': cnic,
         'phoneNumber': phoneNumber,

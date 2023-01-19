@@ -94,7 +94,7 @@ class _ProfileCardState extends State<ProfileCard> {
                   ),
                   child: userProfile['photoUrl'] == null
                       ? const CircleAvatar(
-                          radius: 100,
+                          radius: 50,
                           backgroundColor: Colors.white,
                           child: Icon(
                             Icons.person,
@@ -110,7 +110,7 @@ class _ProfileCardState extends State<ProfileCard> {
               ),
               Container(
                 width: 240,
-                height: 180,
+                height: 100,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                 ),

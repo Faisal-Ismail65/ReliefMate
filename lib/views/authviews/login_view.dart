@@ -172,20 +172,11 @@ class _LoginViewState extends State<LoginView> {
                         );
                         showSnackBar(context, 'Logged In Succesffully');
                       } on UserNotFoundAuthException {
-                        await showErrorDialog(
-                          context,
-                          'User Not Found!',
-                        );
+                        showSnackBar(context, 'User Not Found!');
                       } on WrongPasswordAuthException {
-                        await showErrorDialog(
-                          context,
-                          'Wrong Credentials!',
-                        );
+                        showSnackBar(context, 'Wrong Credentials!');
                       } on GenericAuthException {
-                        await showErrorDialog(
-                          context,
-                          'Login Failed!',
-                        );
+                        showSnackBar(context, 'Login Failed!');
                       }
                     },
                     style: ElevatedButton.styleFrom(

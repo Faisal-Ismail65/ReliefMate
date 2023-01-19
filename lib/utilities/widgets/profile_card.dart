@@ -53,6 +53,7 @@ class _ProfileCardState extends State<ProfileCard> {
                     'Name : ${widget.snap['name']}',
                     'Phone No : ${widget.snap['phoneNumber']}',
                     'Address : ${widget.snap['address']}',
+                    'Need  : ${widget.snap['need']}'
                   ]
                       .map(
                         (e) => Container(

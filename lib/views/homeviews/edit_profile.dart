@@ -18,7 +18,15 @@ class _EditProfileState extends State<EditProfile> {
   final TextEditingController _cnic = TextEditingController();
   final TextEditingController _phoneNumber = TextEditingController();
   final TextEditingController _address = TextEditingController();
+  final _editProfileKey = GlobalKey<FormState>();
   String get _userId => AuthService.firebase().currentUser!.id;
+  String category = 'Medicine';
+  List<String> needs = [
+    'Edibles',
+    'Wearables',
+    'Residence',
+    'Medicine',
+  ];
 
   @override
   void initState() {
@@ -26,20 +34,32 @@ class _EditProfileState extends State<EditProfile> {
     _cnic.text = widget.userData['cnic'];
     _phoneNumber.text = widget.userData['phoneNumber'];
     _address.text = widget.userData['address'];
+    category = widget.userData['need'];
     super.initState();
   }
 
   void editProfile() async {
-    String res = await FirestoreMethods().updateProfile(
-      uid: _userId,
-      name: _name.text,
-      cnic: _cnic.text,
-      phoneNumber: _phoneNumber.text,
-      address: _address.text,
-    );
-    if (res == 'Success') {
-      Navigator.of(context).pop();
-      showSnackBar(context, 'Your Profile Is Edited Succesfully');
+    bool isForm = _name.text.isNotEmpty &&
+        _cnic.text.isNotEmpty &&
+        _phoneNumber.text.isNotEmpty &&
+        _address.text.isNotEmpty;
+    if (isForm) {
+      if (_editProfileKey.currentState!.validate()) {
+        String res = await FirestoreMethods().updateProfile(
+          uid: _userId,
+          name: _name.text,
+          cnic: _cnic.text,
+          phoneNumber: _phoneNumber.text,
+          address: _address.text,
+          need: category,
+        );
+        if (res == 'Success') {
+          Navigator.of(context).pop();
+          showSnackBar(context, 'Your Profile Is Updated Succesfully');
+        }
+      }
+    } else {
+      showSnackBar(context, "Please fill all fields!");
     }
   }
 
@@ -89,62 +109,96 @@ class _EditProfileState extends State<EditProfile> {
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _name,
-                enableSuggestions: false,
-                autocorrect: false,
-                decoration: InputDecoration(
-                  labelText: 'Enter Full Name',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
+          child: Form(
+            key: _editProfileKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: _name,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  decoration: InputDecoration(
+                    labelText: 'Enter Full Name',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextFormField(
-                controller: _cnic,
-                enableSuggestions: false,
-                autocorrect: false,
-                decoration: InputDecoration(
-                  labelText: 'Enter CNIC',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  controller: _cnic,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  decoration: InputDecoration(
+                    labelText: 'Enter CNIC',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextFormField(
-                controller: _phoneNumber,
-                enableSuggestions: false,
-                autocorrect: false,
-                decoration: InputDecoration(
-                  labelText: 'Enter Phone Number',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  controller: _phoneNumber,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  decoration: InputDecoration(
+                    labelText: 'Enter Phone Number',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextFormField(
-                controller: _address,
-                enableSuggestions: false,
-                autocorrect: false,
-                decoration: InputDecoration(
-                  labelText: 'Enter Address',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  controller: _address,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  decoration: InputDecoration(
+                    labelText: 'Enter Address',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(
+                  height: 20,
+                ),
+                DropdownButtonFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  iconSize: 20,
+                  hint: const Text(
+                    'Need',
+                  ),
+                  icon: const Icon(Icons.keyboard_arrow_down),
+                  onChanged: (value) {
+                    setState(() {
+                      category = value!;
+                    });
+                  },
+                  items: needs.map((String item) {
+                    return DropdownMenuItem(
+                      value: item,
+                      child: Text(
+                        item,
+                        style: const TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -15,6 +15,7 @@ class FirestoreMethods {
     required String cnic,
     required String phoneNumber,
     required String address,
+    required String need,
   }) async {
     String res = 'Some Error Occured';
 
@@ -26,6 +27,7 @@ class FirestoreMethods {
         cnic: cnic,
         phoneNumber: phoneNumber,
         address: address,
+        need: need,
       );
 
       await _firestore
@@ -48,6 +50,7 @@ class FirestoreMethods {
     required String cnic,
     required String phoneNumber,
     required String address,
+    required String need,
   }) async {
     String res = 'Some Error Occured';
     try {
@@ -56,6 +59,7 @@ class FirestoreMethods {
         'cnic': cnic,
         'phoneNumber': phoneNumber,
         'address': address,
+        'need': need,
       });
       res = 'Success';
     } on CouldNotUpdateUserProfileException {

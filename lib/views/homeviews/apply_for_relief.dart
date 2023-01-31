@@ -1,9 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:reliefmate/services/auth/auth_service.dart';
 import 'package:reliefmate/services/profile/firestore_methods.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
+import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
 
 class ApplyForRelief extends StatefulWidget {
   const ApplyForRelief({super.key});
@@ -17,8 +18,8 @@ class _ApplyForReliefState extends State<ApplyForRelief> {
   late final TextEditingController _cnic;
   late final TextEditingController _phoneNumber;
   late final TextEditingController _address;
-  String get _userEmail => AuthService.firebase().currentUser!.email;
-  String get _userId => AuthService.firebase().currentUser!.id;
+  final _userEmail = FirebaseAuth.instance.currentUser!.email;
+  final _userId = FirebaseAuth.instance.currentUser!.uid;
   final _profileKey = GlobalKey<FormState>();
   String category = 'Medicine';
   List<String> needs = [
@@ -37,7 +38,7 @@ class _ApplyForReliefState extends State<ApplyForRelief> {
       if (_profileKey.currentState!.validate()) {
         String res = await FirestoreMethods().createProfile(
           uid: _userId,
-          email: _userEmail,
+          email: _userEmail!,
           name: _name.text,
           cnic: _cnic.text,
           phoneNumber: _phoneNumber.text,
@@ -46,7 +47,9 @@ class _ApplyForReliefState extends State<ApplyForRelief> {
         );
 
         if (res == 'Success') {
-          Navigator.of(context).pop();
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => const BottomBarView(),
+          ));
           showSnackBar(context, 'Your Profile Is Created Succesfully');
         }
       }

@@ -1,17 +1,28 @@
-import 'package:firebase_auth/firebase_auth.dart' show User;
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-@immutable
 class AuthUser {
-  final String id;
+  final String uid;
   final String email;
+  final String type;
+
   const AuthUser({
-    required this.id,
+    required this.uid,
     required this.email,
+    required this.type,
   });
 
-  factory AuthUser.fromFirebase(User user) => AuthUser(
-        id: user.uid,
-        email: user.email!,
-      );
+  Map<String, dynamic> toJson() => {
+        'uid': uid,
+        'email': email,
+        'type': type,
+      };
+
+  static AuthUser fromSnap(DocumentSnapshot snap) {
+    var snapshot = snap.data() as Map<String, dynamic>;
+    return AuthUser(
+      uid: snapshot['uid'],
+      email: snapshot['email'],
+      type: snapshot['type'],
+    );
+  }
 }

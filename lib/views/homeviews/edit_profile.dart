@@ -1,7 +1,8 @@
 // ignore_for_file: use_build_context_synchronously, prefer_typing_uninitialized_variables
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:reliefmate/services/auth/auth_service.dart';
+import 'package:reliefmate/services/auth/auth_methods.dart';
 import 'package:reliefmate/services/profile/firestore_methods.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 
@@ -19,7 +20,7 @@ class _EditProfileState extends State<EditProfile> {
   final TextEditingController _phoneNumber = TextEditingController();
   final TextEditingController _address = TextEditingController();
   final _editProfileKey = GlobalKey<FormState>();
-  String get _userId => AuthService.firebase().currentUser!.id;
+  final _userId = FirebaseAuth.instance.currentUser!.uid;
   String category = 'Medicine';
   List<String> needs = [
     'Edibles',

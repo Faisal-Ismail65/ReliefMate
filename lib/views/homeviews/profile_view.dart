@@ -1,13 +1,15 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:reliefmate/services/auth/auth_service.dart';
 import 'package:reliefmate/services/profile/firestore_methods.dart';
 import 'package:reliefmate/utilities/utils/utils.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
+import 'package:reliefmate/views/homeviews/apply_for_relief.dart';
+import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -17,7 +19,7 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  String get _userId => AuthService.firebase().currentUser!.id;
+  final _userId = FirebaseAuth.instance.currentUser!.uid;
   Uint8List? _image;
   var userData = {};
   var userProfile = {};
@@ -51,6 +53,9 @@ class _ProfileViewState extends State<ProfileView> {
     });
     if (res == 'Success') {
       showSnackBar(context, 'Image is Uploaded Succesfully');
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => const BottomBarView(),
+      ));
     }
   }
 
@@ -58,17 +63,14 @@ class _ProfileViewState extends State<ProfileView> {
     setState(() {
       isLoading = true;
     });
-    try {
-      var userProfileSnap = await FirebaseFirestore.instance
-          .collection('profilePics')
-          .doc(_userId)
-          .get();
-      userProfile = userProfileSnap.data()!;
 
-      setState(() {});
-    } catch (e) {
-      print(e.toString());
-    }
+    var userProfileSnap = await FirebaseFirestore.instance
+        .collection('profilePics')
+        .doc(_userId)
+        .get();
+    userProfile = userProfileSnap.data()!;
+
+    setState(() {});
   }
 
   getData() async {
@@ -103,250 +105,284 @@ class _ProfileViewState extends State<ProfileView> {
               padding: const EdgeInsets.all(15.0),
               child: SingleChildScrollView(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Column(
-                          children: [
-                            Container(
-                              width: 130,
-                              height: 130,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.redAccent,
-                                  width: 3,
-                                ),
-                                shape: BoxShape.circle,
-                              ),
-                              child: userProfile['photoUrl'] != null
-                                  ? CircleAvatar(
-                                      backgroundImage:
-                                          NetworkImage(userProfile['photoUrl']),
-                                      radius: 200,
-                                    )
-                                  : _image != null
-                                      ? CircleAvatar(
-                                          backgroundImage: MemoryImage(_image!),
-                                          radius: 200,
-                                        )
-                                      : const Icon(
-                                          Icons.person,
-                                          size: 50,
-                                          color: Colors.redAccent,
-                                        ),
-                            ),
-                            TextButton(
-                              onPressed: selectImage,
-                              child: const Text('Edit Image'),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const Divider(
-                      color: Colors.redAccent,
-                      height: 20,
-                      thickness: 2,
-                      indent: 60,
-                      endIndent: 60,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 40),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    Center(
+                      child: Stack(
                         children: [
-                          const Text(
-                            ' Name',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
                           Container(
-                            padding: const EdgeInsets.all(10),
+                            width: 130,
+                            height: 130,
                             decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.redAccent,
+                                width: 3,
+                              ),
+                              shape: BoxShape.circle,
+                            ),
+                            child: userProfile['photoUrl'] != null
+                                ? CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(userProfile['photoUrl']),
+                                    radius: 200,
+                                  )
+                                : _image != null
+                                    ? CircleAvatar(
+                                        backgroundImage: MemoryImage(_image!),
+                                        radius: 200,
+                                      )
+                                    : const Icon(
+                                        Icons.person,
+                                        size: 50,
+                                        color: Colors.redAccent,
+                                      ),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
                                 border: Border.all(
-                                    color: Colors.redAccent, width: 2),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Row(
-                              children: [
-                                Text(
-                                  '${userData['name'] ?? ''}',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                  ),
+                                  width: 4,
+                                  color: Colors.white,
                                 ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Text(
-                            ' Email',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Colors.redAccent, width: 2),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Row(
-                              children: [
-                                Text(
-                                  '${userData['email'] ?? ''}',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                  ),
+                                color: Colors.blue,
+                              ),
+                              child: InkWell(
+                                onTap: selectImage,
+                                child: const Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Text(
-                            ' CNIC',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Colors.redAccent, width: 2),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Row(
-                              children: [
-                                Text(
-                                  '${userData['cnic'] ?? ''}',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Text(
-                            ' Phone No',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Colors.redAccent, width: 2),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Row(
-                              children: [
-                                Text(
-                                  '${userData['phoneNumber'] ?? ''}',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Text(
-                            ' Address',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Colors.redAccent, width: 2),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Row(
-                              children: [
-                                Text(
-                                  '${userData['address'] ?? ''}',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Text(
-                            ' Need',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Colors.redAccent, width: 2),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Row(
-                              children: [
-                                Text(
-                                  '${userData['need'] ?? ''}',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
                           ),
                         ],
                       ),
                     ),
+                    userData['name'] == null
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 20, bottom: 30),
+                            child: TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ApplyForRelief(),
+                                    ),
+                                  );
+                                },
+                                child: const Text(
+                                  'Create Profile',
+                                  style: TextStyle(fontSize: 20),
+                                )),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.only(top: 10, bottom: 30),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Name',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: const BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        width: 2,
+                                        color: Colors.redAccent,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        '${userData['name'] ?? ''}',
+                                        style: const TextStyle(
+                                          fontSize: 22,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                const Text(
+                                  'Email',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: const BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        width: 2,
+                                        color: Colors.redAccent,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        '${userData['email'] ?? ''}',
+                                        style: const TextStyle(
+                                          fontSize: 22,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                const Text(
+                                  'CNIC',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: const BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        width: 2,
+                                        color: Colors.redAccent,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        '${userData['cnic'] ?? ''}',
+                                        style: const TextStyle(
+                                          fontSize: 22,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                const Text(
+                                  'Phone No',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: const BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        width: 2,
+                                        color: Colors.redAccent,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        '${userData['phoneNumber'] ?? ''}',
+                                        style: const TextStyle(
+                                          fontSize: 22,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                const Text(
+                                  'Address',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: const BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        width: 2,
+                                        color: Colors.redAccent,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        '${userData['address'] ?? ''}',
+                                        style: const TextStyle(
+                                          fontSize: 22,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                const Text(
+                                  'Need',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: const BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        width: 2,
+                                        color: Colors.redAccent,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        '${userData['need'] ?? ''}',
+                                        style: const TextStyle(
+                                          fontSize: 22,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                   ],
                 ),
               ),

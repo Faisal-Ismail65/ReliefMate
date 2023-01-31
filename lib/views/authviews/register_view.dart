@@ -3,11 +3,11 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:reliefmate/constants/routes.dart';
 import 'package:reliefmate/services/auth/auth_exceptions.dart';
-import 'package:reliefmate/services/auth/auth_service.dart';
-import 'package:reliefmate/utilities/dialogs/error_dialog.dart';
+import 'package:reliefmate/services/auth/auth_methods.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
+import 'package:reliefmate/views/authviews/login_view.dart';
+import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -17,21 +17,68 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-  late final TextEditingController _email;
-  late final TextEditingController _password;
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
   bool showPassword = false;
-
+  bool isLoading = false;
   @override
   void initState() {
-    _email = TextEditingController();
-    _password = TextEditingController();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
     super.initState();
+  }
+
+  void registerUser() async {
+    setState(() {
+      isLoading = true;
+    });
+    final email = _emailController.text;
+    final password = _passwordController.text;
+    try {
+      if (email.isNotEmpty && password.isNotEmpty) {
+        await AuthMethods().signUpUser(email: email, password: password);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const BottomBarView(),
+        ));
+        showSnackBar(context, 'Registered Successfully');
+      } else {
+        showSnackBar(context, 'Enter All Credentials!');
+      }
+    } on WeakPasswordAuthException {
+      showSnackBar(context, 'Weak Password');
+    } on EmailAlreadyInUseAuthException {
+      showSnackBar(
+        context,
+        'Email Already In Use!',
+      );
+    } on InvalidEmailAuthException {
+      showSnackBar(
+        context,
+        'Invalid Email Entered!',
+      );
+    } on GenericAuthException {
+      showSnackBar(
+        context,
+        'Failed To Register!',
+      );
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  void navigateToLogin() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const LoginView(),
+      ),
+    );
   }
 
   @override
   void dispose() {
-    _email.dispose();
-    _password.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -42,10 +89,6 @@ class _RegisterViewState extends State<RegisterView> {
         backgroundColor: Colors.redAccent,
         title: AnimatedTextKit(
           animatedTexts: [
-            TypewriterAnimatedText('ReliefMate',
-                textStyle: GoogleFonts.laBelleAurore(
-                  fontSize: 30,
-                )),
             TypewriterAnimatedText(
               'ReliefMate',
               textStyle: GoogleFonts.pacifico(
@@ -83,7 +126,7 @@ class _RegisterViewState extends State<RegisterView> {
                     enableSuggestions: false,
                     autocorrect: false,
                     keyboardType: TextInputType.emailAddress,
-                    controller: _email,
+                    controller: _emailController,
                     decoration: InputDecoration(
                       labelText: 'Enter Email',
                       suffixIcon: const Icon(Icons.email),
@@ -101,7 +144,7 @@ class _RegisterViewState extends State<RegisterView> {
                         obscureText: !showPassword,
                         enableSuggestions: false,
                         autocorrect: false,
-                        controller: _password,
+                        controller: _passwordController,
                         decoration: InputDecoration(
                           labelText: 'Enter Password',
                           suffixIcon: const Icon(Icons.password),
@@ -138,58 +181,30 @@ class _RegisterViewState extends State<RegisterView> {
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: ElevatedButton(
-                    onPressed: () async {
-                      final email = _email.text;
-                      final password = _password.text;
-                      try {
-                        await AuthService.firebase().createUser(
-                          email: email,
-                          password: password,
-                        );
-                        await AuthService.firebase().sendEmailVerification();
-
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                            bottomBarView, (route) => false);
-                        showSnackBar(context, 'Registered Successfully');
-                      } on WeakPasswordAuthException {
-                        await showErrorDialog(
-                          context,
-                          'Weak Password',
-                        );
-                      } on EmailAlreadyInUseAuthException {
-                        await showErrorDialog(
-                          context,
-                          'Email Already In Use!',
-                        );
-                      } on InvalidEmailAuthException {
-                        await showErrorDialog(
-                          context,
-                          'Invalid Email Entered!',
-                        );
-                      } on GenericAuthException {
-                        await showErrorDialog(
-                          context,
-                          'Failed To Register!',
-                        );
-                      }
-                    },
+                    onPressed: registerUser,
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.redAccent,
                         minimumSize: const Size(double.infinity, 60),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         )),
-                    child: const Center(
-                      child: Text(
-                        'Register',
-                        style: TextStyle(
-                          fontFamily: 'worksans',
-                          letterSpacing: 2,
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                    child: Center(
+                      child: isLoading
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            )
+                          : const Text(
+                              'Register',
+                              style: TextStyle(
+                                fontFamily: 'worksans',
+                                letterSpacing: 2,
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                     ),
                   ),
                 ),
@@ -197,12 +212,7 @@ class _RegisterViewState extends State<RegisterView> {
                   padding: const EdgeInsets.all(10.0),
                   child: Center(
                     child: TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                          loginView,
-                          (route) => false,
-                        );
-                      },
+                      onPressed: navigateToLogin,
                       child: const Text(
                         'Already Have Account',
                         style: TextStyle(

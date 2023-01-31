@@ -1,14 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:reliefmate/constants/routes.dart';
 import 'package:reliefmate/services/auth/auth_exceptions.dart';
-import 'package:reliefmate/services/auth/auth_service.dart';
-import 'package:reliefmate/utilities/dialogs/error_dialog.dart';
+import 'package:reliefmate/services/auth/auth_methods.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
+import 'package:reliefmate/views/authviews/register_view.dart';
+import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -18,60 +17,67 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  late final TextEditingController _email;
-  late final TextEditingController _password;
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
   bool showPassword = false;
   bool isLoading = false;
+  @override
+  void initState() {
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    super.initState();
+  }
 
   void loginUser() async {
     setState(() {
       isLoading = true;
     });
+    final email = _emailController.text;
+    final password = _passwordController.text;
     try {
-      if (_email.text == 'admin' && _password.text == 'admin') {
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil(adminView, (route) => false);
-      } else {
-        final email = _email.text;
-        final password = _password.text;
+      if (email.isNotEmpty && password.isNotEmpty) {
+        String res = await AuthMethods().loginUser(
+          email: email,
+          password: password,
+        );
 
-        try {
-          await AuthService.firebase().logIn(
-            email: email,
-            password: password,
-          );
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            bottomBarView,
-            (route) => false,
+        if (res == 'Success') {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const BottomBarView(),
+            ),
           );
           showSnackBar(context, 'Logged In Succesffully');
-        } on UserNotFoundAuthException {
-          showSnackBar(context, 'User Not Found!');
-        } on WrongPasswordAuthException {
-          showSnackBar(context, 'Wrong Credentials!');
-        } on GenericAuthException {
-          showSnackBar(context, 'Login Failed!');
+        } else {
+          showSnackBar(context, res);
         }
+      } else {
+        showSnackBar(context, "Enter all Credentials!");
       }
-    } catch (e) {
-      print(e.toString());
+    } on UserNotFoundAuthException {
+      showSnackBar(context, 'User Not Found!');
+    } on WrongPasswordAuthException {
+      showSnackBar(context, 'Wrong Credentials!');
+    } on GenericAuthException {
+      showSnackBar(context, 'Login Failed!');
     }
     setState(() {
       isLoading = false;
     });
   }
 
-  @override
-  void initState() {
-    _email = TextEditingController();
-    _password = TextEditingController();
-    super.initState();
+  void navigateToCreateAccount() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const RegisterView(),
+      ),
+    );
   }
 
   @override
   void dispose() {
-    _email.dispose();
-    _password.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -82,10 +88,6 @@ class _LoginViewState extends State<LoginView> {
         backgroundColor: Colors.redAccent,
         title: AnimatedTextKit(
           animatedTexts: [
-            TypewriterAnimatedText('ReliefMate',
-                textStyle: GoogleFonts.laBelleAurore(
-                  fontSize: 30,
-                )),
             TypewriterAnimatedText(
               'ReliefMate',
               textStyle: GoogleFonts.pacifico(
@@ -123,7 +125,7 @@ class _LoginViewState extends State<LoginView> {
                     enableSuggestions: false,
                     autocorrect: false,
                     keyboardType: TextInputType.emailAddress,
-                    controller: _email,
+                    controller: _emailController,
                     decoration: InputDecoration(
                       labelText: 'Enter Email',
                       suffixIcon: const Icon(Icons.email),
@@ -141,7 +143,7 @@ class _LoginViewState extends State<LoginView> {
                         obscureText: !showPassword,
                         enableSuggestions: false,
                         autocorrect: false,
-                        controller: _password,
+                        controller: _passwordController,
                         decoration: InputDecoration(
                           labelText: 'Enter Password',
                           suffixIcon: const Icon(Icons.password),
@@ -209,10 +211,7 @@ class _LoginViewState extends State<LoginView> {
                   padding: const EdgeInsets.all(10.0),
                   child: Center(
                     child: TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                            signupView, (route) => false);
-                      },
+                      onPressed: navigateToCreateAccount,
                       child: const Text(
                         'Create Account',
                         style: TextStyle(

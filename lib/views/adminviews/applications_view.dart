@@ -44,6 +44,5 @@ class _ApplicationsViewState extends State<ApplicationsView> {
         ),
       ),
     );
-    ;
   }
 }

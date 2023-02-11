@@ -8,6 +8,7 @@ class UserProfile {
   final String phoneNumber;
   final String address;
   final String need;
+  final String status;
 
   const UserProfile({
     required this.uid,
@@ -17,6 +18,7 @@ class UserProfile {
     required this.phoneNumber,
     required this.address,
     required this.need,
+    required this.status,
   });
 
   Map<String, dynamic> toJson() => {
@@ -27,6 +29,7 @@ class UserProfile {
         'phoneNumber': phoneNumber,
         'address': address,
         'need': need,
+        'status': status,
       };
 
   static UserProfile fromSnap(DocumentSnapshot snap) {
@@ -39,6 +42,7 @@ class UserProfile {
       phoneNumber: snapshot['phoneNumber'],
       address: snapshot['address'],
       need: snapshot['need'],
+      status: snapshot['status'],
     );
   }
 }

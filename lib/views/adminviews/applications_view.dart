@@ -1,16 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:reliefmate/utilities/widgets/application_card.dart';
 
-import 'package:reliefmate/utilities/widgets/profile_card.dart';
-
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class ApplicationsView extends StatefulWidget {
+  const ApplicationsView({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<ApplicationsView> createState() => _ApplicationsViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _ApplicationsViewState extends State<ApplicationsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +18,7 @@ class _HomeViewState extends State<HomeView> {
         child: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('profiles')
-              .where('status', isEqualTo: 'approved')
+              .where('status', isEqualTo: 'pending')
               .snapshots(),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
@@ -30,7 +29,7 @@ class _HomeViewState extends State<HomeView> {
                   return ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
-                      return ProfileCard(
+                      return ApplicationCard(
                         snap: snapshot.data!.docs[index].data(),
                       );
                     },
@@ -45,5 +44,6 @@ class _HomeViewState extends State<HomeView> {
         ),
       ),
     );
+    ;
   }
 }

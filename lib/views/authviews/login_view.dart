@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:reliefmate/services/auth/auth_exceptions.dart';
 import 'package:reliefmate/services/auth/auth_methods.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
+import 'package:reliefmate/views/adminviews/admin_view.dart';
 import 'package:reliefmate/views/authviews/register_view.dart';
 import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
 
@@ -34,32 +35,37 @@ class _LoginViewState extends State<LoginView> {
     });
     final email = _emailController.text;
     final password = _passwordController.text;
-    try {
-      if (email.isNotEmpty && password.isNotEmpty) {
-        String res = await AuthMethods().loginUser(
-          email: email,
-          password: password,
+    if (email.isNotEmpty && password.isNotEmpty) {
+      if (email == 'admin' && password == 'admin') {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const AdminView(),
+          ),
         );
-
-        if (res == 'Success') {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const BottomBarView(),
-            ),
-          );
-          showSnackBar(context, 'Logged In Succesffully');
-        } else {
-          showSnackBar(context, res);
-        }
       } else {
-        showSnackBar(context, "Enter all Credentials!");
+        try {
+          String res = await AuthMethods().loginUser(
+            email: email,
+            password: password,
+          );
+          if (res == 'Success') {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const BottomBarView(),
+              ),
+            );
+            showSnackBar(context, 'Logged In Succesffully');
+          }
+        } on UserNotFoundAuthException {
+          showSnackBar(context, 'User Not Found!');
+        } on WrongPasswordAuthException {
+          showSnackBar(context, 'Wrong Credentials!');
+        } on GenericAuthException {
+          showSnackBar(context, 'Login Failed!');
+        }
       }
-    } on UserNotFoundAuthException {
-      showSnackBar(context, 'User Not Found!');
-    } on WrongPasswordAuthException {
-      showSnackBar(context, 'Wrong Credentials!');
-    } on GenericAuthException {
-      showSnackBar(context, 'Login Failed!');
+    } else {
+      showSnackBar(context, 'Enter All Credentials!');
     }
     setState(() {
       isLoading = false;

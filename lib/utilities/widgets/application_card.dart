@@ -3,15 +3,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class ProfileCard extends StatefulWidget {
+class ApplicationCard extends StatefulWidget {
   final snap;
-  const ProfileCard({super.key, required this.snap});
+  const ApplicationCard({super.key, this.snap});
 
   @override
-  State<ProfileCard> createState() => _ProfileCardState();
+  State<ApplicationCard> createState() => _ApplicationCardState();
 }
 
-class _ProfileCardState extends State<ProfileCard> {
+class _ApplicationCardState extends State<ApplicationCard> {
   var userProfile = {};
   bool isLoading = false;
 

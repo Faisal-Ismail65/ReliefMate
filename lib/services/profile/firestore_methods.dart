@@ -28,6 +28,7 @@ class FirestoreMethods {
         phoneNumber: phoneNumber,
         address: address,
         need: need,
+        status: 'pending',
       );
 
       await _firestore

@@ -129,6 +129,7 @@ class _BottomBarViewState extends State<BottomBarView> {
                   userData['uid'] == null
                       ? InkWell(
                           onTap: () {
+                            Navigator.of(context).pop();
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) {
@@ -152,6 +153,7 @@ class _BottomBarViewState extends State<BottomBarView> {
                         )
                       : InkWell(
                           onTap: () {
+                            Navigator.of(context).pop();
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) {

@@ -175,9 +175,11 @@ class _ProfileViewState extends State<ProfileView> {
                                     ),
                                   );
                                 },
-                                child: const Text(
-                                  'Create Profile',
-                                  style: TextStyle(fontSize: 20),
+                                child: const Center(
+                                  child: Text(
+                                    'Create Profile',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
                                 )),
                           )
                         : userData['status'] == 'pending'
@@ -190,7 +192,7 @@ class _ProfileViewState extends State<ProfileView> {
                               )
                             : Padding(
                                 padding:
-                                    const EdgeInsets.only(top: 10, bottom: 30),
+                                    const EdgeInsets.only(top: 10, bottom: 20),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -199,9 +201,6 @@ class _ProfileViewState extends State<ProfileView> {
                                       style: TextStyle(
                                         fontSize: 20,
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
                                     ),
                                     Container(
                                       padding: const EdgeInsets.all(10),
@@ -233,9 +232,6 @@ class _ProfileViewState extends State<ProfileView> {
                                         fontSize: 20,
                                       ),
                                     ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
                                     Container(
                                       padding: const EdgeInsets.all(10),
                                       decoration: const BoxDecoration(
@@ -265,9 +261,6 @@ class _ProfileViewState extends State<ProfileView> {
                                       style: TextStyle(
                                         fontSize: 20,
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
                                     ),
                                     Container(
                                       padding: const EdgeInsets.all(10),
@@ -299,9 +292,6 @@ class _ProfileViewState extends State<ProfileView> {
                                         fontSize: 20,
                                       ),
                                     ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
                                     Container(
                                       padding: const EdgeInsets.all(10),
                                       decoration: const BoxDecoration(
@@ -332,9 +322,6 @@ class _ProfileViewState extends State<ProfileView> {
                                         fontSize: 20,
                                       ),
                                     ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
                                     Container(
                                       padding: const EdgeInsets.all(10),
                                       decoration: const BoxDecoration(
@@ -364,9 +351,6 @@ class _ProfileViewState extends State<ProfileView> {
                                       style: TextStyle(
                                         fontSize: 20,
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
                                     ),
                                     Container(
                                       padding: const EdgeInsets.all(10),

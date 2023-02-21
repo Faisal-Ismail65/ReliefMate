@@ -177,6 +177,7 @@ class _BottomBarViewState extends State<BottomBarView> {
                         ),
                   InkWell(
                     onTap: () {
+                      Navigator.of(context).pop();
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) {
@@ -225,8 +226,8 @@ class _BottomBarViewState extends State<BottomBarView> {
                             builder: (context) => const LoginView(),
                           ),
                         );
+                        showSnackBar(context, 'Logged Out Successfully');
                       }
-                      showSnackBar(context, 'Logged Out Successfully');
                     },
                     child: const ListTile(
                       leading: Icon(Icons.logout),

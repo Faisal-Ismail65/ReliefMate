@@ -3,7 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reliefmate/firebase_options.dart';
+import 'package:reliefmate/models/auth_user.dart';
 import 'package:reliefmate/providers/user_provider.dart';
+import 'package:reliefmate/views/adminviews/admin_view.dart';
 import 'package:reliefmate/views/authviews/login_view.dart';
 import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
 
@@ -34,7 +36,7 @@ class MyApp extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.hasData) {
-                return const BottomBarView();
+                return const Home();
               } else if (snapshot.hasError) {
                 return Center(
                   child: Text('${snapshot.error}'),
@@ -51,5 +53,34 @@ class MyApp extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class Home extends StatefulWidget {
+  const Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  @override
+  void initState() {
+    addData();
+    super.initState();
+  }
+
+  addData() async {
+    UserProvider userProvider = Provider.of(context, listen: false);
+    await userProvider.refreshUser();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final AuthUser user = Provider.of<UserProvider>(context).getUser;
+    if (user.type == 'admin') {
+      return const AdminView();
+    }
+    return const BottomBarView();
   }
 }

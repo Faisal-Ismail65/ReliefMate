@@ -93,7 +93,7 @@ class _ApplyForReliefState extends State<ApplyForRelief> {
         title: const Text(
           'Create Profile',
           style: TextStyle(
-            fontSize: 30,
+            fontSize: 20,
             fontFamily: 'worksans',
             letterSpacing: 2,
           ),

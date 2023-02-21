@@ -89,4 +89,15 @@ class FirestoreMethods {
     }
     return res;
   }
+
+  Future<String> deleteProfile({required String uid}) async {
+    String res = 'Some error occured';
+    try {
+      await _firestore.collection('profiles').doc(uid).delete();
+      res = 'Success';
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
 }

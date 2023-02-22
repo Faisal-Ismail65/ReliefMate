@@ -3,6 +3,9 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:reliefmate/models/auth_user.dart';
+import 'package:reliefmate/providers/user_provider.dart';
 import 'package:reliefmate/services/auth/auth_exceptions.dart';
 import 'package:reliefmate/services/auth/auth_methods.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
@@ -36,33 +39,34 @@ class _LoginViewState extends State<LoginView> {
     final email = _emailController.text;
     final password = _passwordController.text;
     if (email.isNotEmpty && password.isNotEmpty) {
-      if (email == 'admin' && password == 'admin') {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const AdminView(),
-          ),
+      try {
+        String res = await AuthMethods().loginUser(
+          email: email,
+          password: password,
         );
-      } else {
-        try {
-          String res = await AuthMethods().loginUser(
-            email: email,
-            password: password,
-          );
-          if (res == 'Success') {
+        if (res == 'Success') {
+          final AuthUser user = await AuthMethods().getUserDetails();
+          if (user.type == 'admin') {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const AdminView(),
+              ),
+            );
+          } else if (user.type == 'user') {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder: (context) => const BottomBarView(),
               ),
             );
-            showSnackBar(context, 'Logged In Succesffully');
           }
-        } on UserNotFoundAuthException {
-          showSnackBar(context, 'User Not Found!');
-        } on WrongPasswordAuthException {
-          showSnackBar(context, 'Wrong Credentials!');
-        } on GenericAuthException {
-          showSnackBar(context, 'Login Failed!');
+          showSnackBar(context, 'Logged In Succesffully');
         }
+      } on UserNotFoundAuthException {
+        showSnackBar(context, 'User Not Found!');
+      } on WrongPasswordAuthException {
+        showSnackBar(context, 'Wrong Credentials!');
+      } on GenericAuthException {
+        showSnackBar(context, 'Login Failed!');
       }
     } else {
       showSnackBar(context, 'Enter All Credentials!');

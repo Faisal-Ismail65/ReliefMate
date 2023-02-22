@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:reliefmate/firebase_options.dart';
 import 'package:reliefmate/models/auth_user.dart';
 import 'package:reliefmate/providers/user_provider.dart';
+import 'package:reliefmate/services/auth/auth_methods.dart';
 import 'package:reliefmate/views/adminviews/admin_view.dart';
 import 'package:reliefmate/views/authviews/login_view.dart';
 import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
@@ -30,6 +31,19 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'ReleifMate',
+        theme: ThemeData(
+          colorScheme: const ColorScheme.light(
+            primary: Colors.redAccent,
+          ),
+          appBarTheme: const AppBarTheme(
+              color: Colors.white,
+              foregroundColor: Colors.white,
+              iconTheme: IconThemeData(
+                color: Colors.redAccent,
+                size: 30,
+              )),
+          useMaterial3: true,
+        ),
         debugShowCheckedModeBanner: false,
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
@@ -64,6 +78,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  bool isLoading = false;
+  AuthUser? user;
   @override
   void initState() {
     addData();
@@ -71,16 +87,29 @@ class _HomeState extends State<Home> {
   }
 
   addData() async {
+    setState(() {
+      isLoading = true;
+    });
     UserProvider userProvider = Provider.of(context, listen: false);
     await userProvider.refreshUser();
+    user = await AuthMethods().getUserDetails();
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final AuthUser user = Provider.of<UserProvider>(context).getUser;
-    if (user.type == 'admin') {
-      return const AdminView();
+    if (isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      if (user!.type == 'admin') {
+        return const AdminView();
+      } else {
+        return const BottomBarView();
+      }
     }
-    return const BottomBarView();
   }
 }

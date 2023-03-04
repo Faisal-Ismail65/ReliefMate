@@ -32,17 +32,17 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'ReleifMate',
         theme: ThemeData(
+          useMaterial3: true,
           colorScheme: const ColorScheme.light(
             primary: Colors.redAccent,
           ),
           appBarTheme: const AppBarTheme(
-              color: Colors.white,
+              color: Colors.redAccent,
               foregroundColor: Colors.white,
               iconTheme: IconThemeData(
-                color: Colors.redAccent,
+                color: Colors.white,
                 size: 30,
               )),
-          useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,
         home: StreamBuilder(

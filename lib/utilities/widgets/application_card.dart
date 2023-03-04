@@ -62,7 +62,7 @@ class _ApplicationCardState extends State<ApplicationCard> {
                           child: Text(
                             e,
                             style: const TextStyle(
-                              fontSize: 20,
+                              fontSize: 15,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -124,7 +124,7 @@ class _ApplicationCardState extends State<ApplicationCard> {
                         ' Name : ${widget.snap['name']} ',
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 20,
+                          fontSize: 15,
                         ),
                       ),
                     ),
@@ -134,7 +134,7 @@ class _ApplicationCardState extends State<ApplicationCard> {
                         'Address :  ${widget.snap['address']} ',
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 20,
+                          fontSize: 15,
                         ),
                       ),
                     ),

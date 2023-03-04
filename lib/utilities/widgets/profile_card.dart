@@ -39,7 +39,7 @@ class _ProfileCardState extends State<ProfileCard> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: InkWell(
         onTap: () {
           showDialog(
@@ -58,11 +58,11 @@ class _ProfileCardState extends State<ProfileCard> {
                       .map(
                         (e) => Container(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 20),
+                              vertical: 10, horizontal: 20),
                           child: Text(
                             e,
                             style: const TextStyle(
-                              fontSize: 20,
+                              fontSize: 15,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -82,7 +82,7 @@ class _ProfileCardState extends State<ProfileCard> {
             borderRadius: BorderRadius.circular(10),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(6.0),
+            padding: const EdgeInsets.all(5.0),
             child: Row(
               children: [
                 Container(
@@ -122,7 +122,7 @@ class _ProfileCardState extends State<ProfileCard> {
                           ' Name : ${widget.snap['name']} ',
                           style: const TextStyle(
                             color: Colors.white,
-                            fontSize: 20,
+                            fontSize: 15,
                           ),
                         ),
                       ),
@@ -132,7 +132,7 @@ class _ProfileCardState extends State<ProfileCard> {
                           'Address :  ${widget.snap['address']} ',
                           style: const TextStyle(
                             color: Colors.white,
-                            fontSize: 20,
+                            fontSize: 15,
                           ),
                         ),
                       ),

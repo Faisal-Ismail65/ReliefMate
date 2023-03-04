@@ -40,7 +40,7 @@ class _AdminViewState extends State<AdminView> {
         title: const Text(
           'ReliefMate',
           style: TextStyle(
-            fontSize: 30,
+            fontSize: 20,
             fontFamily: 'worksans',
             letterSpacing: 2,
           ),

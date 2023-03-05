@@ -131,6 +131,7 @@ class _EditProfileState extends State<EditProfile> {
                   controller: _cnic,
                   enableSuggestions: false,
                   autocorrect: false,
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     labelText: 'Enter CNIC',
                     border: OutlineInputBorder(
@@ -145,6 +146,7 @@ class _EditProfileState extends State<EditProfile> {
                   controller: _phoneNumber,
                   enableSuggestions: false,
                   autocorrect: false,
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     labelText: 'Enter Phone Number',
                     border: OutlineInputBorder(

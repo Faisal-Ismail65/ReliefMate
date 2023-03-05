@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reliefmate/services/profile/firestore_methods.dart';
 import 'package:reliefmate/utilities/utils/utils.dart';
+import 'package:reliefmate/utilities/widgets/profile_tile.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 import 'package:reliefmate/views/homeviews/apply_for_relief.dart';
 import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
@@ -163,219 +164,87 @@ class _ProfileViewState extends State<ProfileView> {
                         ],
                       ),
                     ),
-                    userData['name'] == null
-                        ? Padding(
-                            padding: const EdgeInsets.only(top: 20, bottom: 30),
-                            child: TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ApplyForRelief(),
-                                    ),
-                                  );
-                                },
-                                child: const Center(
-                                  child: Text(
-                                    'Create Profile',
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                )),
+                    userData['status'] == 'blocked'
+                        ? const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 40),
+                            child: Center(
+                              child: Text(
+                                'Your Profile is Blocked',
+                              ),
+                            ),
                           )
-                        : userData['status'] == 'pending'
+                        : userData['status'] == 'disapproved'
                             ? const Padding(
-                                padding: EdgeInsets.only(
-                                    left: 30, top: 40, bottom: 30),
-                                child: Text(
-                                  'Your Application is Submitted and Will be Reviewed',
+                                padding: EdgeInsets.symmetric(vertical: 40),
+                                child: Center(
+                                  child: Text(
+                                    'Your Application is Disapproved',
+                                  ),
                                 ),
                               )
-                            : Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 10, bottom: 20),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'Name',
-                                      style: TextStyle(
-                                        fontSize: 20,
+                            : userData['status'] == 'pending'
+                                ? const Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 40),
+                                    child: Center(
+                                      child: Text(
+                                        'Your Application is Submitted and Will be Reviewed',
                                       ),
                                     ),
-                                    Container(
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: const BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                            width: 2,
-                                            color: Colors.redAccent,
-                                          ),
+                                  )
+                                : userData['name'] == null
+                                    ? Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 20, bottom: 30),
+                                        child: TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const ApplyForRelief(),
+                                                ),
+                                              );
+                                            },
+                                            child: const Center(
+                                              child: Text(
+                                                'Create Profile',
+                                                style: TextStyle(fontSize: 20),
+                                              ),
+                                            )),
+                                      )
+                                    : Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 10, bottom: 20),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            ProfileTile(
+                                                fieldName: 'Name',
+                                                fieldValue:
+                                                    '${userData['name'] ?? ''}'),
+                                            ProfileTile(
+                                                fieldName: 'Email',
+                                                fieldValue:
+                                                    '${userData['email'] ?? ''}'),
+                                            ProfileTile(
+                                                fieldName: 'CNIC',
+                                                fieldValue:
+                                                    '${userData['cnic'] ?? ''}'),
+                                            ProfileTile(
+                                                fieldName: 'Phone No',
+                                                fieldValue:
+                                                    '${userData['phoneNumber'] ?? ''}'),
+                                            ProfileTile(
+                                                fieldName: 'Address',
+                                                fieldValue:
+                                                    '${userData['address'] ?? ''}'),
+                                            ProfileTile(
+                                                fieldName: 'Need',
+                                                fieldValue:
+                                                    '${userData['need'] ?? ''}'),
+                                          ],
                                         ),
                                       ),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            '${userData['name'] ?? ''}',
-                                            style: const TextStyle(
-                                              fontSize: 22,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    const Text(
-                                      'Email',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: const BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                            width: 2,
-                                            color: Colors.redAccent,
-                                          ),
-                                        ),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            '${userData['email'] ?? ''}',
-                                            style: const TextStyle(
-                                              fontSize: 22,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    const Text(
-                                      'CNIC',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: const BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                            width: 2,
-                                            color: Colors.redAccent,
-                                          ),
-                                        ),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            '${userData['cnic'] ?? ''}',
-                                            style: const TextStyle(
-                                              fontSize: 22,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    const Text(
-                                      'Phone No',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: const BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                            width: 2,
-                                            color: Colors.redAccent,
-                                          ),
-                                        ),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            '${userData['phoneNumber'] ?? ''}',
-                                            style: const TextStyle(
-                                              fontSize: 22,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    const Text(
-                                      'Address',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: const BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                            width: 2,
-                                            color: Colors.redAccent,
-                                          ),
-                                        ),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            '${userData['address'] ?? ''}',
-                                            style: const TextStyle(
-                                              fontSize: 22,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    const Text(
-                                      'Need',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: const BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                            width: 2,
-                                            color: Colors.redAccent,
-                                          ),
-                                        ),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            '${userData['need'] ?? ''}',
-                                            style: const TextStyle(
-                                              fontSize: 22,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
                   ],
                 ),
               ),

@@ -53,6 +53,7 @@ class _BottomBarViewState extends State<BottomBarView> {
           .get();
 
       userData = userSnap.data()!;
+      print(userData);
       setState(() {});
     } catch (e) {
       print(e.toString());
@@ -127,55 +128,69 @@ class _BottomBarViewState extends State<BottomBarView> {
                       ),
                     ),
                   ),
-                  userData['uid'] == null
-                      ? InkWell(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return const ApplyForRelief();
-                                },
-                              ),
-                            );
-                          },
-                          child: const ListTile(
-                            leading: Icon(Icons.person_add),
-                            title: Text(
-                              'Apply for Relief',
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.redAccent,
-                                fontFamily: 'worksans',
-                                fontWeight: FontWeight.bold,
-                              ),
+                  userData['status'] == 'blocked' ||
+                          userData['status'] == 'disapproved'
+                      ? const ListTile(
+                          leading: Icon(Icons.person_add),
+                          title: Text(
+                            'Profile Blocked',
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.redAccent,
+                              fontFamily: 'worksans',
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         )
-                      : InkWell(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return EditProfile(userData: userData);
-                                },
+                      : userData['uid'] == null
+                          ? InkWell(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return const ApplyForRelief();
+                                    },
+                                  ),
+                                );
+                              },
+                              child: const ListTile(
+                                leading: Icon(Icons.person_add),
+                                title: Text(
+                                  'Apply for Relief',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.redAccent,
+                                    fontFamily: 'worksans',
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
-                            );
-                          },
-                          child: const ListTile(
-                            leading: Icon(Icons.person_add),
-                            title: Text(
-                              'Edit Profile',
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.redAccent,
-                                fontFamily: 'worksans',
-                                fontWeight: FontWeight.bold,
+                            )
+                          : InkWell(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return EditProfile(userData: userData);
+                                    },
+                                  ),
+                                );
+                              },
+                              child: const ListTile(
+                                leading: Icon(Icons.person_add),
+                                title: Text(
+                                  'Edit Profile',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.redAccent,
+                                    fontFamily: 'worksans',
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
                   InkWell(
                     onTap: () {
                       Navigator.of(context).pop();

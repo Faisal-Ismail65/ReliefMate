@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:reliefmate/services/profile/firestore_methods.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
@@ -136,6 +137,7 @@ class _ApplyForReliefState extends State<ApplyForRelief> {
                   controller: _cnic,
                   enableSuggestions: false,
                   autocorrect: false,
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     labelText: 'Enter CNIC',
                     border: OutlineInputBorder(
@@ -150,6 +152,7 @@ class _ApplyForReliefState extends State<ApplyForRelief> {
                   controller: _phoneNumber,
                   enableSuggestions: false,
                   autocorrect: false,
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     labelText: 'Enter Phone Number',
                     border: OutlineInputBorder(

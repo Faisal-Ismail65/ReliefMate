@@ -51,7 +51,7 @@ class _SettingViewState extends State<SettingView> {
         centerTitle: true,
       ),
       body: Column(children: [
-        userData['uid'] != null
+        userData['status'] == 'approved'
             ? TextButton(
                 onPressed: deleteProfile,
                 child: const Text(

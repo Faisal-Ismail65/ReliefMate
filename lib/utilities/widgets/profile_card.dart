@@ -47,7 +47,7 @@ class _ProfileCardState extends State<ProfileCard> {
             builder: (context) {
               return Dialog(
                 child: ListView(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   shrinkWrap: true,
                   children: [
                     'Name : ${widget.snap['name']}',
@@ -58,7 +58,7 @@ class _ProfileCardState extends State<ProfileCard> {
                       .map(
                         (e) => Container(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 20),
+                              vertical: 5, horizontal: 20),
                           child: Text(
                             e,
                             style: const TextStyle(
@@ -74,72 +74,75 @@ class _ProfileCardState extends State<ProfileCard> {
             },
           );
         },
-        child: Card(
-          color: Colors.redAccent,
-          elevation: 50,
-          shadowColor: Colors.red,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Row(
-              children: [
-                Container(
-                  width: 90,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: userProfile['photoUrl'] == null
-                      ? const CircleAvatar(
-                          radius: 20,
-                          backgroundColor: Colors.white,
-                          child: Icon(
-                            Icons.person,
-                            size: 40,
-                            color: Colors.redAccent,
+        child: SizedBox(
+          height: 100,
+          child: Card(
+            color: Colors.redAccent,
+            elevation: 50,
+            shadowColor: Colors.red,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                children: [
+                  Container(
+                    width: 70,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: userProfile['photoUrl'] == null
+                        ? const CircleAvatar(
+                            radius: 20,
+                            backgroundColor: Colors.white,
+                            child: Icon(
+                              Icons.person,
+                              size: 30,
+                              color: Colors.redAccent,
+                            ),
+                          )
+                        : CircleAvatar(
+                            backgroundImage:
+                                NetworkImage(userProfile['photoUrl']),
                           ),
-                        )
-                      : CircleAvatar(
-                          backgroundImage:
-                              NetworkImage(userProfile['photoUrl']),
-                        ),
-                ),
-                Container(
-                  width: 220,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5),
-                        child: Text(
-                          ' Name : ${widget.snap['name']} ',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5),
-                        child: Text(
-                          'Address :  ${widget.snap['address']} ',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
+                  Container(
+                    width: 220,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: Text(
+                            ' Name : ${widget.snap['name']} ',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: Text(
+                            'Address :  ${widget.snap['address']} ',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

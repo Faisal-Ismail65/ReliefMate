@@ -16,25 +16,46 @@ class FirestoreMethods {
     required String phoneNumber,
     required String address,
     required String need,
+    required String type,
+    required String accountNumber,
   }) async {
     String res = 'Some Error Occured';
 
     try {
-      UserProfile userProfile = UserProfile(
-        uid: uid,
-        email: email,
-        name: name,
-        cnic: cnic,
-        phoneNumber: phoneNumber,
-        address: address,
-        need: need,
-        status: 'pending',
-      );
+      if (type == 'donor') {
+        UserProfile userProfile = UserProfile(
+          uid: uid,
+          email: email,
+          name: name,
+          cnic: cnic,
+          phoneNumber: phoneNumber,
+          address: address,
+          status: 'approved',
+          type: type,
+        );
+        await _firestore
+            .collection('profiles')
+            .doc(uid)
+            .set(userProfile.toJson());
+      } else if (type == 'victim') {
+        UserProfile userProfile = UserProfile(
+          uid: uid,
+          email: email,
+          name: name,
+          cnic: cnic,
+          phoneNumber: phoneNumber,
+          address: address,
+          status: 'pending',
+          type: type,
+          need: need,
+          accountNumber: accountNumber,
+        );
+        await _firestore
+            .collection('profiles')
+            .doc(uid)
+            .set(userProfile.toJson());
+      }
 
-      await _firestore
-          .collection('profiles')
-          .doc(uid)
-          .set(userProfile.toJson());
       res = 'Success';
     } on CouldNotCreateUserProfileException {
       throw CouldNotCreateUserProfileException();
@@ -52,6 +73,7 @@ class FirestoreMethods {
     required String phoneNumber,
     required String address,
     required String need,
+    required String accountNumber,
   }) async {
     String res = 'Some Error Occured';
     try {
@@ -61,6 +83,7 @@ class FirestoreMethods {
         'phoneNumber': phoneNumber,
         'address': address,
         'need': need,
+        'accountNumber': accountNumber,
       });
       res = 'Success';
     } on CouldNotUpdateUserProfileException {

@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reliefmate/services/profile/firestore_methods.dart';
+import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/utils/utils.dart';
+import 'package:reliefmate/utilities/widgets/custom_text_button.dart';
 import 'package:reliefmate/utilities/widgets/profile_tile.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
-import 'package:reliefmate/views/homeviews/apply_for_relief.dart';
+import 'package:reliefmate/views/homeviews/create_profile.dart';
 import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
 
 class ProfileView extends StatefulWidget {
@@ -35,49 +37,60 @@ class _ProfileViewState extends State<ProfileView> {
 
   void selectImage() async {
     Uint8List img = await pickImage(ImageSource.gallery);
-    setState(() {
-      _image = img;
-    });
+    if (mounted) {
+      setState(() {
+        _image = img;
+      });
+    }
+
     uploadProfileImage();
   }
 
   void uploadProfileImage() async {
-    setState(() {
-      isLoading = true;
-    });
-    String res = await FirestoreMethods().uploadProfileImage(
-      file: _image!,
-      uid: _userId,
-    );
-    setState(() {
-      isLoading = false;
-    });
-    if (res == 'Success') {
-      showSnackBar(context, 'Image is Uploaded Succesfully');
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => const BottomBarView(),
-      ));
+    if (_image != null) {
+      setState(() {
+        isLoading = true;
+      });
+      String res = await FirestoreMethods().uploadProfileImage(
+        file: _image!,
+        uid: _userId,
+      );
+      setState(() {
+        isLoading = false;
+      });
+      if (res == 'Success') {
+        showSnackBar(context, 'Image is Uploaded Succesfully');
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const BottomBarView(),
+        ));
+      }
     }
   }
 
   getProfilePic() async {
-    setState(() {
-      isLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = true;
+      });
+    }
 
     var userProfileSnap = await FirebaseFirestore.instance
         .collection('profilePics')
         .doc(_userId)
         .get();
-    userProfile = userProfileSnap.data()!;
+    userProfile = userProfileSnap.data() ?? {};
 
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   getData() async {
-    setState(() {
-      isLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = true;
+      });
+    }
 
     try {
       var userSnap = await FirebaseFirestore.instance
@@ -85,14 +98,18 @@ class _ProfileViewState extends State<ProfileView> {
           .doc(_userId)
           .get();
 
-      userData = userSnap.data()!;
-      setState(() {});
+      userData = userSnap.data() ?? {};
+      if (mounted) {
+        setState(() {});
+      }
     } catch (e) {
       print(e.toString());
     }
-    setState(() {
-      isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -116,7 +133,7 @@ class _ProfileViewState extends State<ProfileView> {
                             height: 130,
                             decoration: BoxDecoration(
                               border: Border.all(
-                                color: Colors.redAccent,
+                                color: GlobalVariables.appBarBackgroundColor,
                                 width: 3,
                               ),
                               shape: BoxShape.circle,
@@ -135,7 +152,8 @@ class _ProfileViewState extends State<ProfileView> {
                                     : const Icon(
                                         Icons.person,
                                         size: 50,
-                                        color: Colors.redAccent,
+                                        color: GlobalVariables
+                                            .appBarBackgroundColor,
                                       ),
                           ),
                           Positioned(
@@ -150,7 +168,7 @@ class _ProfileViewState extends State<ProfileView> {
                                   width: 4,
                                   color: Colors.white,
                                 ),
-                                color: Colors.blue,
+                                color: GlobalVariables.btnBackgroundColor,
                               ),
                               child: InkWell(
                                 onTap: selectImage,
@@ -195,21 +213,20 @@ class _ProfileViewState extends State<ProfileView> {
                                     ? Padding(
                                         padding: const EdgeInsets.only(
                                             top: 20, bottom: 30),
-                                        child: TextButton(
+                                        child: Center(
+                                          child: CustomTextButton(
                                             onPressed: () {
                                               Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      const ApplyForRelief(),
+                                                      const CreateProfile(),
                                                 ),
                                               );
                                             },
-                                            child: const Center(
-                                              child: Text(
-                                                'Create Profile',
-                                                style: TextStyle(fontSize: 20),
-                                              ),
-                                            )),
+                                            text: "Create Profile",
+                                            underline: false,
+                                          ),
+                                        ),
                                       )
                                     : Padding(
                                         padding: const EdgeInsets.only(
@@ -238,10 +255,21 @@ class _ProfileViewState extends State<ProfileView> {
                                                 fieldName: 'Address',
                                                 fieldValue:
                                                     '${userData['address'] ?? ''}'),
-                                            ProfileTile(
-                                                fieldName: 'Need',
-                                                fieldValue:
-                                                    '${userData['need'] ?? ''}'),
+                                            userData['type'] == 'victim'
+                                                ? Column(
+                                                    children: [
+                                                      ProfileTile(
+                                                          fieldName:
+                                                              'Account Number',
+                                                          fieldValue:
+                                                              '${userData['accountNumber'] ?? ''}'),
+                                                      ProfileTile(
+                                                          fieldName: 'Need',
+                                                          fieldValue:
+                                                              '${userData['need'] ?? ''}'),
+                                                    ],
+                                                  )
+                                                : const SizedBox(),
                                           ],
                                         ),
                                       ),

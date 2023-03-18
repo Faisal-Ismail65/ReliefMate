@@ -6,9 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:reliefmate/services/auth/auth_methods.dart';
 import 'package:reliefmate/utilities/dialogs/logout_dialog.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
+import 'package:reliefmate/utilities/widgets/app_bar.dart';
+import 'package:reliefmate/utilities/widgets/drawer_menu_tile.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 import 'package:reliefmate/views/authviews/login_view.dart';
-import 'package:reliefmate/views/homeviews/settings_view.dart';
 
 class AdminView extends StatefulWidget {
   const AdminView({super.key});
@@ -35,19 +36,7 @@ class _AdminViewState extends State<AdminView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.redAccent,
-        title: const Text(
-          'ReliefMate',
-          style: TextStyle(
-            fontSize: 20,
-            fontFamily: 'worksans',
-            letterSpacing: 2,
-          ),
-        ),
-        centerTitle: true,
-        elevation: 0.0,
-      ),
+      appBar: const SimpleAppBar(text: "ReliefMate Admin"),
       drawer: Drawer(
         width: 230,
         child: ListView(
@@ -66,53 +55,24 @@ class _AdminViewState extends State<AdminView> {
                   ),
                 ),
                 decoration: const BoxDecoration(
-                  color: Colors.redAccent,
+                  color: GlobalVariables.appBarColor,
                 ),
               ),
             ),
-            InkWell(
-              onTap: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const SettingView();
-                    },
-                  ),
-                );
-              },
-              child: const ListTile(
-                leading: Icon(Icons.settings),
-                title: Text(
-                  'Setting',
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.redAccent,
-                    fontFamily: 'worksans',
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+            DrawerMenuTile(
+              text: 'Setting',
+              icon: const Icon(Icons.settings),
+              onPressed: () {},
             ),
-            InkWell(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: const ListTile(
-                leading: Icon(Icons.info),
-                title: Text(
-                  'About',
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.redAccent,
-                    fontFamily: 'worksans',
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+            DrawerMenuTile(
+              text: 'About',
+              icon: const Icon(Icons.info),
+              onPressed: () {},
             ),
-            InkWell(
-              onTap: () async {
+            DrawerMenuTile(
+              text: 'Logout',
+              icon: const Icon(Icons.logout),
+              onPressed: () async {
                 final shouldLogout = await showLogOutDialog(context);
                 if (shouldLogout) {
                   await AuthMethods().signOut();
@@ -124,19 +84,7 @@ class _AdminViewState extends State<AdminView> {
                   showSnackBar(context, 'Logged Out Successfully');
                 }
               },
-              child: const ListTile(
-                leading: Icon(Icons.logout),
-                title: Text(
-                  'Logout',
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.redAccent,
-                    fontFamily: 'worksans',
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            )
+            ),
           ],
         ),
       ),
@@ -154,19 +102,25 @@ class _AdminViewState extends State<AdminView> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home_outlined,
-              color: _page == 0 ? Colors.redAccent : Colors.black,
+              color: _page == 0
+                  ? GlobalVariables.btnBackgroundColor
+                  : GlobalVariables.appBarBackgroundColor,
             ),
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.local_fire_department_outlined,
-              color: _page == 1 ? Colors.redAccent : Colors.black,
+              color: _page == 1
+                  ? GlobalVariables.btnBackgroundColor
+                  : GlobalVariables.appBarBackgroundColor,
             ),
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.analytics_outlined,
-              color: _page == 2 ? Colors.redAccent : Colors.black,
+              color: _page == 2
+                  ? GlobalVariables.btnBackgroundColor
+                  : GlobalVariables.appBarBackgroundColor,
             ),
           ),
         ],

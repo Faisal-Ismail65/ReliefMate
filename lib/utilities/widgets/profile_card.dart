@@ -2,6 +2,8 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:reliefmate/utilities/utils/global_variables.dart';
+import 'package:reliefmate/utilities/widgets/victim_detail.dart';
 
 class ProfileCard extends StatefulWidget {
   final snap;
@@ -22,18 +24,23 @@ class _ProfileCardState extends State<ProfileCard> {
   }
 
   getData() async {
-    setState(() {
-      isLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = true;
+      });
+    }
+
     var userProfileSnap = await FirebaseFirestore.instance
         .collection('profilePics')
         .doc(widget.snap['uid'])
         .get();
 
-    userProfile = userProfileSnap.data()!;
-    setState(() {
-      isLoading = false;
-    });
+    userProfile = userProfileSnap.data() ?? {};
+    if (mounted) {
+      setState(() {
+        isLoading = true;
+      });
+    }
   }
 
   @override
@@ -42,44 +49,18 @@ class _ProfileCardState extends State<ProfileCard> {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: InkWell(
         onTap: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return Dialog(
-                child: ListView(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  shrinkWrap: true,
-                  children: [
-                    'Name : ${widget.snap['name']}',
-                    'Phone No : ${widget.snap['phoneNumber']}',
-                    'Address : ${widget.snap['address']}',
-                    'Need  : ${widget.snap['need']}'
-                  ]
-                      .map(
-                        (e) => Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 20),
-                          child: Text(
-                            e,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                ),
-              );
-            },
-          );
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => VictimDetail(
+              snap: widget.snap,
+            ),
+          ));
         },
         child: SizedBox(
           height: 100,
           child: Card(
-            color: Colors.redAccent,
+            color: GlobalVariables.appBarBackgroundColor,
             elevation: 50,
-            shadowColor: Colors.red,
+            shadowColor: GlobalVariables.appBarColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
@@ -100,7 +81,7 @@ class _ProfileCardState extends State<ProfileCard> {
                             child: Icon(
                               Icons.person,
                               size: 30,
-                              color: Colors.redAccent,
+                              color: GlobalVariables.appBarBackgroundColor,
                             ),
                           )
                         : CircleAvatar(

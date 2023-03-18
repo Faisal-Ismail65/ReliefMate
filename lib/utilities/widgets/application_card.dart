@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:reliefmate/services/profile/admin_firestore_methods.dart';
+import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 
 class ApplicationCard extends StatefulWidget {
@@ -25,18 +26,23 @@ class _ApplicationCardState extends State<ApplicationCard> {
   }
 
   getData() async {
-    setState(() {
-      isLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = true;
+      });
+    }
+
     var userProfileSnap = await FirebaseFirestore.instance
         .collection('profilePics')
         .doc(widget.snap['uid'])
         .get();
 
-    userProfile = userProfileSnap.data()!;
-    setState(() {
-      isLoading = false;
-    });
+    userProfile = userProfileSnap.data() ?? {};
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -116,45 +122,45 @@ class _ApplicationCardState extends State<ApplicationCard> {
             },
           );
         },
-        onTap: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return Dialog(
-                child: ListView(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  shrinkWrap: true,
-                  children: [
-                    'Name : ${widget.snap['name']}',
-                    'Phone No : ${widget.snap['phoneNumber']}',
-                    'Address : ${widget.snap['address']}',
-                    'Need  : ${widget.snap['need']}'
-                  ]
-                      .map(
-                        (e) => Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 20),
-                          child: Text(
-                            e,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                ),
-              );
-            },
-          );
-        },
+        // onTap: () {
+        //   showDialog(
+        //     context: context,
+        //     builder: (context) {
+        //       return Dialog(
+        //         child: ListView(
+        //           padding: const EdgeInsets.symmetric(vertical: 10),
+        //           shrinkWrap: true,
+        //           children: [
+        //             'Name : ${widget.snap['name']}',
+        //             'Phone No : ${widget.snap['phoneNumber']}',
+        //             'Address : ${widget.snap['address']}',
+        //             'Need  : ${widget.snap['need']}'
+        //           ]
+        //               .map(
+        //                 (e) => Container(
+        //                   padding: const EdgeInsets.symmetric(
+        //                       vertical: 5, horizontal: 20),
+        //                   child: Text(
+        //                     e,
+        //                     style: const TextStyle(
+        //                       fontSize: 15,
+        //                       fontWeight: FontWeight.w500,
+        //                     ),
+        //                   ),
+        //                 ),
+        //               )
+        //               .toList(),
+        //         ),
+        //       );
+        //     },
+        //   );
+        // },
         child: SizedBox(
           height: 100,
           child: Card(
-            color: Colors.redAccent,
+            color: GlobalVariables.appBarBackgroundColor,
             elevation: 50,
-            shadowColor: Colors.red,
+            shadowColor: GlobalVariables.btnBackgroundColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
@@ -175,7 +181,7 @@ class _ApplicationCardState extends State<ApplicationCard> {
                             child: Icon(
                               Icons.person,
                               size: 30,
-                              color: Colors.redAccent,
+                              color: GlobalVariables.btnBackgroundColor,
                             ),
                           )
                         : CircleAvatar(

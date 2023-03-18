@@ -7,11 +7,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:reliefmate/services/auth/auth_methods.dart';
 import 'package:reliefmate/utilities/dialogs/logout_dialog.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
+import 'package:reliefmate/utilities/widgets/app_bar.dart';
+import 'package:reliefmate/utilities/widgets/drawer_menu_tile.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 import 'package:reliefmate/views/authviews/login_view.dart';
-import 'package:reliefmate/views/homeviews/apply_for_relief.dart';
+import 'package:reliefmate/views/homeviews/create_profile.dart';
 import 'package:reliefmate/views/homeviews/edit_profile.dart';
-import 'package:reliefmate/views/homeviews/settings_view.dart';
 
 class BottomBarView extends StatefulWidget {
   const BottomBarView({super.key});
@@ -52,8 +53,7 @@ class _BottomBarViewState extends State<BottomBarView> {
           .doc(_userId)
           .get();
 
-      userData = userSnap.data()!;
-      print(userData);
+      userData = userSnap.data() ?? {};
       setState(() {});
     } catch (e) {
       print(e.toString());
@@ -72,7 +72,7 @@ class _BottomBarViewState extends State<BottomBarView> {
         .doc(_userId)
         .get();
 
-    userProfile = userProfileSnap.data()!;
+    userProfile = userProfileSnap.data() ?? {};
     setState(() {
       isLoading = false;
     });
@@ -81,19 +81,8 @@ class _BottomBarViewState extends State<BottomBarView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.redAccent,
-        title: const Text(
-          'ReliefMate',
-          style: TextStyle(
-            fontSize: 30,
-            fontFamily: 'worksans',
-            letterSpacing: 2,
-          ),
-        ),
-        iconTheme: const IconThemeData(color: Colors.white),
-        centerTitle: true,
-        elevation: 0.0,
+      appBar: const SimpleAppBar(
+        text: 'ReliefMate',
       ),
       drawer: Drawer(
         width: 230,
@@ -124,51 +113,35 @@ class _BottomBarViewState extends State<BottomBarView> {
                               ),
                             ),
                       decoration: const BoxDecoration(
-                        color: Colors.redAccent,
+                        color: GlobalVariables.appBarColor,
                       ),
                     ),
                   ),
-                  userData['status'] == 'blocked' ||
-                          userData['status'] == 'disapproved'
-                      ? const ListTile(
-                          leading: Icon(Icons.person_add),
-                          title: Text(
-                            'Profile Blocked',
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.redAccent,
-                              fontFamily: 'worksans',
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                  userData['status'] == 'disapproved'
+                      ? DrawerMenuTile(
+                          text: 'Profile Disapproved',
+                          icon: const Icon(Icons.person),
+                          onPressed: () {},
                         )
                       : userData['uid'] == null
-                          ? InkWell(
-                              onTap: () {
+                          ? DrawerMenuTile(
+                              text: 'Create Profile',
+                              icon: const Icon(Icons.person_add),
+                              onPressed: () {
                                 Navigator.of(context).pop();
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return const ApplyForRelief();
+                                      return const CreateProfile();
                                     },
                                   ),
                                 );
                               },
-                              child: const ListTile(
-                                leading: Icon(Icons.person_add),
-                                title: Text(
-                                  'Apply for Relief',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.redAccent,
-                                    fontFamily: 'worksans',
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
                             )
-                          : InkWell(
-                              onTap: () {
+                          : DrawerMenuTile(
+                              text: 'Edit Profile',
+                              icon: const Icon(Icons.person_add),
+                              onPressed: () {
                                 Navigator.of(context).pop();
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
@@ -178,62 +151,21 @@ class _BottomBarViewState extends State<BottomBarView> {
                                   ),
                                 );
                               },
-                              child: const ListTile(
-                                leading: Icon(Icons.person_add),
-                                title: Text(
-                                  'Edit Profile',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.redAccent,
-                                    fontFamily: 'worksans',
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
                             ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return const SettingView();
-                          },
-                        ),
-                      );
-                    },
-                    child: const ListTile(
-                      leading: Icon(Icons.settings),
-                      title: Text(
-                        'Setting',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.redAccent,
-                          fontFamily: 'worksans',
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+                  DrawerMenuTile(
+                    text: 'Setting',
+                    icon: const Icon(Icons.settings),
+                    onPressed: () {},
                   ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const ListTile(
-                      leading: Icon(Icons.info),
-                      title: Text(
-                        'About',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.redAccent,
-                          fontFamily: 'worksans',
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+                  DrawerMenuTile(
+                    text: 'About',
+                    icon: const Icon(Icons.info),
+                    onPressed: () {},
                   ),
-                  InkWell(
-                    onTap: () async {
+                  DrawerMenuTile(
+                    text: 'Logout',
+                    icon: const Icon(Icons.logout),
+                    onPressed: () async {
                       final shouldLogout = await showLogOutDialog(context);
                       if (shouldLogout) {
                         await AuthMethods().signOut();
@@ -245,19 +177,7 @@ class _BottomBarViewState extends State<BottomBarView> {
                         showSnackBar(context, 'Logged Out Successfully');
                       }
                     },
-                    child: const ListTile(
-                      leading: Icon(Icons.logout),
-                      title: Text(
-                        'Logout',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.redAccent,
-                          fontFamily: 'worksans',
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  )
+                  ),
                 ],
               ),
       ),
@@ -275,19 +195,25 @@ class _BottomBarViewState extends State<BottomBarView> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home_outlined,
-              color: _page == 0 ? Colors.redAccent : Colors.black,
+              color: _page == 0
+                  ? GlobalVariables.btnBackgroundColor
+                  : GlobalVariables.appBarBackgroundColor,
             ),
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.local_fire_department_outlined,
-              color: _page == 1 ? Colors.redAccent : Colors.black,
+              color: _page == 1
+                  ? GlobalVariables.btnBackgroundColor
+                  : GlobalVariables.appBarBackgroundColor,
             ),
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.person_outline,
-              color: _page == 2 ? Colors.redAccent : Colors.black,
+              color: _page == 2
+                  ? GlobalVariables.btnBackgroundColor
+                  : GlobalVariables.appBarBackgroundColor,
             ),
           ),
         ],

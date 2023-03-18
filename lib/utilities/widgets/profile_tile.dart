@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reliefmate/utilities/utils/global_variables.dart';
 
 class ProfileTile extends StatelessWidget {
   final String fieldName;
@@ -9,13 +10,13 @@ class ProfileTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
-        padding: const EdgeInsets.only(top: 20, bottom: 5),
+        padding: const EdgeInsets.only(top: 25, bottom: 5),
         decoration: const BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: Colors.redAccent,
+              color: GlobalVariables.appBarColor,
             ),
           ),
         ),

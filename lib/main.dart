@@ -6,6 +6,7 @@ import 'package:reliefmate/firebase_options.dart';
 import 'package:reliefmate/models/auth_user.dart';
 import 'package:reliefmate/providers/user_provider.dart';
 import 'package:reliefmate/services/auth/auth_methods.dart';
+import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/views/adminviews/admin_view.dart';
 import 'package:reliefmate/views/authviews/login_view.dart';
 import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
@@ -32,17 +33,18 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'ReleifMate',
         theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: const ColorScheme.light(
-            primary: Colors.redAccent,
-          ),
+          backgroundColor: GlobalVariables.appBackgroundColor,
           appBarTheme: const AppBarTheme(
-              color: Colors.redAccent,
-              foregroundColor: Colors.white,
-              iconTheme: IconThemeData(
-                color: Colors.white,
-                size: 30,
-              )),
+            color: GlobalVariables.appBarColor,
+            foregroundColor: Colors.white,
+            toolbarTextStyle: TextStyle(
+              color: GlobalVariables.textColor,
+            ),
+            iconTheme: IconThemeData(
+              color: GlobalVariables.textColor,
+              size: 30,
+            ),
+          ),
         ),
         debugShowCheckedModeBanner: false,
         home: StreamBuilder(

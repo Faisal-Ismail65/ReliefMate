@@ -1,15 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:reliefmate/utilities/widgets/application_card.dart';
 
-class ApplicationsView extends StatefulWidget {
-  const ApplicationsView({super.key});
+import 'package:reliefmate/utilities/widgets/profile_card.dart';
+
+class VictimsView extends StatefulWidget {
+  const VictimsView({super.key});
 
   @override
-  State<ApplicationsView> createState() => _ApplicationsViewState();
+  State<VictimsView> createState() => _VictimsViewState();
 }
 
-class _ApplicationsViewState extends State<ApplicationsView> {
+class _VictimsViewState extends State<VictimsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +19,8 @@ class _ApplicationsViewState extends State<ApplicationsView> {
         child: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('profiles')
-              .where('status', isEqualTo: 'pending')
+              .where('type', isEqualTo: 'victim')
+              .where('status', isEqualTo: 'approved')
               .snapshots(),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
@@ -29,7 +31,7 @@ class _ApplicationsViewState extends State<ApplicationsView> {
                   return ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
-                      return ApplicationCard(
+                      return ProfileCard(
                         snap: snapshot.data!.docs[index].data(),
                       );
                     },

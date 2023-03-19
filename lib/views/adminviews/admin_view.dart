@@ -10,6 +10,7 @@ import 'package:reliefmate/utilities/widgets/app_bar.dart';
 import 'package:reliefmate/utilities/widgets/drawer_menu_tile.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 import 'package:reliefmate/views/authviews/login_view.dart';
+import 'package:reliefmate/views/homeviews/about_view.dart';
 
 class AdminView extends StatefulWidget {
   const AdminView({super.key});
@@ -67,7 +68,11 @@ class _AdminViewState extends State<AdminView> {
             DrawerMenuTile(
               text: 'About',
               icon: const Icon(Icons.info),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const AboutView(),
+                ));
+              },
             ),
             DrawerMenuTile(
               text: 'Logout',

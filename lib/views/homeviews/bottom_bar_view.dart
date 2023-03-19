@@ -11,6 +11,7 @@ import 'package:reliefmate/utilities/widgets/app_bar.dart';
 import 'package:reliefmate/utilities/widgets/drawer_menu_tile.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 import 'package:reliefmate/views/authviews/login_view.dart';
+import 'package:reliefmate/views/homeviews/about_view.dart';
 import 'package:reliefmate/views/homeviews/create_profile.dart';
 import 'package:reliefmate/views/homeviews/edit_profile.dart';
 
@@ -160,7 +161,11 @@ class _BottomBarViewState extends State<BottomBarView> {
                   DrawerMenuTile(
                     text: 'About',
                     icon: const Icon(Icons.info),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const AboutView(),
+                      ));
+                    },
                   ),
                   DrawerMenuTile(
                     text: 'Logout',

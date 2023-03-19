@@ -2,7 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:reliefmate/services/profile/admin_firestore_methods.dart';
+import 'package:reliefmate/services/admin/admin_firestore_methods.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 

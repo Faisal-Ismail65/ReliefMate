@@ -7,6 +7,7 @@ import 'package:reliefmate/utilities/widgets/custom_text_button.dart';
 import 'package:reliefmate/utilities/widgets/grid_item.dart';
 import 'package:reliefmate/views/homeviews/create_profile.dart';
 import 'package:reliefmate/views/homeviews/donate_view.dart';
+import 'package:reliefmate/views/homeviews/donations_list.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -116,7 +117,7 @@ class _HomeViewState extends State<HomeView> {
                           shrinkWrap: true,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
+                            crossAxisCount: 2,
                           ),
                           children: [
                             InkWell(
@@ -127,6 +128,17 @@ class _HomeViewState extends State<HomeView> {
                               },
                               child: const GridItem(
                                   icon: Icons.home, text: 'Donate'),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const DonationsList(),
+                                  ),
+                                );
+                              },
+                              child: const GridItem(
+                                  icon: Icons.home, text: 'Donations'),
                             ),
                           ],
                         )

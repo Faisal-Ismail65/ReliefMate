@@ -8,28 +8,31 @@ class GridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: GlobalVariables.btnBackgroundColor,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: 40,
-              color: Colors.white,
-            ),
-            Text(
-              text,
-              style: const TextStyle(
-                fontSize: 20,
+      padding: const EdgeInsets.all(30.0),
+      child: Card(
+        elevation: 70,
+        child: Container(
+          decoration: BoxDecoration(
+            color: GlobalVariables.btnBackgroundColor,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: 40,
                 color: Colors.white,
               ),
-            ),
-          ],
+              Text(
+                text,
+                style: const TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

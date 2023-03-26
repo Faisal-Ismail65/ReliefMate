@@ -8,6 +8,7 @@ import 'package:reliefmate/services/auth/auth_methods.dart';
 import 'package:reliefmate/utilities/widgets/custom_elevated_button.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_button.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_field.dart';
+import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 import 'package:reliefmate/views/authviews/login_view.dart';
 import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
@@ -35,8 +36,8 @@ class _RegisterViewState extends State<RegisterView> {
     setState(() {
       isLoading = true;
     });
-    final email = _emailController.text;
-    final password = _passwordController.text;
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
     try {
       if (email.isNotEmpty && password.isNotEmpty) {
         await AuthMethods().signUpUser(email: email, password: password);
@@ -146,7 +147,10 @@ class _RegisterViewState extends State<RegisterView> {
                 ],
               ),
             ),
-            CustomElevatedButton(onPressed: registerUser, text: 'Register'),
+            isLoading
+                ? const Loader()
+                : CustomElevatedButton(
+                    onPressed: registerUser, text: 'Register'),
             CustomTextButton(
               onPressed: navigateToLogin,
               text: 'Already Have Account',

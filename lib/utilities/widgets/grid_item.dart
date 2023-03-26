@@ -8,7 +8,7 @@ class GridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(30.0),
+      padding: const EdgeInsets.all(15.0),
       child: Card(
         elevation: 70,
         child: Container(

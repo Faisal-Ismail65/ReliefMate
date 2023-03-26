@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:reliefmate/services/profile/profile_firestore_methods.dart';
+import 'package:reliefmate/utilities/widgets/app_bar.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
 
@@ -17,6 +18,13 @@ class SettingView extends StatefulWidget {
 class _SettingViewState extends State<SettingView> {
   final _userId = FirebaseAuth.instance.currentUser!.uid;
   var userData = {};
+
+  @override
+  void initState() {
+    user();
+    super.initState();
+  }
+
   void user() async {
     var userSnap = await FirebaseFirestore.instance
         .collection('profiles')
@@ -38,18 +46,7 @@ class _SettingViewState extends State<SettingView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Settings',
-          style: TextStyle(
-            fontSize: 30,
-            fontFamily: 'worksans',
-            letterSpacing: 2,
-          ),
-        ),
-        backgroundColor: Colors.redAccent,
-        centerTitle: true,
-      ),
+      appBar: const SimpleAppBar(text: 'Settings'),
       body: Column(children: [
         userData['status'] == 'approved'
             ? TextButton(

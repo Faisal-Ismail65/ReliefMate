@@ -6,10 +6,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:reliefmate/models/auth_user.dart';
 import 'package:reliefmate/services/auth/auth_exceptions.dart';
 import 'package:reliefmate/services/auth/auth_methods.dart';
-import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/widgets/custom_elevated_button.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_button.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_field.dart';
+import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 import 'package:reliefmate/views/adminviews/admin_view.dart';
 import 'package:reliefmate/views/authviews/register_view.dart';
@@ -152,7 +152,9 @@ class _LoginViewState extends State<LoginView> {
               ],
             ),
           ),
-          CustomElevatedButton(onPressed: loginUser, text: 'Login'),
+          isLoading
+              ? const Loader()
+              : CustomElevatedButton(onPressed: loginUser, text: 'Login'),
           CustomTextButton(
               onPressed: navigateToCreateAccount,
               text: 'Create Account',

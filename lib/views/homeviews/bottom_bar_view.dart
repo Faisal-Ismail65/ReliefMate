@@ -14,6 +14,7 @@ import 'package:reliefmate/views/authviews/login_view.dart';
 import 'package:reliefmate/views/homeviews/about_view.dart';
 import 'package:reliefmate/views/homeviews/create_profile.dart';
 import 'package:reliefmate/views/homeviews/edit_profile.dart';
+import 'package:reliefmate/views/homeviews/settings_view.dart';
 
 class BottomBarView extends StatefulWidget {
   const BottomBarView({super.key});
@@ -156,7 +157,12 @@ class _BottomBarViewState extends State<BottomBarView> {
                   DrawerMenuTile(
                     text: 'Setting',
                     icon: const Icon(Icons.settings),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const SettingView(),
+                      ));
+                    },
                   ),
                   DrawerMenuTile(
                     text: 'About',

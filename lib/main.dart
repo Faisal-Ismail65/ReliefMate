@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:reliefmate/firebase_options.dart';
 import 'package:reliefmate/models/auth_user.dart';
 import 'package:reliefmate/providers/user_provider.dart';
-import 'package:reliefmate/services/auth/auth_methods.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/views/adminviews/admin_view.dart';
 import 'package:reliefmate/views/authviews/login_view.dart';
@@ -93,8 +92,9 @@ class _HomeState extends State<Home> {
       isLoading = true;
     });
     UserProvider userProvider = Provider.of(context, listen: false);
+    // await userProvider.refreshUserProfile();
     await userProvider.refreshUser();
-    user = await AuthMethods().getUserDetails();
+    user = userProvider.getUser;
     setState(() {
       isLoading = false;
     });
@@ -107,7 +107,7 @@ class _HomeState extends State<Home> {
         child: CircularProgressIndicator(),
       );
     } else {
-      if (user!.type == 'admin') {
+      if (user?.type == 'admin') {
         return const AdminView();
       } else {
         return const BottomBarView();

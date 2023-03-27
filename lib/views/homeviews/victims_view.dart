@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:reliefmate/utilities/widgets/loader.dart';
 
 import 'package:reliefmate/utilities/widgets/profile_card.dart';
 
@@ -37,10 +38,10 @@ class _VictimsViewState extends State<VictimsView> {
                     },
                   );
                 } else {
-                  return const CircularProgressIndicator();
+                  return const Loader();
                 }
               default:
-                return const CircularProgressIndicator();
+                return const Loader();
             }
           },
         ),

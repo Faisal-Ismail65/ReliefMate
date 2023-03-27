@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:reliefmate/services/profile/profile_firestore_methods.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_field.dart';
+import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
 
@@ -123,9 +124,7 @@ class _CreateProfileState extends State<CreateProfile> {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
+        ? const Loader()
         : Scaffold(
             appBar: AppBar(
               leading: IconButton(

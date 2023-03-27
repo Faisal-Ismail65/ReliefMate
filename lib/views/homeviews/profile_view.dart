@@ -9,6 +9,7 @@ import 'package:reliefmate/services/profile/profile_firestore_methods.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/utils/utils.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_button.dart';
+import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/utilities/widgets/profile_tile.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 import 'package:reliefmate/views/homeviews/create_profile.dart';
@@ -115,9 +116,7 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
+        ? const Loader()
         : Scaffold(
             body: Padding(
               padding: const EdgeInsets.all(15.0),

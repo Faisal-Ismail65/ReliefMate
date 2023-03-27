@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:reliefmate/utilities/widgets/app_bar.dart';
 import 'package:reliefmate/utilities/widgets/donation_card.dart';
+import 'package:reliefmate/utilities/widgets/loader.dart';
 
 class DonationsList extends StatefulWidget {
   const DonationsList({super.key});
@@ -39,10 +40,10 @@ class _DonationsListState extends State<DonationsList> {
                     },
                   );
                 } else {
-                  return const CircularProgressIndicator();
+                  return const Loader();
                 }
               default:
-                return const CircularProgressIndicator();
+                return const Loader();
             }
           },
         ),

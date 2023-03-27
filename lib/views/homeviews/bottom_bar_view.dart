@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, avoid_print
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +9,7 @@ import 'package:reliefmate/utilities/dialogs/logout_dialog.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/widgets/app_bar.dart';
 import 'package:reliefmate/utilities/widgets/drawer_menu_tile.dart';
+import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 import 'package:reliefmate/views/authviews/login_view.dart';
 import 'package:reliefmate/views/homeviews/about_view.dart';
@@ -45,9 +46,11 @@ class _BottomBarViewState extends State<BottomBarView> {
   }
 
   getData() async {
-    setState(() {
-      isLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = true;
+      });
+    }
 
     try {
       var userSnap = await FirebaseFirestore.instance
@@ -56,28 +59,36 @@ class _BottomBarViewState extends State<BottomBarView> {
           .get();
 
       userData = userSnap.data() ?? {};
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     } catch (e) {
       print(e.toString());
     }
-    setState(() {
-      isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   getProfilePic() async {
-    setState(() {
-      isLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = true;
+      });
+    }
     var userProfileSnap = await FirebaseFirestore.instance
         .collection('profilePics')
         .doc(_userId)
         .get();
 
     userProfile = userProfileSnap.data() ?? {};
-    setState(() {
-      isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -89,9 +100,7 @@ class _BottomBarViewState extends State<BottomBarView> {
       drawer: Drawer(
         width: 230,
         child: isLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
+            ? const Loader()
             : ListView(
                 children: <Widget>[
                   DrawerHeader(

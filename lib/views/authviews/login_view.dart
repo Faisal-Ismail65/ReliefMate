@@ -35,9 +35,11 @@ class _LoginViewState extends State<LoginView> {
   }
 
   void loginUser() async {
-    setState(() {
-      isLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = true;
+      });
+    }
     final email = _emailController.text;
     final password = _passwordController.text;
     if (email.isNotEmpty && password.isNotEmpty) {
@@ -73,9 +75,11 @@ class _LoginViewState extends State<LoginView> {
     } else {
       showSnackBar(context, 'Enter All Credentials!');
     }
-    setState(() {
-      isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   void navigateToCreateAccount() {

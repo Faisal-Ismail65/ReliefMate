@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_button.dart';
 import 'package:reliefmate/utilities/widgets/grid_item.dart';
+import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/views/homeviews/create_profile.dart';
 import 'package:reliefmate/views/homeviews/donate_view.dart';
 import 'package:reliefmate/views/homeviews/donations_list.dart';
@@ -51,9 +51,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
+        ? const Loader()
         : Scaffold(
             body: Padding(
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),

@@ -33,9 +33,11 @@ class _RegisterViewState extends State<RegisterView> {
   }
 
   void registerUser() async {
-    setState(() {
-      isLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = true;
+      });
+    }
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
     try {
@@ -66,9 +68,11 @@ class _RegisterViewState extends State<RegisterView> {
         'Failed To Register!',
       );
     }
-    setState(() {
-      isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   void navigateToLogin() {

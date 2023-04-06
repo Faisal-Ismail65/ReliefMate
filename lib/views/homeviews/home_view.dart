@@ -7,7 +7,8 @@ import 'package:reliefmate/utilities/widgets/grid_item.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/views/homeviews/create_profile.dart';
 import 'package:reliefmate/views/homeviews/donate_view.dart';
-import 'package:reliefmate/views/homeviews/donations_list.dart';
+import 'package:reliefmate/views/homeviews/donations_view.dart';
+import 'package:reliefmate/views/homeviews/victims_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -125,18 +126,38 @@ class _HomeViewState extends State<HomeView> {
                                 ));
                               },
                               child: const GridItem(
-                                  icon: Icons.home, text: 'Donate'),
+                                  height: 60,
+                                  width: 60,
+                                  path: 'assets/icons/donate.svg',
+                                  text: 'Donate'),
                             ),
                             InkWell(
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => const DonationsList(),
+                                    builder: (context) => const DonationsView(),
                                   ),
                                 );
                               },
                               child: const GridItem(
-                                  icon: Icons.home, text: 'Donations'),
+                                  height: 60,
+                                  width: 70,
+                                  path: 'assets/icons/donation.svg',
+                                  text: 'Donations'),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const VictimsView(),
+                                  ),
+                                );
+                              },
+                              child: const GridItem(
+                                  height: 60,
+                                  width: 70,
+                                  path: 'assets/icons/victims.svg',
+                                  text: 'Victims'),
                             ),
                           ],
                         )

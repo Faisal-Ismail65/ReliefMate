@@ -20,7 +20,9 @@ class DonateView extends StatefulWidget {
 }
 
 class _DonateViewState extends State<DonateView> {
-  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _descriptionController1 = TextEditingController();
+  final TextEditingController _descriptionController2 = TextEditingController();
+  final TextEditingController _descriptionController3 = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _messageController = TextEditingController();
   final _userId = FirebaseAuth.instance.currentUser!.uid;
@@ -29,40 +31,18 @@ class _DonateViewState extends State<DonateView> {
   var userData = {};
   bool isLoading = false;
   DateTime selectedDate = DateTime.now();
+  String category1 = '';
+  String category2 = '';
+  String category3 = '';
+  List<String> needs = [
+    'Edibles',
+    'Wearables',
+    'Residence',
+    'Medicine',
+    'Other',
+  ];
 
-  @override
-  void initState() {
-    getData();
-    super.initState();
-  }
-
-  getData() async {
-    if (mounted) {
-      setState(() {
-        isLoading = true;
-      });
-    }
-
-    try {
-      var userSnap = await FirebaseFirestore.instance
-          .collection('profiles')
-          .doc(_userId)
-          .get();
-
-      userData = userSnap.data() ?? {};
-      _addressController.text = userData['address'];
-      if (mounted) {
-        setState(() {});
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-    if (mounted) {
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
+  int index = 0;
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -79,7 +59,7 @@ class _DonateViewState extends State<DonateView> {
 
   void createDonation() async {
     bool isForm = _addressController.text.isNotEmpty &&
-        _descriptionController.text.isNotEmpty;
+        _descriptionController1.text.isNotEmpty;
     if (isForm) {
       if (_donationKey.currentState!.validate()) {
         if (mounted) {
@@ -94,7 +74,7 @@ class _DonateViewState extends State<DonateView> {
           donorCnic: userData['cnic'],
           donorPhoneNumber: userData['phoneNumber'],
           donationAddress: userData['address'],
-          donationDesc: _descriptionController.text,
+          donationDesc: _descriptionController1.text,
           donationMsg: _messageController.text,
           donationExpDate:
               '${selectedDate.day}-${selectedDate.month}-${selectedDate.year}',
@@ -119,7 +99,9 @@ class _DonateViewState extends State<DonateView> {
   @override
   void dispose() {
     _addressController.dispose();
-    _descriptionController.dispose();
+    _descriptionController1.dispose();
+    _descriptionController2.dispose();
+    _descriptionController3.dispose();
     _messageController.dispose();
     super.dispose();
   }
@@ -147,24 +129,196 @@ class _DonateViewState extends State<DonateView> {
                             obseureText: false,
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: TextFormField(
-                              minLines: 3,
-                              maxLines: 3,
-                              controller: _descriptionController,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            child: DropdownButtonFormField(
                               decoration: InputDecoration(
-                                hintText: 'Enter Some  Description',
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color:
-                                          GlobalVariables.btnBackgroundColor),
+                                border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
                                 ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: GlobalVariables.btnBackgroundColor,
-                                      width: 2),
-                                  borderRadius: BorderRadius.circular(20),
+                              ),
+                              iconSize: 20,
+                              hint: const Text(
+                                'Donation Category',
+                              ),
+                              icon: const Icon(Icons.keyboard_arrow_down),
+                              onChanged: (value) {
+                                category1 = value!;
+                                setState(() {
+                                  index++;
+                                });
+                              },
+                              items: needs.map((String item) {
+                                return DropdownMenuItem(
+                                  alignment: Alignment.center,
+                                  value: item,
+                                  child: Text(
+                                    item,
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                          Visibility(
+                            visible: index > 0,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: TextFormField(
+                                minLines: 3,
+                                maxLines: 3,
+                                controller: _descriptionController1,
+                                decoration: InputDecoration(
+                                  hintText: 'Enter Products Description',
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color:
+                                            GlobalVariables.btnBackgroundColor),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color:
+                                            GlobalVariables.btnBackgroundColor,
+                                        width: 2),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Visibility(
+                            visible: index > 0,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              child: DropdownButtonFormField(
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                                iconSize: 20,
+                                hint: const Text(
+                                  'Optional Second Category',
+                                ),
+                                icon: const Icon(Icons.keyboard_arrow_down),
+                                onChanged: (value) {
+                                  category2 = value!;
+                                  setState(() {
+                                    index++;
+                                  });
+                                },
+                                items: needs.map((String item) {
+                                  return DropdownMenuItem(
+                                    alignment: Alignment.center,
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ),
+                          Visibility(
+                            visible: index > 1,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: TextFormField(
+                                minLines: 3,
+                                maxLines: 3,
+                                controller: _descriptionController1,
+                                decoration: InputDecoration(
+                                  hintText: 'Enter Products Description',
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color:
+                                            GlobalVariables.btnBackgroundColor),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color:
+                                            GlobalVariables.btnBackgroundColor,
+                                        width: 2),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Visibility(
+                            visible: index > 1,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              child: DropdownButtonFormField(
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                                iconSize: 20,
+                                hint: const Text(
+                                  'Optional Third Category',
+                                ),
+                                icon: const Icon(Icons.keyboard_arrow_down),
+                                onChanged: (value) {
+                                  category3 = value!;
+                                  setState(() {
+                                    index++;
+                                  });
+                                },
+                                items: needs.map((String item) {
+                                  return DropdownMenuItem(
+                                    alignment: Alignment.center,
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Visibility(
+                            visible: index > 2,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: TextFormField(
+                                minLines: 3,
+                                maxLines: 3,
+                                controller: _descriptionController1,
+                                decoration: InputDecoration(
+                                  hintText: 'Enter Products Description',
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color:
+                                            GlobalVariables.btnBackgroundColor),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color:
+                                            GlobalVariables.btnBackgroundColor,
+                                        width: 2),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
                                 ),
                               ),
                             ),

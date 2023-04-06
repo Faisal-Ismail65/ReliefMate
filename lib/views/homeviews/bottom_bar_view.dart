@@ -222,14 +222,6 @@ class _BottomBarViewState extends State<BottomBarView> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.local_fire_department_outlined,
-              color: _page == 1
-                  ? GlobalVariables.btnBackgroundColor
-                  : GlobalVariables.appBarBackgroundColor,
-            ),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
               Icons.person_outline,
               color: _page == 2
                   ? GlobalVariables.btnBackgroundColor

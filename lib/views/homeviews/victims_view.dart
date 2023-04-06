@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:reliefmate/utilities/widgets/app_bar.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 
 import 'package:reliefmate/utilities/widgets/profile_card.dart';
@@ -15,6 +16,7 @@ class _VictimsViewState extends State<VictimsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const SimpleAppBar(text: 'Victims'),
       body: Padding(
         padding: const EdgeInsets.only(top: 15.0),
         child: StreamBuilder(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reliefmate/views/adminviews/pending_applications_view.dart';
 import 'package:reliefmate/views/adminviews/approved_applications_view.dart';
-import 'package:reliefmate/views/homeviews/blogs_view.dart';
 import 'package:reliefmate/views/homeviews/home_view.dart';
 import 'package:reliefmate/views/homeviews/victims_view.dart';
 import 'package:reliefmate/views/homeviews/profile_view.dart';
@@ -16,7 +15,6 @@ class GlobalVariables {
 
 List<Widget> homeScreenItems = [
   const HomeView(),
-  const VictimsView(),
   const ProfileView(),
 ];
 

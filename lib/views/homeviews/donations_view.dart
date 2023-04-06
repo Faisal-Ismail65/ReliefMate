@@ -5,14 +5,14 @@ import 'package:reliefmate/utilities/widgets/app_bar.dart';
 import 'package:reliefmate/utilities/widgets/donation_card.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 
-class DonationsList extends StatefulWidget {
-  const DonationsList({super.key});
+class DonationsView extends StatefulWidget {
+  const DonationsView({super.key});
 
   @override
-  State<DonationsList> createState() => _DonationsListState();
+  State<DonationsView> createState() => _DonationsViewState();
 }
 
-class _DonationsListState extends State<DonationsList> {
+class _DonationsViewState extends State<DonationsView> {
   final _userId = FirebaseAuth.instance.currentUser!.uid;
   @override
   Widget build(BuildContext context) {

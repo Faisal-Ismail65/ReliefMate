@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
 
 class GridItem extends StatelessWidget {
-  const GridItem({super.key, required this.icon, required this.text});
-  final IconData icon;
+  const GridItem(
+      {super.key,
+      required this.path,
+      required this.text,
+      required this.height,
+      required this.width});
+  final String path;
   final String text;
+  final double height;
+  final double width;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -19,9 +27,10 @@ class GridItem extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                icon,
-                size: 40,
+              SvgPicture.asset(
+                path,
+                width: width,
+                height: height,
                 color: Colors.white,
               ),
               Text(

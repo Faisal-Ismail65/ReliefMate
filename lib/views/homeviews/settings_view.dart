@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:reliefmate/services/profile/profile_firestore_methods.dart';
 import 'package:reliefmate/utilities/widgets/app_bar.dart';
+import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
 
@@ -18,6 +19,7 @@ class SettingView extends StatefulWidget {
 class _SettingViewState extends State<SettingView> {
   final _userId = FirebaseAuth.instance.currentUser!.uid;
   var userData = {};
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -26,11 +28,22 @@ class _SettingViewState extends State<SettingView> {
   }
 
   void user() async {
+    if (mounted) {
+      setState(() {
+        isLoading = true;
+      });
+    }
     var userSnap = await FirebaseFirestore.instance
         .collection('profiles')
         .doc(_userId)
         .get();
-    userData = userSnap.data()!;
+    userData = userSnap.data() ?? {};
+    if (mounted) {
+      setState(() {
+        isLoading = true;
+      });
+    }
+    print(userData['status']);
   }
 
   void deleteProfile() async {
@@ -47,16 +60,18 @@ class _SettingViewState extends State<SettingView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const SimpleAppBar(text: 'Settings'),
-      body: Column(children: [
-        userData['status'] == 'approved'
-            ? TextButton(
-                onPressed: deleteProfile,
-                child: const Text(
-                  'Delete Profile',
-                  style: TextStyle(color: Colors.red),
-                ))
-            : const SizedBox(),
-      ]),
+      body: ListView(
+        children: [
+          userData['status'] == 'approved'
+              ? TextButton(
+                  onPressed: deleteProfile,
+                  child: const Text(
+                    'Delete Profile',
+                    style: TextStyle(color: Colors.red),
+                  ))
+              : const SizedBox(),
+        ],
+      ),
     );
   }
 }

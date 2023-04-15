@@ -1,16 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:reliefmate/utilities/widgets/application_card.dart';
+import 'package:reliefmate/utilities/widgets/loader.dart';
 
-class PendingApplicationsView extends StatefulWidget {
-  const PendingApplicationsView({super.key});
+class DisapprovedVictimsView extends StatelessWidget {
+  const DisapprovedVictimsView({super.key});
 
-  @override
-  State<PendingApplicationsView> createState() =>
-      _PendingApplicationsViewState();
-}
-
-class _PendingApplicationsViewState extends State<PendingApplicationsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +14,8 @@ class _PendingApplicationsViewState extends State<PendingApplicationsView> {
         child: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('profiles')
-              .where('status', isEqualTo: 'pending')
+              .where('status', isEqualTo: 'disapproved')
+              .where('type', isEqualTo: 'victim')
               .snapshots(),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
@@ -36,10 +32,10 @@ class _PendingApplicationsViewState extends State<PendingApplicationsView> {
                     },
                   );
                 } else {
-                  return const CircularProgressIndicator();
+                  return const Loader();
                 }
               default:
-                return const CircularProgressIndicator();
+                return const Loader();
             }
           },
         ),

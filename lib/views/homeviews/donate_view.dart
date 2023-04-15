@@ -1,12 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:reliefmate/services/donation/donation_firestore_methods.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/widgets/app_bar.dart';
 import 'package:reliefmate/utilities/widgets/custom_elevated_button.dart';
+import 'package:reliefmate/utilities/widgets/custom_text_button.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_field.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
@@ -25,7 +24,6 @@ class _DonateViewState extends State<DonateView> {
   final TextEditingController _descriptionController3 = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _messageController = TextEditingController();
-  final _userId = FirebaseAuth.instance.currentUser!.uid;
 
   final _donationKey = GlobalKey<FormState>();
   var userData = {};
@@ -44,18 +42,18 @@ class _DonateViewState extends State<DonateView> {
 
   int index = 0;
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime.now(),
-        lastDate: DateTime(2100));
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
-  }
+  // Future<void> _selectDate(BuildContext context) async {
+  //   final DateTime? picked = await showDatePicker(
+  //       context: context,
+  //       initialDate: selectedDate,
+  //       firstDate: DateTime.now(),
+  //       lastDate: DateTime(2100));
+  //   if (picked != null && picked != selectedDate) {
+  //     setState(() {
+  //       selectedDate = picked;
+  //     });
+  //   }
+  // }
 
   void createDonation() async {
     bool isForm = _addressController.text.isNotEmpty &&
@@ -353,7 +351,69 @@ class _DonateViewState extends State<DonateView> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 10),
                             child: InkWell(
-                              onTap: () => _selectDate(context),
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(30),
+                                      topRight: Radius.circular(30),
+                                    ),
+                                  ),
+                                  builder: (context) {
+                                    return SizedBox(
+                                      height: MediaQuery.of(context)
+                                              .copyWith()
+                                              .size
+                                              .height /
+                                          2,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 20),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              'Expiration Date',
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.grey.shade800,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: CupertinoDatePicker(
+                                                initialDateTime: DateTime.now(),
+                                                onDateTimeChanged:
+                                                    (DateTime newDate) {
+                                                  selectedDate = newDate;
+                                                },
+                                                use24hFormat: true,
+                                                minuteInterval: 1,
+                                                mode: CupertinoDatePickerMode
+                                                    .date,
+                                              ),
+                                            ),
+                                            CustomElevatedButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                                setState(() {});
+                                              },
+                                              text: 'Select Date',
+                                            ),
+                                            CustomTextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                  selectedDate = DateTime.now();
+                                                },
+                                                text: 'Cancel',
+                                                underline: false)
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
                               child: Container(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 10),

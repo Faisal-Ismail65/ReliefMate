@@ -104,7 +104,7 @@ class _ProfileViewState extends State<ProfileView> {
         setState(() {});
       }
     } catch (e) {
-      print(e.toString());
+      e.toString();
     }
     if (mounted) {
       setState(() {

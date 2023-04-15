@@ -55,111 +55,130 @@ class _ApplicationCardState extends State<ApplicationCard> {
             context: context,
             builder: (context) {
               return Dialog(
-                child: ListView(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  shrinkWrap: true,
-                  children: [
-                    widget.snap['status'] == 'pending'
-                        ? 'Approve'
-                        : 'Move to Pending List',
-                    widget.snap['status'] == 'approved'
-                        ? 'Block'
-                        : 'Disapprove',
-                  ]
-                      .map(
-                        (e) => Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 20),
-                          child: Center(
-                            child: InkWell(
-                              onTap: () {
-                                if (e == 'Approve') {
-                                  adminFirestoreMethods.editProfile(
-                                    uid: widget.snap['uid'],
-                                    status: 'approved',
-                                  );
-                                  showSnackBar(context,
-                                      '${widget.snap['name']}\'s Profile is Approved');
-                                } else if (e == 'Move to Pending List') {
-                                  adminFirestoreMethods.editProfile(
-                                    uid: widget.snap['uid'],
-                                    status: 'pending',
-                                  );
-                                  showSnackBar(context,
-                                      '${widget.snap['name']}\'s Profile is moved to Pending List');
-                                } else if (e == 'Disapprove') {
-                                  adminFirestoreMethods.editProfile(
-                                    uid: widget.snap['uid'],
-                                    status: 'disapproved',
-                                  );
-                                  showSnackBar(context,
-                                      '${widget.snap['name']}\'s Profile is Disapproved');
-                                } else if (e == 'Block') {
-                                  adminFirestoreMethods.editProfile(
-                                    uid: widget.snap['uid'],
-                                    status: 'blocked',
-                                  );
-                                  showSnackBar(context,
-                                      '${widget.snap['name']}\'s Profile is Blocked');
-                                }
-                                Navigator.of(context).pop();
-                              },
-                              child: Text(
-                                e,
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.redAccent,
+                child: widget.snap['type'] == 'victim'
+                    ? ListView(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        shrinkWrap: true,
+                        children: [
+                          widget.snap['status'] == 'pending'
+                              ? 'Approve'
+                              : 'Move to Pending List',
+                          widget.snap['status'] == 'approved'
+                              ? 'Block'
+                              : 'Disapprove',
+                        ]
+                            .map(
+                              (e) => Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 20),
+                                child: Center(
+                                  child: InkWell(
+                                    onTap: () {
+                                      if (e == 'Approve') {
+                                        adminFirestoreMethods.editProfile(
+                                          uid: widget.snap['uid'],
+                                          status: 'approved',
+                                        );
+                                        showSnackBar(context,
+                                            '${widget.snap['name']}\'s Profile is Approved');
+                                      } else if (e == 'Move to Pending List') {
+                                        adminFirestoreMethods.editProfile(
+                                          uid: widget.snap['uid'],
+                                          status: 'pending',
+                                        );
+                                        showSnackBar(context,
+                                            '${widget.snap['name']}\'s Profile is moved to Pending List');
+                                      } else if (e == 'Disapprove') {
+                                        adminFirestoreMethods.editProfile(
+                                          uid: widget.snap['uid'],
+                                          status: 'disapproved',
+                                        );
+                                        showSnackBar(context,
+                                            '${widget.snap['name']}\'s Profile is Disapproved');
+                                      } else if (e == 'Block') {
+                                        adminFirestoreMethods.editProfile(
+                                          uid: widget.snap['uid'],
+                                          status: 'blocked',
+                                        );
+                                        showSnackBar(context,
+                                            '${widget.snap['name']}\'s Profile is Blocked');
+                                      }
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      e,
+                                      style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500,
+                                          color: GlobalVariables.appBarColor),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ),
+                            )
+                            .toList(),
                       )
-                      .toList(),
-                ),
+                    : ListView(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        shrinkWrap: true,
+                        children: [
+                          widget.snap['status'] == 'approved'
+                              ? 'Disapprove'
+                              : 'Approve',
+                        ]
+                            .map(
+                              (e) => Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 20),
+                                child: Center(
+                                  child: InkWell(
+                                    onTap: () {
+                                      if (e == 'Approve') {
+                                        adminFirestoreMethods.editProfile(
+                                          uid: widget.snap['uid'],
+                                          status: 'approved',
+                                        );
+                                        showSnackBar(context,
+                                            '${widget.snap['name']}\'s Profile is Approved');
+                                      } else if (e == 'Disapprove') {
+                                        adminFirestoreMethods.editProfile(
+                                          uid: widget.snap['uid'],
+                                          status: 'disapproved',
+                                        );
+                                        showSnackBar(context,
+                                            '${widget.snap['name']}\'s Profile is Disapproved');
+                                      } else if (e == 'Block') {
+                                        adminFirestoreMethods.editProfile(
+                                          uid: widget.snap['uid'],
+                                          status: 'blocked',
+                                        );
+                                        showSnackBar(context,
+                                            '${widget.snap['name']}\'s Profile is Blocked');
+                                      }
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      e,
+                                      style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500,
+                                          color: GlobalVariables.appBarColor),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      ),
               );
             },
           );
         },
-        // onTap: () {
-        //   showDialog(
-        //     context: context,
-        //     builder: (context) {
-        //       return Dialog(
-        //         child: ListView(
-        //           padding: const EdgeInsets.symmetric(vertical: 10),
-        //           shrinkWrap: true,
-        //           children: [
-        //             'Name : ${widget.snap['name']}',
-        //             'Phone No : ${widget.snap['phoneNumber']}',
-        //             'Address : ${widget.snap['address']}',
-        //             'Need  : ${widget.snap['need']}'
-        //           ]
-        //               .map(
-        //                 (e) => Container(
-        //                   padding: const EdgeInsets.symmetric(
-        //                       vertical: 5, horizontal: 20),
-        //                   child: Text(
-        //                     e,
-        //                     style: const TextStyle(
-        //                       fontSize: 15,
-        //                       fontWeight: FontWeight.w500,
-        //                     ),
-        //                   ),
-        //                 ),
-        //               )
-        //               .toList(),
-        //         ),
-        //       );
-        //     },
-        //   );
-        // },
         child: SizedBox(
           height: 100,
           child: Card(
             color: GlobalVariables.appBarBackgroundColor,
-            elevation: 50,
+            elevation: 6,
             shadowColor: GlobalVariables.btnBackgroundColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),

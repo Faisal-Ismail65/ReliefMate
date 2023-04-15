@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:reliefmate/services/profile/profile_firestore_methods.dart';
 import 'package:reliefmate/utilities/widgets/app_bar.dart';
-import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
 
@@ -43,7 +42,6 @@ class _SettingViewState extends State<SettingView> {
         isLoading = true;
       });
     }
-    print(userData['status']);
   }
 
   void deleteProfile() async {

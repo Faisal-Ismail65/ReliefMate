@@ -42,7 +42,7 @@ class _HomeViewState extends State<HomeView> {
       userData = userSnap.data() ?? {};
       setState(() {});
     } catch (e) {
-      print(e.toString());
+      e.toString();
     }
     setState(() {
       isLoading = false;

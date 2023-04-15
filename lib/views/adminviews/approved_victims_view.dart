@@ -1,16 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:reliefmate/utilities/widgets/application_card.dart';
+import 'package:reliefmate/utilities/widgets/loader.dart';
 
-class ApprovedApplicationsView extends StatefulWidget {
-  const ApprovedApplicationsView({super.key});
+class ApprovedVictimsView extends StatelessWidget {
+  const ApprovedVictimsView({super.key});
 
-  @override
-  State<ApprovedApplicationsView> createState() =>
-      _ApprovedApplicationsViewState();
-}
-
-class _ApprovedApplicationsViewState extends State<ApprovedApplicationsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,6 +15,7 @@ class _ApprovedApplicationsViewState extends State<ApprovedApplicationsView> {
           stream: FirebaseFirestore.instance
               .collection('profiles')
               .where('status', isEqualTo: 'approved')
+              .where('type', isEqualTo: 'victim')
               .snapshots(),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
@@ -36,10 +32,10 @@ class _ApprovedApplicationsViewState extends State<ApprovedApplicationsView> {
                     },
                   );
                 } else {
-                  return const CircularProgressIndicator();
+                  return const Loader();
                 }
               default:
-                return const CircularProgressIndicator();
+                return const Loader();
             }
           },
         ),

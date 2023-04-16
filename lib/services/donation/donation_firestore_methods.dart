@@ -26,6 +26,7 @@ class DonationFirestoreMethods {
         donationDesc: donationDesc,
         donationMsg: donationMsg,
         donationExpDate: donationExpDate,
+        status: 'pending',
       );
       await _firestore.collection('donations').doc().set(donation.toMap());
       res = 'Success';

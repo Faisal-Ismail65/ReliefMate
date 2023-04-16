@@ -47,7 +47,10 @@ class _VictimDetailState extends State<VictimDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const SimpleAppBar(text: 'Victim Details'),
+      appBar: SimpleAppBar(
+          text: widget.snap['type'] == 'victim'
+              ? 'Victim Details'
+              : 'Donor Details'),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: Column(
@@ -82,10 +85,16 @@ class _VictimDetailState extends State<VictimDetail> {
             ProfileTile(
                 fieldName: 'Phone Number',
                 fieldValue: widget.snap['phoneNumber']),
-            ProfileTile(
-                fieldName: 'Account Number',
-                fieldValue: widget.snap['accountNumber']),
-            ProfileTile(fieldName: 'Need', fieldValue: widget.snap['need']),
+            Visibility(
+              visible: widget.snap['accountNumber'] != '',
+              child: ProfileTile(
+                  fieldName: 'Account Number',
+                  fieldValue: widget.snap['accountNumber']),
+            ),
+            Visibility(
+                visible: widget.snap['need'] != '',
+                child: ProfileTile(
+                    fieldName: 'Need', fieldValue: widget.snap['need'])),
           ],
         ),
       ),

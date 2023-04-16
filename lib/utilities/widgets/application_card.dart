@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:reliefmate/services/admin/admin_firestore_methods.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
+import 'package:reliefmate/utilities/widgets/victim_detail.dart';
 
 class ApplicationCard extends StatefulWidget {
   final snap;
@@ -50,6 +51,13 @@ class _ApplicationCardState extends State<ApplicationCard> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: InkWell(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => VictimDetail(
+              snap: widget.snap,
+            ),
+          ));
+        },
         onLongPress: () {
           showDialog(
             context: context,

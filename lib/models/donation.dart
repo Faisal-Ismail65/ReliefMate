@@ -11,6 +11,7 @@ class Donation {
   String donationDesc;
   String donationMsg;
   String donationExpDate;
+  String status;
   Donation({
     required this.donorId,
     required this.donorEmail,
@@ -21,6 +22,7 @@ class Donation {
     required this.donationDesc,
     required this.donationMsg,
     required this.donationExpDate,
+    required this.status,
   });
 
   Map<String, dynamic> toMap() {
@@ -34,6 +36,7 @@ class Donation {
       'donationDesc': donationDesc,
       'donationMsg': donationMsg,
       'donationExpDate': donationExpDate,
+      'status': status,
     };
   }
 
@@ -48,6 +51,7 @@ class Donation {
       donationDesc: map['donationDesc'] as String,
       donationMsg: map['donationMsg'] as String,
       donationExpDate: map['donationExpDate'] as String,
+      status: map['status'] as String,
     );
   }
 

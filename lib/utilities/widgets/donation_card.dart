@@ -56,7 +56,7 @@ class _DonationCardState extends State<DonationCard> {
                       Padding(
                         padding: const EdgeInsets.only(top: 5),
                         child: Text(
-                          'Donation Expiration Date:  ${widget.snap['donationExpirationDate']} ',
+                          'Donation Expiration Date:  ${widget.snap['donationExpDate']} ',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 15,

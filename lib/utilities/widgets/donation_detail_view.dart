@@ -23,10 +23,10 @@ class _DonationDetailViewState extends State<DonationDetailView> {
           children: [
             DonationDetailTile(
               name: 'Address',
-              value: widget.snap['donationAddress'],
+              value: widget.snap['donationAddress'] ?? '',
             ),
             DonationDetailTile(
-                name: 'Description', value: widget.snap['donationDesc']),
+                name: 'Description', value: widget.snap['description1'] ?? ''),
             DonationDetailTile(
                 name: 'Message',
                 value: widget.snap['donationMsg'] == ''
@@ -34,7 +34,7 @@ class _DonationDetailViewState extends State<DonationDetailView> {
                     : widget.snap['donationMsg']),
             DonationDetailTile(
                 name: 'Expiration Date',
-                value: widget.snap['donationExpirationDate']),
+                value: widget.snap['donationExpDate'] ?? 'not '),
           ],
         ),
       ),

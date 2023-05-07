@@ -12,7 +12,7 @@ class DonorView extends StatelessWidget {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Victims'),
+            title: const Text('Donors'),
             centerTitle: true,
             bottom: const TabBar(
               indicatorColor: GlobalVariables.appBarColor,

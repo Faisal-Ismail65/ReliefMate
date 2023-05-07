@@ -189,11 +189,11 @@ class _BottomBarViewState extends State<BottomBarView> {
                       final shouldLogout = await showLogOutDialog(context);
                       if (shouldLogout) {
                         await AuthMethods().signOut();
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => const LoginView(),
-                          ),
-                        );
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (context) => const LoginView(),
+                            ),
+                            (route) => false);
                         showSnackBar(context, 'Logged Out Successfully');
                       }
                     },

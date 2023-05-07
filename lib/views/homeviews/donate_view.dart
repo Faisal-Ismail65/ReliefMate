@@ -1,4 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:reliefmate/services/donation/donation_firestore_methods.dart';
@@ -39,6 +41,40 @@ class _DonateViewState extends State<DonateView> {
     'Medicine',
     'Other',
   ];
+  final _userId = FirebaseAuth.instance.currentUser!.uid;
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  getData() async {
+    if (mounted) {
+      setState(() {
+        isLoading = true;
+      });
+    }
+
+    try {
+      var userSnap = await FirebaseFirestore.instance
+          .collection('profiles')
+          .doc(_userId)
+          .get();
+
+      userData = userSnap.data() ?? {};
+      if (mounted) {
+        setState(() {});
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   int index = 0;
 
@@ -65,14 +101,20 @@ class _DonateViewState extends State<DonateView> {
             isLoading = true;
           });
         }
+
         String res = await DonationFirestoreMethods().createDonationa(
           donorid: userData['uid'],
           donorEmail: userData['email'],
           donorName: userData['name'],
           donorCnic: userData['cnic'],
           donorPhoneNumber: userData['phoneNumber'],
-          donationAddress: userData['address'],
-          donationDesc: _descriptionController1.text,
+          donationAddress: _addressController.text,
+          category1: category1,
+          category2: category2,
+          category3: category3,
+          description1: _descriptionController1.text,
+          description2: _descriptionController2.text,
+          description3: _descriptionController3.text,
           donationMsg: _messageController.text,
           donationExpDate:
               '${selectedDate.day}-${selectedDate.month}-${selectedDate.year}',
@@ -233,7 +275,7 @@ class _DonateViewState extends State<DonateView> {
                               child: TextFormField(
                                 minLines: 3,
                                 maxLines: 3,
-                                controller: _descriptionController1,
+                                controller: _descriptionController2,
                                 decoration: InputDecoration(
                                   hintText: 'Enter Products Description',
                                   enabledBorder: OutlineInputBorder(
@@ -301,7 +343,7 @@ class _DonateViewState extends State<DonateView> {
                               child: TextFormField(
                                 minLines: 3,
                                 maxLines: 3,
-                                controller: _descriptionController1,
+                                controller: _descriptionController3,
                                 decoration: InputDecoration(
                                   hintText: 'Enter Products Description',
                                   enabledBorder: OutlineInputBorder(
@@ -386,6 +428,7 @@ class _DonateViewState extends State<DonateView> {
                                                 onDateTimeChanged:
                                                     (DateTime newDate) {
                                                   selectedDate = newDate;
+                                                  print(selectedDate);
                                                 },
                                                 use24hFormat: true,
                                                 minuteInterval: 1,

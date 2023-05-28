@@ -11,7 +11,7 @@ import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/views/adminviews/admin_view.dart';
 import 'package:reliefmate/views/authviews/login_view.dart';
-import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
+import 'package:reliefmate/views/homeviews/home_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +35,6 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'ReleifMate',
         theme: ThemeData(
-          backgroundColor: GlobalVariables.appBackgroundColor,
           appBarTheme: const AppBarTheme(
             color: GlobalVariables.appBarColor,
             foregroundColor: Colors.white,
@@ -114,7 +113,7 @@ class _HomeState extends State<Home> {
       if (user?.type == 'admin') {
         return const AdminView();
       } else {
-        return const BottomBarView();
+        return const HomeView();
       }
     }
   }

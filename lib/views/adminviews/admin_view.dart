@@ -11,6 +11,7 @@ import 'package:reliefmate/utilities/widgets/grid_item.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 import 'package:reliefmate/views/adminviews/donation_view.dart';
 import 'package:reliefmate/views/adminviews/donor_view.dart';
+import 'package:reliefmate/views/adminviews/stock_view.dart';
 import 'package:reliefmate/views/adminviews/victims_view.dart';
 import 'package:reliefmate/views/authviews/login_view.dart';
 import 'package:reliefmate/views/homeviews/about_view.dart';
@@ -108,10 +109,7 @@ class _AdminViewState extends State<AdminView> {
               ));
             },
             child: const GridItem(
-              height: 60,
-              width: 60,
-              path: 'assets/icons/donate.svg',
-              text: 'Donors',
+              path: 'assets/images/donate.jpeg',
             ),
           ),
           InkWell(
@@ -121,10 +119,7 @@ class _AdminViewState extends State<AdminView> {
               ));
             },
             child: const GridItem(
-              height: 90,
-              width: 80,
-              path: 'assets/icons/donation.svg',
-              text: 'Donations',
+              path: 'assets/images/donations.jpeg',
             ),
           ),
           InkWell(
@@ -134,19 +129,17 @@ class _AdminViewState extends State<AdminView> {
               ));
             },
             child: const GridItem(
-              height: 60,
-              width: 70,
-              path: 'assets/icons/victims.svg',
-              text: 'Victims',
+              path: 'assets/images/victims.jpeg',
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const StockView(),
+              ));
+            },
             child: const GridItem(
-              height: 90,
-              width: 80,
-              path: 'assets/icons/product.svg',
-              text: 'Stock',
+              path: 'assets/images/stock.png',
             ),
           ),
         ],

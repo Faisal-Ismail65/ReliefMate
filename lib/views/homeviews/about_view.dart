@@ -18,7 +18,7 @@ class AboutView extends StatelessWidget {
               style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
-                color: GlobalVariables.appBarColor,
+                color: Colors.black87,
               ),
             ),
             SizedBox(
@@ -26,9 +26,10 @@ class AboutView extends StatelessWidget {
             ),
             Text(
               'ReliefMate is a mobile app that connects the victims of disaster with helping bodies nationwide. It is the first app of its kind in the world. It\'s free, easy-to-use, and can be downloaded in just a couple of minutes. ',
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 15,
-                color: GlobalVariables.appBarBackgroundColor,
+                color: Colors.black54,
               ),
             ),
             SizedBox(
@@ -36,9 +37,10 @@ class AboutView extends StatelessWidget {
             ),
             Text(
               'ReliefMate is created to make sure that victims of disasters get the help they need in an emergency. Natural disasters are a major problem that the world faces today. They can strike at any time and place, without warning. And, when they do, the damage they cause can be absolutely devastating.',
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 15,
-                color: GlobalVariables.appBarBackgroundColor,
+                color: Colors.black54,
               ),
             ),
             SizedBox(
@@ -46,9 +48,10 @@ class AboutView extends StatelessWidget {
             ),
             Text(
               'Disasters can happen anytime and anywhere. They can be caused by natural phenomena like floods, earthquakes or by human activities like wars. In the aftermath of a natural disaster, victims are often left stranded and without essential resources. In the recent years, the frequency of natural calamities such as floods, earthquakes, and landslides have increased manifold. As a result, the number of people who require relief assistance has also increased. However, the traditional methods of providing relief are not very efficient',
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 15,
-                color: GlobalVariables.appBarBackgroundColor,
+                color: Colors.black54,
               ),
             ),
           ],

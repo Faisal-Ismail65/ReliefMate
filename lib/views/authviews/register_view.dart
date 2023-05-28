@@ -12,6 +12,8 @@ import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 import 'package:reliefmate/views/authviews/login_view.dart';
 import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
+import 'package:reliefmate/views/homeviews/create_profile.dart';
+import 'package:reliefmate/views/homeviews/home_view.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -44,9 +46,8 @@ class _RegisterViewState extends State<RegisterView> {
       if (email.isNotEmpty && password.isNotEmpty) {
         await AuthMethods().signUpUser(email: email, password: password);
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => const BottomBarView(),
+          builder: (context) => const HomeView(),
         ));
-        showSnackBar(context, 'Registered Successfully');
       } else {
         showSnackBar(context, 'Enter All Credentials!');
       }

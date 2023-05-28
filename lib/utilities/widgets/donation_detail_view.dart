@@ -22,11 +22,21 @@ class _DonationDetailViewState extends State<DonationDetailView> {
         child: Column(
           children: [
             DonationDetailTile(
+              name: 'Donor Name',
+              value: widget.snap['donorName'] ?? '',
+            ),
+            DonationDetailTile(
+              name: 'Donor Email',
+              value: widget.snap['donorEmail'] ?? '',
+            ),
+            DonationDetailTile(
+              name: 'Donor Phone Number',
+              value: widget.snap['donorPhoneNumber'] ?? '',
+            ),
+            DonationDetailTile(
               name: 'Address',
               value: widget.snap['donationAddress'] ?? '',
             ),
-            DonationDetailTile(
-                name: 'Description', value: widget.snap['description1'] ?? ''),
             DonationDetailTile(
                 name: 'Message',
                 value: widget.snap['donationMsg'] == ''

@@ -1,19 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:reliefmate/models/donation.dart';
+import 'package:reliefmate/models/request.dart';
 import 'package:uuid/uuid.dart';
 
-class DonationFirestoreMethods {
+class RequestFirestoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<String> createDonationa({
-    required String donorid,
-    required String donorEmail,
-    required String donorName,
-    required String donorCnic,
-    required String donorPhoneNumber,
-    required String donationAddress,
-    required String donationMsg,
-    required String donationExpDate,
+  Future<String> createRequest({
+    required String requesterId,
+    required String requesterEmail,
+    required String requesterName,
+    required String requesterCnic,
+    required String requesterPhoneNumber,
+    required String requestAddress,
+    required String requestMsg,
     required String category1,
     required String category2,
     required String category3,
@@ -24,16 +23,15 @@ class DonationFirestoreMethods {
     String res = 'Some Error Occurred';
     try {
       final id = const Uuid().v4();
-      Donation donation = Donation(
+      Request request = Request(
         id: id,
-        donorId: donorid,
-        donorEmail: donorEmail,
-        donorName: donorName,
-        donorCnic: donorCnic,
-        donorPhoneNumber: donorPhoneNumber,
-        donationAddress: donationAddress,
-        donationMsg: donationMsg,
-        donationExpDate: donationExpDate,
+        requesterId: requesterId,
+        requesterEmail: requesterEmail,
+        requesterName: requesterName,
+        requesterCnic: requesterCnic,
+        requesterPhoneNumber: requesterPhoneNumber,
+        requestAddress: requestAddress,
+        requestMsg: requestMsg,
         status: 'pending',
       );
 
@@ -44,12 +42,12 @@ class DonationFirestoreMethods {
       };
 
       await _firestore
-          .collection('donations')
+          .collection('requests')
           .doc(id)
-          .set(donation.toMap())
+          .set(request.toMap())
           .then((value) {
         _firestore
-            .collection('donations')
+            .collection('requests')
             .doc(id)
             .collection('category')
             .doc()

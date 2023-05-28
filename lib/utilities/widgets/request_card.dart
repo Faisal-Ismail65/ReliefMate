@@ -1,18 +1,12 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
-
 import 'package:flutter/material.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/widgets/donation_detail_view.dart';
+import 'package:reliefmate/views/homeviews/request_detail_view.dart';
 
-class DonationCard extends StatefulWidget {
-  const DonationCard({super.key, this.snap});
+class RequestCard extends StatelessWidget {
   final snap;
+  const RequestCard({super.key, this.snap});
 
-  @override
-  State<DonationCard> createState() => _DonationCardState();
-}
-
-class _DonationCardState extends State<DonationCard> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -20,8 +14,8 @@ class _DonationCardState extends State<DonationCard> {
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DonationDetailView(
-              snap: widget.snap,
+            builder: (context) => RequestDetailView(
+              snap: snap,
             ),
           ));
         },
@@ -46,7 +40,7 @@ class _DonationCardState extends State<DonationCard> {
                       Padding(
                         padding: const EdgeInsets.only(top: 5),
                         child: Text(
-                          ' Address : ${widget.snap['donationAddress']} ',
+                          ' Address : ${snap['requestAddress']} ',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 15,
@@ -56,7 +50,7 @@ class _DonationCardState extends State<DonationCard> {
                       Padding(
                         padding: const EdgeInsets.only(top: 5),
                         child: Text(
-                          'Donation Expiration Date:  ${widget.snap['donationExpDate']} ',
+                          'status:  ${snap['status']} ',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 15,

@@ -1,28 +1,24 @@
 // ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:reliefmate/main.dart';
-import 'package:reliefmate/services/donation/donation_firestore_methods.dart';
+import 'package:reliefmate/services/request/request_firestore_methods.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/widgets/app_bar.dart';
 import 'package:reliefmate/utilities/widgets/custom_elevated_button.dart';
-import 'package:reliefmate/utilities/widgets/custom_text_button.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_field.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
-import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
-import 'package:reliefmate/views/homeviews/home_view.dart';
 
-class DonateView extends StatefulWidget {
-  const DonateView({super.key});
+class RequestView extends StatefulWidget {
+  const RequestView({super.key});
 
   @override
-  State<DonateView> createState() => _DonateViewState();
+  State<RequestView> createState() => _RequestViewState();
 }
 
-class _DonateViewState extends State<DonateView> {
+class _RequestViewState extends State<RequestView> {
   final TextEditingController _descriptionController1 = TextEditingController();
   final TextEditingController _descriptionController2 = TextEditingController();
   final TextEditingController _descriptionController3 = TextEditingController();
@@ -44,11 +40,12 @@ class _DonateViewState extends State<DonateView> {
     'Other',
   ];
   final _userId = FirebaseAuth.instance.currentUser!.uid;
+  int index = 0;
 
   @override
   void initState() {
-    getData();
     super.initState();
+    getData();
   }
 
   getData() async {
@@ -78,8 +75,7 @@ class _DonateViewState extends State<DonateView> {
     }
   }
 
-  int index = 0;
-  void createDonation() async {
+  void createRequest() async {
     bool isForm = _addressController.text.isNotEmpty &&
         _descriptionController1.text.isNotEmpty;
     if (isForm) {
@@ -90,22 +86,20 @@ class _DonateViewState extends State<DonateView> {
           });
         }
 
-        String res = await DonationFirestoreMethods().createDonationa(
-          donorid: userData['uid'],
-          donorEmail: userData['email'],
-          donorName: userData['name'],
-          donorCnic: userData['cnic'],
-          donorPhoneNumber: userData['phoneNumber'],
-          donationAddress: _addressController.text,
+        String res = await RequestFirestoreMethods().createRequest(
+          requesterId: userData['uid'],
+          requesterEmail: userData['email'],
+          requesterName: userData['name'],
+          requesterCnic: userData['cnic'],
+          requesterPhoneNumber: userData['phoneNumber'],
+          requestAddress: _addressController.text,
           category1: category1,
           category2: category2,
           category3: category3,
           description1: _descriptionController1.text,
           description2: _descriptionController2.text,
           description3: _descriptionController3.text,
-          donationMsg: _messageController.text,
-          donationExpDate:
-              '${selectedDate.day}-${selectedDate.month}-${selectedDate.year}',
+          requestMsg: _messageController.text,
         );
         if (mounted) {
           setState(() {
@@ -114,7 +108,7 @@ class _DonateViewState extends State<DonateView> {
         }
         if (res == 'Success') {
           Navigator.of(context).pop();
-          showSnackBar(context, 'Donated Succesfully');
+          showSnackBar(context, 'Requested Succesfully');
         }
       }
     } else {
@@ -135,7 +129,7 @@ class _DonateViewState extends State<DonateView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const SimpleAppBar(text: "Donate"),
+      appBar: const SimpleAppBar(text: "Request"),
       body: isLoading
           ? const Loader()
           : ListView(
@@ -174,7 +168,7 @@ class _DonateViewState extends State<DonateView> {
                               ),
                               iconSize: 20,
                               hint: const Text(
-                                'Donation Category',
+                                'Request Category',
                               ),
                               icon: const Icon(Icons.keyboard_arrow_down),
                               onChanged: (value) {
@@ -404,113 +398,8 @@ class _DonateViewState extends State<DonateView> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 10),
-                            child: InkWell(
-                              onTap: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(30),
-                                      topRight: Radius.circular(30),
-                                    ),
-                                  ),
-                                  builder: (context) {
-                                    return SizedBox(
-                                      height: MediaQuery.of(context)
-                                              .copyWith()
-                                              .size
-                                              .height /
-                                          2,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 20),
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              'Expiration Date',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.grey.shade800,
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: CupertinoDatePicker(
-                                                initialDateTime: DateTime.now(),
-                                                onDateTimeChanged:
-                                                    (DateTime newDate) {
-                                                  selectedDate = newDate;
-                                                  print(selectedDate);
-                                                },
-                                                use24hFormat: true,
-                                                minuteInterval: 1,
-                                                mode: CupertinoDatePickerMode
-                                                    .date,
-                                              ),
-                                            ),
-                                            CustomElevatedButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                                setState(() {});
-                                              },
-                                              text: 'Select Date',
-                                            ),
-                                            CustomTextButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                  selectedDate = DateTime.now();
-                                                },
-                                                text: 'Cancel',
-                                                underline: false)
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: GlobalVariables.btnBackgroundColor,
-                                    width: 2,
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    const Text(
-                                      "Expiration Date:",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      '${selectedDate.day}-${selectedDate.month}-${selectedDate.year}',
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    const Icon(
-                                      Icons.edit_calendar,
-                                      size: 30,
-                                      color: GlobalVariables.btnBackgroundColor,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
                           CustomElevatedButton(
-                              onPressed: createDonation, text: "Donate")
+                              onPressed: createRequest, text: "Request")
                         ],
                       ),
                     ),

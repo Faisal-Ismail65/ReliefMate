@@ -2,12 +2,12 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:reliefmate/main.dart';
 import 'package:reliefmate/services/profile/profile_firestore_methods.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_field.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
-import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
 
 class CreateProfile extends StatefulWidget {
   const CreateProfile({super.key});
@@ -44,66 +44,34 @@ class _CreateProfileState extends State<CreateProfile> {
 
     if (isForm) {
       if (_profileKey.currentState!.validate()) {
-        if (_value == 0) {
-          if (mounted) {
-            setState(() {
-              isLoading = true;
-            });
-          }
-          String res = await FirestoreMethods().createProfile(
-            uid: _userId,
-            email: _userEmail!,
-            name: _nameController.text,
-            cnic: _cnicController.text,
-            phoneNumber: _phoneNumberController.text,
-            address: _addressController.text,
-            type: 'donor',
-            accountNumber: _accountNumberController.text,
-            need: category ?? '',
-          );
-          if (mounted) {
-            setState(() {
-              isLoading = false;
-            });
-          }
-          if (res == 'Success') {
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (context) => const BottomBarView(),
-            ));
-            showSnackBar(context, 'Your Profile Is Created Succesfully');
-          }
-        } else if (_value == 1) {
-          if (_accountNumberController.text != '' && category != null) {
-            if (mounted) {
-              setState(() {
-                isLoading = true;
-              });
-            }
-            String res = await FirestoreMethods().createProfile(
-              uid: _userId,
-              email: _userEmail!,
-              name: _nameController.text,
-              cnic: _cnicController.text,
-              phoneNumber: _phoneNumberController.text,
-              address: _addressController.text,
-              type: 'victim',
-              accountNumber: _accountNumberController.text,
-              need: category!,
-            );
-            if (mounted) {
-              setState(() {
-                isLoading = false;
-              });
-            }
-            if (res == 'Success') {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => const BottomBarView(),
-              ));
-              showSnackBar(context, 'Your Profile Is Created Succesfully');
-            }
-          } else {
-            showSnackBar(context, "Please fill all fields!");
-          }
+        if (mounted) {
+          setState(() {
+            isLoading = true;
+          });
+        }
+        String res = await FirestoreMethods().createProfile(
+          uid: _userId,
+          email: _userEmail!,
+          name: _nameController.text,
+          cnic: _cnicController.text,
+          phoneNumber: _phoneNumberController.text,
+          address: _addressController.text,
+          type: _value == 0 ? 'donor' : 'victim',
+          accountNumber: _accountNumberController.text,
+          need: category ?? '',
+        );
+        if (mounted) {
+          setState(() {
+            isLoading = false;
+          });
+        }
+        if (res == 'Success') {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => const Home(),
+              ),
+              (route) => false);
+          showSnackBar(context, 'Your Profile Is Created Succesfully');
         }
       }
     } else {
@@ -155,8 +123,9 @@ class _CreateProfileState extends State<CreateProfile> {
                 ),
               ],
             ),
-            body: Padding(
-              padding: const EdgeInsets.all(10.0),
+            body: Container(
+              // decoration: BoxDecoration(color: Colors.grey.shade300),
+              margin: const EdgeInsets.all(10.0),
               child: SingleChildScrollView(
                 child: Form(
                   key: _profileKey,
@@ -217,50 +186,50 @@ class _CreateProfileState extends State<CreateProfile> {
                           }
                         },
                       ),
-                      _value == 1
-                          ? Column(
-                              children: [
-                                CustomTextField(
-                                  controller: _accountNumberController,
-                                  labelText: 'Enter Account Number',
-                                  obseureText: false,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 10),
-                                  child: DropdownButtonFormField(
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                    ),
-                                    hint: const Text(
-                                      'Need',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    icon: const Icon(Icons.keyboard_arrow_down),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        category = value!;
-                                      });
-                                    },
-                                    items: needs.map((String item) {
-                                      return DropdownMenuItem(
-                                        value: item,
-                                        child: Text(
-                                          item,
-                                          style: const TextStyle(
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ],
-                            )
-                          : const SizedBox(),
+                      // _value == 1
+                      //     ? Column(
+                      //         children: [
+                      //           CustomTextField(
+                      //             controller: _accountNumberController,
+                      //             labelText: 'Enter Account Number',
+                      //             obseureText: false,
+                      //           ),
+                      //           Padding(
+                      //             padding: const EdgeInsets.symmetric(
+                      //                 horizontal: 10, vertical: 10),
+                      //             child: DropdownButtonFormField(
+                      //               decoration: InputDecoration(
+                      //                 border: OutlineInputBorder(
+                      //                   borderRadius: BorderRadius.circular(20),
+                      //                 ),
+                      //               ),
+                      //               hint: const Text(
+                      //                 'Need',
+                      //                 style: TextStyle(
+                      //                     fontWeight: FontWeight.bold),
+                      //               ),
+                      //               icon: const Icon(Icons.keyboard_arrow_down),
+                      //               onChanged: (value) {
+                      //                 setState(() {
+                      //                   category = value!;
+                      //                 });
+                      //               },
+                      //               items: needs.map((String item) {
+                      //                 return DropdownMenuItem(
+                      //                   value: item,
+                      //                   child: Text(
+                      //                     item,
+                      //                     style: const TextStyle(
+                      //                       fontSize: 20,
+                      //                     ),
+                      //                   ),
+                      //                 );
+                      //               }).toList(),
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       )
+                      //     : const SizedBox(),
                     ],
                   ),
                 ),

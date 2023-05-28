@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:reliefmate/services/profile/profile_firestore_methods.dart';
+import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_field.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
@@ -170,8 +171,18 @@ class _EditProfileState extends State<EditProfile> {
                                   child: DropdownButtonFormField(
                                     value: category,
                                     decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(20),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: const BorderSide(
+                                            color: GlobalVariables
+                                                .btnBackgroundColor),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: const BorderSide(
+                                            color: GlobalVariables
+                                                .btnBackgroundColor,
+                                            width: 2),
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
                                     ),
                                     iconSize: 20,

@@ -1,13 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:reliefmate/utilities/utils/global_variables.dart';
+import 'package:reliefmate/utilities/widgets/app_bar.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_button.dart';
 import 'package:reliefmate/utilities/widgets/grid_item.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
+import 'package:reliefmate/views/homeviews/about_view.dart';
 import 'package:reliefmate/views/homeviews/create_profile.dart';
 import 'package:reliefmate/views/homeviews/donate_view.dart';
 import 'package:reliefmate/views/homeviews/donations_view.dart';
+import 'package:reliefmate/views/homeviews/profile_view.dart';
+import 'package:reliefmate/views/homeviews/request_view.dart';
+import 'package:reliefmate/views/homeviews/requests_view.dart';
 import 'package:reliefmate/views/homeviews/victims_view.dart';
 
 class HomeView extends StatefulWidget {
@@ -22,6 +26,11 @@ class _HomeViewState extends State<HomeView> {
   var userData = {};
   bool isLoading = false;
 
+  List<String> path = [
+    'assets/images/donate.jpeg',
+    'assets/images/donations.jpeg',
+    'assets/images/donate.jpeg',
+  ];
   @override
   void initState() {
     getData();
@@ -54,117 +63,155 @@ class _HomeViewState extends State<HomeView> {
     return isLoading
         ? const Loader()
         : Scaffold(
-            body: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  userData['uid'] == null
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Center(
-                            child: Column(
-                              children: [
-                                const Text(
-                                  'Welcome to ReliefMate',
-                                  style: TextStyle(
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold,
-                                    color: GlobalVariables.appBarColor,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                const Text(
-                                  'ReliefMate is created to make sure that victims of disasters get the help they need in an emergency. Natural disasters are a major problem that the world faces today. They can strike at any time and place, without warning. And, when they do, the damage they cause can be absolutely devastating.',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color:
-                                        GlobalVariables.appBarBackgroundColor,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                const Text(
-                                  'You first have to create your profile to access the full functionality of the application. Once you finish your profile you will be able to donate needy people.',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color:
-                                        GlobalVariables.appBarBackgroundColor,
-                                  ),
-                                ),
-                                CustomTextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const CreateProfile(),
-                                        ),
-                                      );
-                                    },
-                                    text: "Click here to Create Profile",
-                                    underline: false)
-                              ],
-                            ),
-                          ),
-                        )
-                      : const SizedBox(),
-                  userData['type'] == 'donor'
-                      ? GridView(
-                          shrinkWrap: true,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                          ),
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const DonateView(),
-                                ));
-                              },
-                              child: const GridItem(
-                                  height: 60,
-                                  width: 60,
-                                  path: 'assets/icons/donate.svg',
-                                  text: 'Donate'),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => const DonationsView(),
-                                  ),
-                                );
-                              },
-                              child: const GridItem(
-                                  height: 60,
-                                  width: 70,
-                                  path: 'assets/icons/donation.svg',
-                                  text: 'Donations'),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => const VictimsView(),
-                                  ),
-                                );
-                              },
-                              child: const GridItem(
-                                  height: 60,
-                                  width: 70,
-                                  path: 'assets/icons/victims.svg',
-                                  text: 'Victims'),
-                            ),
-                          ],
-                        )
-                      : const SizedBox(),
-                ],
-              ),
+            appBar: const SimpleAppBar(
+              text: 'ReliefMate',
             ),
+            body: userData['uid'] == null
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 20),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          const Text(
+                            'Welcome',
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Text(
+                            'ReliefMate is created to make sure that victims of disasters get the help they need in an emergency. Natural disasters are a major problem that the world faces today. They can strike at any time and place, without warning. And, when they do, the damage they cause can be absolutely devastating.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const Text(
+                            'You first have to create your profile to access the full functionality of the application. Once you finish your profile you will be able to donate needy people.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          CustomTextButton(
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const CreateProfile(),
+                                ),
+                              );
+                            },
+                            text: "Click here to Create Profile",
+                            underline: false,
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 10),
+                    child: GridView(
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                      ),
+                      children: [
+                        userData['type'] == 'donor'
+                            ? InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => const DonateView(),
+                                  ));
+                                },
+                                child: const GridItem(
+                                  path: 'assets/images/donate.jpeg',
+                                ),
+                              )
+                            : InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => const RequestView(),
+                                  ));
+                                },
+                                child: const GridItem(
+                                  path: 'assets/images/request.jpeg',
+                                ),
+                              ),
+                        userData['type'] == 'donor'
+                            ? InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const DonationsView(),
+                                    ),
+                                  );
+                                },
+                                child: const GridItem(
+                                  path: 'assets/images/donations.jpeg',
+                                ),
+                              )
+                            : InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const RequestsView(),
+                                    ),
+                                  );
+                                },
+                                child: const GridItem(
+                                  path: 'assets/images/123.jpg',
+                                ),
+                              ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const VictimsView(),
+                              ),
+                            );
+                          },
+                          child: const GridItem(
+                            path: 'assets/images/victims.jpeg',
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const ProfileView(),
+                              ),
+                            );
+                          },
+                          child: const GridItem(
+                            path: 'assets/images/profile.jpeg',
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const AboutView(),
+                            ));
+                          },
+                          child: const GridItem(
+                            path: 'assets/images/about_us.png',
+                          ),
+                        ),
+                      ],
+                    )),
           );
   }
 }

@@ -5,15 +5,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:reliefmate/services/auth/auth_methods.dart';
 import 'package:reliefmate/services/profile/profile_firestore_methods.dart';
+import 'package:reliefmate/utilities/dialogs/logout_dialog.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/utils/utils.dart';
+import 'package:reliefmate/utilities/widgets/app_bar.dart';
+import 'package:reliefmate/utilities/widgets/custom_elevated_button.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_button.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/utilities/widgets/profile_tile.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
+import 'package:reliefmate/views/authviews/login_view.dart';
 import 'package:reliefmate/views/homeviews/create_profile.dart';
 import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
+import 'package:reliefmate/views/homeviews/edit_profile.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -118,6 +124,7 @@ class _ProfileViewState extends State<ProfileView> {
     return isLoading
         ? const Loader()
         : Scaffold(
+            appBar: const SimpleAppBar(text: 'Profile'),
             body: Padding(
               padding: const EdgeInsets.all(15.0),
               child: SingleChildScrollView(
@@ -254,24 +261,35 @@ class _ProfileViewState extends State<ProfileView> {
                                                 fieldName: 'Address',
                                                 fieldValue:
                                                     '${userData['address'] ?? ''}'),
-                                            userData['type'] == 'victim'
-                                                ? Column(
-                                                    children: [
-                                                      ProfileTile(
-                                                          fieldName:
-                                                              'Account Number',
-                                                          fieldValue:
-                                                              '${userData['accountNumber'] ?? ''}'),
-                                                      ProfileTile(
-                                                          fieldName: 'Need',
-                                                          fieldValue:
-                                                              '${userData['need'] ?? ''}'),
-                                                    ],
-                                                  )
-                                                : const SizedBox(),
                                           ],
                                         ),
                                       ),
+                    userData['name'] != null
+                        ? CustomElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    EditProfile(userData: userData),
+                              ));
+                            },
+                            text: 'Edit Profile',
+                          )
+                        : const SizedBox(),
+                    CustomElevatedButton(
+                      onPressed: () async {
+                        final shouldLogout = await showLogOutDialog(context);
+                        if (shouldLogout) {
+                          await AuthMethods().signOut();
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                builder: (context) => const LoginView(),
+                              ),
+                              (route) => false);
+                          showSnackBar(context, 'Logged Out Successfully');
+                        }
+                      },
+                      text: 'Logout',
+                    ),
                   ],
                 ),
               ),

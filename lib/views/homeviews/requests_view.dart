@@ -6,25 +6,25 @@ import 'package:reliefmate/utilities/widgets/donation_card.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/utilities/widgets/request_card.dart';
 
-class DonationsView extends StatefulWidget {
-  const DonationsView({super.key});
+class RequestsView extends StatefulWidget {
+  const RequestsView({super.key});
 
   @override
-  State<DonationsView> createState() => _DonationsViewState();
+  State<RequestsView> createState() => _RequestsViewState();
 }
 
-class _DonationsViewState extends State<DonationsView> {
+class _RequestsViewState extends State<RequestsView> {
   final _userId = FirebaseAuth.instance.currentUser!.uid;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const SimpleAppBar(text: 'My Donations'),
+      appBar: const SimpleAppBar(text: 'My Request'),
       body: Padding(
         padding: const EdgeInsets.only(top: 15.0),
         child: StreamBuilder(
           stream: FirebaseFirestore.instance
-              .collection('donations')
-              .where('donorId', isEqualTo: _userId)
+              .collection('requests')
+              .where('requesterId', isEqualTo: _userId)
               .snapshots(),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
@@ -35,7 +35,8 @@ class _DonationsViewState extends State<DonationsView> {
                   return ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
-                      return DonationCard(
+                      print(snapshot.data!.docs.length);
+                      return RequestCard(
                         snap: snapshot.data!.docs[index].data(),
                       );
                     },

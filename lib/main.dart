@@ -1,23 +1,34 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reliefmate/firebase_options.dart';
 import 'package:reliefmate/models/auth_user.dart';
 import 'package:reliefmate/providers/user_provider.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
+import 'package:reliefmate/utilities/utils/notification_service.dart';
+import 'package:reliefmate/utilities/utils/utils.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/views/adminviews/admin_view.dart';
 import 'package:reliefmate/views/authviews/login_view.dart';
 import 'package:reliefmate/views/homeviews/home_view.dart';
+
+Future<void> backgroundHandler(RemoteMessage message) async {
+  print(message.data.toString());
+  print(message.notification!.title);
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseMessaging.onBackgroundMessage(backgroundHandler);
   runApp(const MyApp());
 }
 
@@ -83,10 +94,70 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool isLoading = false;
   AuthUser? user;
+
+  final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+
   @override
   void initState() {
+    permissionHandler();
     addData();
+    _initializeFirebaseMessaging();
     super.initState();
+  }
+
+  void _initializeFirebaseMessaging() async {
+    LocalNotificationService.initialize(context);
+    if (Platform.isIOS) {
+      await FirebaseMessaging.instance.requestPermission();
+    }
+
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+
+    //  This method call when app in terminated state and you get a notification
+    // when you click on notification app open from terminated state and you can get notification data in this method
+
+    FirebaseMessaging.instance.getInitialMessage().then(
+      (message) async {
+        print("FirebaseMessaging.instance.getInitialMessage");
+        if (message != null) {
+          if (message.notification != null) {
+            print(message.notification!.title);
+            print(message.notification!.body);
+            print("message.data ${message.data}");
+          }
+        }
+      },
+    );
+
+    // This method only call when App in forground it mean app must be opened
+    FirebaseMessaging.onMessage.listen(
+      (message) {
+        print("FirebaseMessaging.onMessage.listen");
+        if (message.notification != null) {
+          print('Got a message whilst in the foreground!');
+          print('Message data: ${message.data}');
+          LocalNotificationService.createAndDisplayNotification(message);
+        }
+      },
+    );
+
+    //  This method only call when App in background and not terminated(not closed)
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      (message) async {
+        print(
+            "FirebaseMessaging.onMessageOpenedApp.listen App is Running in Background");
+        if (message.notification != null) {
+          print(message.notification!.title);
+          print(message.notification!.body);
+          print("message.data ${message.data}");
+        }
+      },
+    );
   }
 
   addData() async {

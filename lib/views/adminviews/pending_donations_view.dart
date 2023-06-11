@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:reliefmate/models/donation.dart';
 import 'package:reliefmate/utilities/widgets/donation_card.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 
@@ -50,9 +49,7 @@ class _PendingDonationViewState extends State<PendingDonationView> {
                   DateTime date = DateFormat('dd-MM-yyy')
                       .parse(donationList[index]['donationExpDate']);
                   if (date.isAfter(DateTime.now())) {
-                    return DonationCard(
-                      snap: donationList[index],
-                    );
+                    return Container();
                   }
                   return const SizedBox();
                 },

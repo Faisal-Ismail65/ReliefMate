@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:reliefmate/utilities/utils/utils.dart';
 import 'package:reliefmate/utilities/widgets/app_bar.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_button.dart';
 import 'package:reliefmate/utilities/widgets/grid_item.dart';
@@ -9,6 +11,7 @@ import 'package:reliefmate/views/homeviews/about_view.dart';
 import 'package:reliefmate/views/homeviews/create_profile.dart';
 import 'package:reliefmate/views/homeviews/donate_view.dart';
 import 'package:reliefmate/views/homeviews/donations_view.dart';
+import 'package:reliefmate/views/homeviews/notification_view.dart';
 import 'package:reliefmate/views/homeviews/profile_view.dart';
 import 'package:reliefmate/views/homeviews/request_view.dart';
 import 'package:reliefmate/views/homeviews/requests_view.dart';
@@ -26,6 +29,22 @@ class _HomeViewState extends State<HomeView> {
   var userData = {};
   bool isLoading = false;
 
+  void getLocation() async {
+    final location = await getUserLocation();
+    print(location.latitude);
+    print(location.longitude);
+
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+      location.latitude,
+      location.longitude,
+    );
+    Placemark place = placemarks[0];
+
+    String address =
+        "${place.street}, ${place.locality}, ${place.postalCode}, ${place.country}";
+    print(address);
+  }
+
   List<String> path = [
     'assets/images/donate.jpeg',
     'assets/images/donations.jpeg',
@@ -33,8 +52,9 @@ class _HomeViewState extends State<HomeView> {
   ];
   @override
   void initState() {
-    getData();
     super.initState();
+    getLocation();
+    getData();
   }
 
   getData() async {
@@ -63,8 +83,29 @@ class _HomeViewState extends State<HomeView> {
     return isLoading
         ? const Loader()
         : Scaffold(
-            appBar: const SimpleAppBar(
+            appBar: SimpleAppBar(
               text: 'ReliefMate',
+              actions: [
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const NotificationView(),
+                    ));
+                  },
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Badge(
+                      label: Text('5'),
+                      child: const Icon(
+                        Icons.notifications_none,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+              ],
             ),
             body: userData['uid'] == null
                 ? Padding(

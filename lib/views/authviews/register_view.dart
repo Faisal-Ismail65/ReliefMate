@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reliefmate/services/auth/auth_exceptions.dart';
 import 'package:reliefmate/services/auth/auth_methods.dart';
+import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/widgets/custom_elevated_button.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_button.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_field.dart';
@@ -109,27 +110,58 @@ class _RegisterViewState extends State<RegisterView> {
         centerTitle: true,
         elevation: 0.0,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomTextField(
-              controller: _emailController,
-              labelText: 'Enter Email',
-              icon: const Icon(
-                Icons.email,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Center(
+          child: Column(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.width * 0.30,
               ),
-              obseureText: false,
-            ),
-            CustomTextField(
-              controller: _passwordController,
-              labelText: 'Enter Password',
-              icon: const Icon(Icons.password),
-              obseureText: !showPassword,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'Welcome,',
+                      style: TextStyle(
+                        fontSize: 28,
+                        color: GlobalVariables.appBarColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      'Join and Register!',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: GlobalVariables.appBarColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              CustomTextField(
+                controller: _emailController,
+                labelText: 'Enter Email',
+                icon: const Icon(
+                  Icons.email,
+                ),
+                obseureText: false,
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              CustomTextField(
+                controller: _passwordController,
+                labelText: 'Enter Password',
+                icon: const Icon(Icons.password),
+                obseureText: !showPassword,
+              ),
+              Row(
                 children: [
                   Checkbox(
                     value: showPassword,
@@ -151,17 +183,17 @@ class _RegisterViewState extends State<RegisterView> {
                   ),
                 ],
               ),
-            ),
-            isLoading
-                ? const Loader()
-                : CustomElevatedButton(
-                    onPressed: registerUser, text: 'Register'),
-            CustomTextButton(
-              onPressed: navigateToLogin,
-              text: 'Already Have Account',
-              underline: true,
-            ),
-          ],
+              isLoading
+                  ? const Loader()
+                  : CustomElevatedButton(
+                      onPressed: registerUser, text: 'Register'),
+              CustomTextButton(
+                onPressed: navigateToLogin,
+                text: 'Already Have Account',
+                underline: true,
+              ),
+            ],
+          ),
         ),
       ),
     );

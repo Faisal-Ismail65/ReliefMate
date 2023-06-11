@@ -59,7 +59,7 @@ class _ProfileCardState extends State<ProfileCard> {
           height: 100,
           child: Card(
             color: GlobalVariables.appBarBackgroundColor,
-            elevation: 50,
+            elevation: 5,
             shadowColor: GlobalVariables.appBarColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),

@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
-import 'package:reliefmate/views/adminviews/approved_victims_view.dart';
-import 'package:reliefmate/views/adminviews/disapproved_victims_view.dart';
-import 'package:reliefmate/views/adminviews/pending_victims_view.dart';
+import 'package:reliefmate/views/adminviews/completed_request_view.dart';
+import 'package:reliefmate/views/adminviews/pending_request_view.dart';
 
-class VictimsView extends StatelessWidget {
-  const VictimsView({super.key});
+class RequestView extends StatelessWidget {
+  const RequestView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 3,
+        length: 2,
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Victims'),
+            title: const Text('Requests'),
             centerTitle: true,
             bottom: PreferredSize(
               preferredSize: const Size(double.infinity, 40),
@@ -38,13 +37,10 @@ class VictimsView extends StatelessWidget {
                   unselectedLabelColor: Colors.white,
                   tabs: [
                     Tab(
-                      text: 'Approved',
-                    ),
-                    Tab(
                       text: 'Pending',
                     ),
                     Tab(
-                      text: 'Disapproved',
+                      text: 'Completed',
                     ),
                   ],
                 ),
@@ -53,9 +49,8 @@ class VictimsView extends StatelessWidget {
           ),
           body: const TabBarView(
             children: [
-              ApprovedVictimsView(),
-              PendingVictimsView(),
-              DisapprovedVictimsView(),
+              PendingRequestView(),
+              CompletedRequestView(),
             ],
           ),
         ));

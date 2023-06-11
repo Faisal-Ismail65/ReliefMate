@@ -11,6 +11,7 @@ import 'package:reliefmate/utilities/widgets/grid_item.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 import 'package:reliefmate/views/adminviews/donation_view.dart';
 import 'package:reliefmate/views/adminviews/donor_view.dart';
+import 'package:reliefmate/views/adminviews/request_view.dart';
 import 'package:reliefmate/views/adminviews/stock_view.dart';
 import 'package:reliefmate/views/adminviews/victims_view.dart';
 import 'package:reliefmate/views/authviews/login_view.dart';
@@ -115,21 +116,31 @@ class _AdminViewState extends State<AdminView> {
           InkWell(
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const DonationView(),
-              ));
-            },
-            child: const GridItem(
-              path: 'assets/images/donations.jpeg',
-            ),
-          ),
-          InkWell(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => const VictimsView(),
               ));
             },
             child: const GridItem(
               path: 'assets/images/victims.jpeg',
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const RequestView(),
+              ));
+            },
+            child: const GridItem(
+              path: 'assets/images/requests.jpeg',
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const DonationView(),
+              ));
+            },
+            child: const GridItem(
+              path: 'assets/images/donations.jpeg',
             ),
           ),
           InkWell(

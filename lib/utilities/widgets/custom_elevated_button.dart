@@ -9,26 +9,23 @@ class CustomElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: GlobalVariables.btnBackgroundColor,
-          minimumSize: const Size(double.infinity, 60),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: GlobalVariables.btnBackgroundColor,
+        minimumSize: const Size(double.infinity, 45),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
         ),
-        child: Text(
-          text,
-          style: const TextStyle(
-            fontFamily: 'worksans',
-            letterSpacing: 2,
-            fontSize: 20,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontFamily: 'worksans',
+          letterSpacing: 2,
+          fontSize: 18,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );

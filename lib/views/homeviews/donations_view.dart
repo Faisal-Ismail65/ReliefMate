@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:reliefmate/models/donation.dart';
 import 'package:reliefmate/utilities/widgets/app_bar.dart';
 import 'package:reliefmate/utilities/widgets/donation_card.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
-import 'package:reliefmate/utilities/widgets/request_card.dart';
 
 class DonationsView extends StatefulWidget {
   const DonationsView({super.key});
@@ -35,8 +35,10 @@ class _DonationsViewState extends State<DonationsView> {
                   return ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
+                      final Donation donation =
+                          Donation.fromMap(snapshot.data!.docs[index].data());
                       return DonationCard(
-                        snap: snapshot.data!.docs[index].data(),
+                        donation: donation,
                       );
                     },
                   );

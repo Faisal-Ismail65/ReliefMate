@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:reliefmate/models/auth_user.dart';
 import 'package:reliefmate/services/auth/auth_exceptions.dart';
 import 'package:reliefmate/services/auth/auth_methods.dart';
+import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/widgets/custom_elevated_button.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_button.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_field.dart';
@@ -114,26 +115,58 @@ class _LoginViewState extends State<LoginView> {
         ),
         centerTitle: true,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CustomTextField(
-            controller: _emailController,
-            labelText: 'Enter Email',
-            icon: const Icon(
-              Icons.email,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.width * 0.30,
             ),
-            obseureText: false,
-          ),
-          CustomTextField(
-            controller: _passwordController,
-            labelText: 'Enter Password',
-            icon: const Icon(Icons.password),
-            obseureText: !showPassword,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    'Welcome,',
+                    style: TextStyle(
+                      fontSize: 28,
+                      color: GlobalVariables.appBarColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    'Sign in to continue!',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: GlobalVariables.appBarColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            CustomTextField(
+              controller: _emailController,
+              labelText: 'Enter Email',
+              icon: const Icon(
+                Icons.email,
+              ),
+              obseureText: false,
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            CustomTextField(
+              controller: _passwordController,
+              labelText: 'Enter Password',
+              icon: const Icon(Icons.password),
+              obseureText: !showPassword,
+            ),
+            Row(
               children: [
                 Checkbox(
                   value: showPassword,
@@ -155,15 +188,15 @@ class _LoginViewState extends State<LoginView> {
                 ),
               ],
             ),
-          ),
-          isLoading
-              ? const Loader()
-              : CustomElevatedButton(onPressed: loginUser, text: 'Login'),
-          CustomTextButton(
-              onPressed: navigateToCreateAccount,
-              text: 'Create Account',
-              underline: true),
-        ],
+            isLoading
+                ? const Loader()
+                : CustomElevatedButton(onPressed: loginUser, text: 'Login'),
+            CustomTextButton(
+                onPressed: navigateToCreateAccount,
+                text: 'Create Account',
+                underline: true),
+          ],
+        ),
       ),
     );
   }

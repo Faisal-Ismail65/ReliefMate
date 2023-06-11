@@ -1,75 +1,90 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:reliefmate/models/donation.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/widgets/donation_detail_view.dart';
 
-class DonationCard extends StatefulWidget {
-  const DonationCard({super.key, this.snap});
-  final snap;
+class DonationCard extends StatelessWidget {
+  final Donation donation;
+  const DonationCard({super.key, required this.donation});
 
-  @override
-  State<DonationCard> createState() => _DonationCardState();
-}
-
-class _DonationCardState extends State<DonationCard> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      child: InkWell(
-        onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DonationDetailView(
-              snap: widget.snap,
-            ),
-          ));
-        },
-        child: SizedBox(
-          height: 100,
-          child: Card(
-            color: GlobalVariables.appBarBackgroundColor,
-            elevation: 5,
-            shadowColor: GlobalVariables.appBarColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5),
-                        child: Text(
-                          ' Address : ${widget.snap['donationAddress']} ',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5),
-                        child: Text(
-                          'Donation Expiration Date:  ${widget.snap['donationExpDate']} ',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ),
-                    ],
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.only(bottom: 12),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: GlobalVariables.appBarColor),
+        child: Row(children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  donation.donationAddress,
+                  style: GoogleFonts.lato(
+                    textStyle: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
-                ],
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.access_time_rounded,
+                      color: Colors.grey[200],
+                      size: 18,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      donation.donationExpDate,
+                      style: GoogleFonts.lato(
+                        textStyle:
+                            TextStyle(fontSize: 13, color: Colors.grey[100]),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  donation.donorEmail,
+                  style: GoogleFonts.lato(
+                    textStyle: TextStyle(fontSize: 15, color: Colors.grey[100]),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 10),
+            height: 60,
+            width: 0.5,
+            color: Colors.grey[200]!.withOpacity(0.7),
+          ),
+          RotatedBox(
+            quarterTurns: 3,
+            child: Text(
+              donation.status,
+              style: GoogleFonts.lato(
+                textStyle: const TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
             ),
           ),
-        ),
+        ]),
       ),
     );
   }

@@ -112,7 +112,7 @@ class _RequestViewState extends State<RequestView> {
         }
       }
     } else {
-      showSnackBar(context, "Please fill all fields!");
+      showSnackBar(context, "Please fill all Required fields!");
     }
   }
 
@@ -133,6 +133,7 @@ class _RequestViewState extends State<RequestView> {
       body: isLoading
           ? const Loader()
           : ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               physics: const BouncingScrollPhysics(
                 parent: AlwaysScrollableScrollPhysics(),
               ),
@@ -149,8 +150,7 @@ class _RequestViewState extends State<RequestView> {
                             obseureText: false,
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(
-                                left: 15, bottom: 10, right: 15),
+                            padding: const EdgeInsets.symmetric(vertical: 10),
                             child: DropdownButtonFormField(
                               decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
@@ -193,28 +193,23 @@ class _RequestViewState extends State<RequestView> {
                           ),
                           Visibility(
                             visible: index > 0,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15),
-                              child: TextFormField(
-                                minLines: 3,
-                                maxLines: 3,
-                                controller: _descriptionController1,
-                                decoration: InputDecoration(
-                                  hintText: 'Enter Products Description',
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color:
-                                            GlobalVariables.btnBackgroundColor),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color:
-                                            GlobalVariables.btnBackgroundColor,
-                                        width: 2),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
+                            child: TextFormField(
+                              minLines: 3,
+                              maxLines: 3,
+                              controller: _descriptionController1,
+                              decoration: InputDecoration(
+                                hintText: 'Enter Products Description',
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color:
+                                          GlobalVariables.btnBackgroundColor),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: GlobalVariables.btnBackgroundColor,
+                                      width: 2),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
                             ),
@@ -222,8 +217,7 @@ class _RequestViewState extends State<RequestView> {
                           Visibility(
                             visible: index > 0,
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 10),
+                              padding: const EdgeInsets.symmetric(vertical: 10),
                               child: DropdownButtonFormField(
                                 decoration: InputDecoration(
                                   enabledBorder: OutlineInputBorder(
@@ -268,28 +262,23 @@ class _RequestViewState extends State<RequestView> {
                           ),
                           Visibility(
                             visible: index > 1,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15),
-                              child: TextFormField(
-                                minLines: 3,
-                                maxLines: 3,
-                                controller: _descriptionController2,
-                                decoration: InputDecoration(
-                                  hintText: 'Enter Products Description',
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color:
-                                            GlobalVariables.btnBackgroundColor),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color:
-                                            GlobalVariables.btnBackgroundColor,
-                                        width: 2),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
+                            child: TextFormField(
+                              minLines: 3,
+                              maxLines: 3,
+                              controller: _descriptionController2,
+                              decoration: InputDecoration(
+                                hintText: 'Enter Products Description',
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color:
+                                          GlobalVariables.btnBackgroundColor),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: GlobalVariables.btnBackgroundColor,
+                                      width: 2),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
                             ),
@@ -297,8 +286,7 @@ class _RequestViewState extends State<RequestView> {
                           Visibility(
                             visible: index > 1,
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 10),
+                              padding: const EdgeInsets.symmetric(vertical: 10),
                               child: DropdownButtonFormField(
                                 decoration: InputDecoration(
                                   enabledBorder: OutlineInputBorder(
@@ -341,48 +329,14 @@ class _RequestViewState extends State<RequestView> {
                               ),
                             ),
                           ),
-                          const SizedBox(
-                            height: 10,
-                          ),
                           Visibility(
                             visible: index > 2,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15),
-                              child: TextFormField(
-                                minLines: 3,
-                                maxLines: 3,
-                                controller: _descriptionController3,
-                                decoration: InputDecoration(
-                                  hintText: 'Enter Products Description',
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color:
-                                            GlobalVariables.btnBackgroundColor),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color:
-                                            GlobalVariables.btnBackgroundColor,
-                                        width: 2),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
                             child: TextFormField(
                               minLines: 3,
                               maxLines: 3,
-                              controller: _messageController,
+                              controller: _descriptionController3,
                               decoration: InputDecoration(
-                                hintText: 'Optional Message',
+                                hintText: 'Enter Products Description',
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: const BorderSide(
                                       color:
@@ -397,6 +351,31 @@ class _RequestViewState extends State<RequestView> {
                                 ),
                               ),
                             ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            minLines: 3,
+                            maxLines: 3,
+                            controller: _messageController,
+                            decoration: InputDecoration(
+                              hintText: 'Optional Message',
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: GlobalVariables.btnBackgroundColor),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: GlobalVariables.btnBackgroundColor,
+                                    width: 2),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
                           ),
                           CustomElevatedButton(
                               onPressed: createRequest, text: "Request")

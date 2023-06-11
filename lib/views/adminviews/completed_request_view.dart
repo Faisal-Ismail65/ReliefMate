@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:reliefmate/utilities/widgets/donation_card.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 
-class CompletedDonationView extends StatelessWidget {
-  const CompletedDonationView({super.key});
+class CompletedRequestView extends StatelessWidget {
+  const CompletedRequestView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class CompletedDonationView extends StatelessWidget {
         padding: const EdgeInsets.only(top: 15.0),
         child: StreamBuilder(
           stream: FirebaseFirestore.instance
-              .collection('donations')
+              .collection('requests')
               .where('status', isEqualTo: 'completed')
               .snapshots(),
           builder: (context,

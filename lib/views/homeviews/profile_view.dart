@@ -275,6 +275,9 @@ class _ProfileViewState extends State<ProfileView> {
                             text: 'Edit Profile',
                           )
                         : const SizedBox(),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     CustomElevatedButton(
                       onPressed: () async {
                         final shouldLogout = await showLogOutDialog(context);

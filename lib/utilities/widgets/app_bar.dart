@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 
 class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const SimpleAppBar({super.key, required this.text});
   final String text;
-
+  final List<Widget>? actions;
+  const SimpleAppBar({super.key, required this.text, this.actions});
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -18,6 +18,7 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       centerTitle: true,
+      actions: actions,
     );
   }
 

@@ -3,7 +3,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:reliefmate/services/profile/profile_firestore_methods.dart';
-import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_field.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
@@ -157,61 +156,6 @@ class _EditProfileState extends State<EditProfile> {
                         labelText: 'Enter Address',
                         obseureText: false,
                       ),
-                      type == 'victim'
-                          ? Column(
-                              children: [
-                                CustomTextField(
-                                  controller: _accountNumberController,
-                                  labelText: 'Enter Account Number',
-                                  obseureText: false,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 10),
-                                  child: DropdownButtonFormField(
-                                    value: category,
-                                    decoration: InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
-                                            color: GlobalVariables
-                                                .btnBackgroundColor),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
-                                            color: GlobalVariables
-                                                .btnBackgroundColor,
-                                            width: 2),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                    iconSize: 20,
-                                    hint: const Text(
-                                      'Need',
-                                    ),
-                                    icon: const Icon(Icons.keyboard_arrow_down),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        category = value.toString();
-                                      });
-                                    },
-                                    items: needs.map((String item) {
-                                      return DropdownMenuItem(
-                                        alignment: Alignment.center,
-                                        value: item,
-                                        child: Text(
-                                          item,
-                                          style: const TextStyle(
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ],
-                            )
-                          : const SizedBox(),
                     ],
                   ),
                 ),

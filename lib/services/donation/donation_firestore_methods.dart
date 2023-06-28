@@ -7,10 +7,6 @@ class DonationFirestoreMethods {
 
   Future<String> createDonationa({
     required String donorid,
-    required String donorEmail,
-    required String donorName,
-    required String donorCnic,
-    required String donorPhoneNumber,
     required String donationAddress,
     required String donationMsg,
     required String donationExpDate,
@@ -27,10 +23,6 @@ class DonationFirestoreMethods {
       Donation donation = Donation(
         id: id,
         donorId: donorid,
-        donorEmail: donorEmail,
-        donorName: donorName,
-        donorCnic: donorCnic,
-        donorPhoneNumber: donorPhoneNumber,
         donationAddress: donationAddress,
         donationMsg: donationMsg,
         donationExpDate: donationExpDate,

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:reliefmate/models/donation.dart';
 import 'package:reliefmate/utilities/widgets/donation_card.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 
@@ -25,7 +26,9 @@ class CompletedDonationView extends StatelessWidget {
                   return ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
-                      return Container();
+                      final donation =
+                          Donation.fromMap(snapshot.data!.docs[index].data());
+                      return DonationCard(donation: donation);
                     },
                   );
                 } else {

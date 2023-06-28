@@ -58,9 +58,9 @@ class _ProfileCardState extends State<ProfileCard> {
         child: SizedBox(
           height: 100,
           child: Card(
-            color: GlobalVariables.appBarBackgroundColor,
-            elevation: 5,
-            shadowColor: GlobalVariables.appBarColor,
+            // color: GlobalVariables.appBarBackgroundColor,
+            elevation: 2,
+            // shadowColor: GlobalVariables.appBarColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
@@ -77,7 +77,7 @@ class _ProfileCardState extends State<ProfileCard> {
                     child: userProfile['photoUrl'] == null
                         ? const CircleAvatar(
                             radius: 20,
-                            backgroundColor: Colors.white,
+                            backgroundColor: GlobalVariables.appBarColor,
                             child: Icon(
                               Icons.person,
                               size: 30,
@@ -92,29 +92,32 @@ class _ProfileCardState extends State<ProfileCard> {
                   Container(
                     width: 220,
                     height: 100,
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(top: 5),
                           child: Text(
-                            ' Name : ${widget.snap['name']} ',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
+                            widget.snap['name'],
+                            style: TextStyle(
+                              color: Colors.grey.shade800,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20,
                             ),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 5),
                           child: Text(
-                            'Address :  ${widget.snap['address']} ',
-                            style: const TextStyle(
-                              color: Colors.white,
+                            widget.snap['address'],
+                            style: TextStyle(
+                              color: Colors.grey.shade800,
+                              fontWeight: FontWeight.w600,
                               fontSize: 15,
                             ),
                           ),

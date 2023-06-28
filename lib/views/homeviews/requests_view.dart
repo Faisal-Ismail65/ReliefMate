@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:reliefmate/models/request.dart';
 import 'package:reliefmate/utilities/widgets/app_bar.dart';
 import 'package:reliefmate/utilities/widgets/donation_card.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
@@ -32,12 +33,22 @@ class _RequestsViewState extends State<RequestsView> {
               case ConnectionState.waiting:
               case ConnectionState.active:
                 if (snapshot.hasData) {
+                  if (snapshot.data!.docs.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'No Requests Right Now',
+                        style: TextStyle(fontSize: 20, color: Colors.grey),
+                      ),
+                    );
+                  }
                   return ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
+                      final request =
+                          Request.fromMap(snapshot.data!.docs[index].data());
                       print(snapshot.data!.docs.length);
                       return RequestCard(
-                        snap: snapshot.data!.docs[index].data(),
+                        request: request,
                       );
                     },
                   );

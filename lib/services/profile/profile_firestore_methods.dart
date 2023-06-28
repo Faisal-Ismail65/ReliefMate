@@ -5,6 +5,7 @@ import 'package:reliefmate/models/user_profile.dart';
 import 'package:reliefmate/services/profile/cloud_storage_exceptions.dart';
 
 import 'package:reliefmate/services/profile/storage_methods.dart';
+import 'package:reliefmate/utilities/utils/utils.dart';
 
 class FirestoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -24,46 +25,32 @@ class FirestoreMethods {
     required String cnic,
     required String phoneNumber,
     required String address,
-    required String need,
     required String type,
-    required String accountNumber,
+    required double latitude,
+    required double longitude,
   }) async {
     String res = 'Some Error Occured';
 
     try {
-      if (type == 'donor') {
-        UserProfile userProfile = UserProfile(
-          uid: uid,
-          email: email,
-          name: name,
-          cnic: cnic,
-          phoneNumber: phoneNumber,
-          address: address,
-          status: 'approved',
-          type: type,
-        );
-        await _firestore
-            .collection('profiles')
-            .doc(uid)
-            .set(userProfile.toJson());
-      } else if (type == 'victim') {
-        UserProfile userProfile = UserProfile(
-          uid: uid,
-          email: email,
-          name: name,
-          cnic: cnic,
-          phoneNumber: phoneNumber,
-          address: address,
-          status: 'pending',
-          type: type,
-          need: need,
-          accountNumber: accountNumber,
-        );
-        await _firestore
-            .collection('profiles')
-            .doc(uid)
-            .set(userProfile.toJson());
-      }
+      final token = await getDeviceToken();
+      print('Device Token $token');
+      UserProfile userProfile = UserProfile(
+        uid: uid,
+        email: email,
+        name: name,
+        cnic: cnic,
+        phoneNumber: phoneNumber,
+        address: address,
+        status: type == 'donor' ? 'approved' : 'pending',
+        type: type,
+        token: token,
+        latitude: latitude,
+        longitude: longitude,
+      );
+      await _firestore
+          .collection('profiles')
+          .doc(uid)
+          .set(userProfile.toJson());
 
       res = 'Success';
     } on CouldNotCreateUserProfileException {

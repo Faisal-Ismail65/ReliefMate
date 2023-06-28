@@ -7,10 +7,6 @@ class RequestFirestoreMethods {
 
   Future<String> createRequest({
     required String requesterId,
-    required String requesterEmail,
-    required String requesterName,
-    required String requesterCnic,
-    required String requesterPhoneNumber,
     required String requestAddress,
     required String requestMsg,
     required String category1,
@@ -26,10 +22,6 @@ class RequestFirestoreMethods {
       Request request = Request(
         id: id,
         requesterId: requesterId,
-        requesterEmail: requesterEmail,
-        requesterName: requesterName,
-        requesterCnic: requesterCnic,
-        requesterPhoneNumber: requesterPhoneNumber,
         requestAddress: requestAddress,
         requestMsg: requestMsg,
         status: 'pending',

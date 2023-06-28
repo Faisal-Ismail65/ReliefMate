@@ -1,8 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:reliefmate/services/auth/auth_methods.dart';
+import 'package:reliefmate/services/notification/send_notification_service.dart';
 import 'package:reliefmate/utilities/dialogs/logout_dialog.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/widgets/app_bar.dart';
@@ -16,6 +18,7 @@ import 'package:reliefmate/views/adminviews/stock_view.dart';
 import 'package:reliefmate/views/adminviews/victims_view.dart';
 import 'package:reliefmate/views/authviews/login_view.dart';
 import 'package:reliefmate/views/homeviews/about_view.dart';
+import 'package:reliefmate/views/homeviews/notification_view.dart';
 
 class AdminView extends StatefulWidget {
   const AdminView({super.key});
@@ -26,22 +29,62 @@ class AdminView extends StatefulWidget {
 
 class _AdminViewState extends State<AdminView> {
   final _userEmail = FirebaseAuth.instance.currentUser!.email;
-  late PageController adminPageController;
 
   @override
   void initState() {
-    adminPageController = PageController();
     super.initState();
-  }
-
-  void navigationTapped(int page) {
-    adminPageController.jumpToPage(page);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const SimpleAppBar(text: "Admin"),
+      appBar: SimpleAppBar(
+        text: 'Admin',
+        actions: [
+          InkWell(
+            onTap: () async {
+              // SendNotificationService()
+              //     .sendNoticationToAdmin(title: 'Hello', body: 'end');
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const NotificationView(),
+              ));
+            },
+            child: Align(
+              alignment: Alignment.center,
+              child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('notifications')
+                      .where('status', isEqualTo: 'unread')
+                      .where('userId',
+                          isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final data = snapshot.data!.docs.length;
+                      if (data > 0) {
+                        return Badge(
+                          label: Text(data.toString()),
+                          child: const Icon(
+                            Icons.notifications_none,
+                          ),
+                        );
+                      } else {
+                        return const Icon(
+                          Icons.notifications_none,
+                        );
+                      }
+                    }
+                    return const Icon(
+                      Icons.notifications_none,
+                    );
+                  }),
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+        ],
+      ),
       drawer: Drawer(
         width: 230,
         child: ListView(

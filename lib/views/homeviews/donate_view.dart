@@ -4,7 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:reliefmate/services/donation/donation_firestore_methods.dart';
+import 'package:reliefmate/services/notification/send_notification_service.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
+import 'package:reliefmate/utilities/utils/utils.dart';
 import 'package:reliefmate/utilities/widgets/app_bar.dart';
 import 'package:reliefmate/utilities/widgets/custom_elevated_button.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_button.dart';
@@ -13,7 +15,11 @@ import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 
 class DonateView extends StatefulWidget {
-  const DonateView({super.key});
+  final user;
+  const DonateView({
+    super.key,
+    required this.user,
+  });
 
   @override
   State<DonateView> createState() => _DonateViewState();
@@ -27,7 +33,6 @@ class _DonateViewState extends State<DonateView> {
   final TextEditingController _messageController = TextEditingController();
 
   final _donationKey = GlobalKey<FormState>();
-  var userData = {};
   bool isLoading = false;
   DateTime selectedDate = DateTime.now();
   String category1 = '';
@@ -40,7 +45,6 @@ class _DonateViewState extends State<DonateView> {
     'Medicine',
     'Other',
   ];
-  final _userId = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   void initState() {
@@ -56,12 +60,12 @@ class _DonateViewState extends State<DonateView> {
     }
 
     try {
-      var userSnap = await FirebaseFirestore.instance
-          .collection('profiles')
-          .doc(_userId)
-          .get();
+      final location = await getUserLocation();
 
-      userData = userSnap.data() ?? {};
+      final address = await getUserAddress(
+          latitude: location.latitude, longitude: location.longitude);
+      _addressController.text = '${address.street} ${address.locality}';
+
       if (mounted) {
         setState(() {});
       }
@@ -88,11 +92,7 @@ class _DonateViewState extends State<DonateView> {
         }
 
         String res = await DonationFirestoreMethods().createDonationa(
-          donorid: userData['uid'],
-          donorEmail: userData['email'],
-          donorName: userData['name'],
-          donorCnic: userData['cnic'],
-          donorPhoneNumber: userData['phoneNumber'],
+          donorid: widget.user['uid'],
           donationAddress: _addressController.text,
           category1: category1,
           category2: category2,
@@ -112,6 +112,10 @@ class _DonateViewState extends State<DonateView> {
         if (res == 'Success') {
           Navigator.of(context).pop();
           showSnackBar(context, 'Donated Succesfully');
+          SendNotificationService().sendNoticationToAdmin(
+              title: 'Donation Request',
+              body:
+                  '${widget.user['name']} created a donation request with category $category1 $category2 $category3');
         }
       }
     } else {
@@ -131,6 +135,7 @@ class _DonateViewState extends State<DonateView> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.user['name']);
     return Scaffold(
       appBar: const SimpleAppBar(text: "Donate"),
       body: isLoading

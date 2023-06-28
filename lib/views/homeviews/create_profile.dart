@@ -2,12 +2,15 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:reliefmate/main.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:reliefmate/services/profile/profile_firestore_methods.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
+import 'package:reliefmate/utilities/utils/utils.dart';
+import 'package:reliefmate/utilities/widgets/custom_elevated_button.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_field.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
+import 'package:reliefmate/views/homeviews/home_view.dart';
 
 class CreateProfile extends StatefulWidget {
   const CreateProfile({super.key});
@@ -21,20 +24,36 @@ class _CreateProfileState extends State<CreateProfile> {
   final TextEditingController _cnicController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _accountNumberController =
-      TextEditingController();
+
   final _userEmail = FirebaseAuth.instance.currentUser!.email;
   final _userId = FirebaseAuth.instance.currentUser!.uid;
   int? _value;
   final _profileKey = GlobalKey<FormState>();
   bool isLoading = false;
   String? category;
-  List<String> needs = [
-    'Edibles',
-    'Wearables',
-    'Residence',
-    'Medicine',
-  ];
+  Position? location;
+
+  @override
+  void initState() {
+    getAddress();
+    super.initState();
+  }
+
+  void getAddress() async {
+    setState(() {
+      isLoading = true;
+    });
+    location = await getUserLocation();
+    if (location != null) {
+      final address = await getUserAddress(
+          latitude: location!.latitude, longitude: location!.longitude);
+      _addressController.text = '${address.street} ${address.locality}';
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   void createProfile() async {
     bool isForm = _nameController.text.isNotEmpty &&
         _cnicController.text.isNotEmpty &&
@@ -57,8 +76,8 @@ class _CreateProfileState extends State<CreateProfile> {
           phoneNumber: _phoneNumberController.text,
           address: _addressController.text,
           type: _value == 0 ? 'donor' : 'victim',
-          accountNumber: _accountNumberController.text,
-          need: category ?? '',
+          latitude: location!.latitude,
+          longitude: location!.longitude,
         );
         if (mounted) {
           setState(() {
@@ -68,10 +87,9 @@ class _CreateProfileState extends State<CreateProfile> {
         if (res == 'Success') {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => const Home(),
+                builder: (context) => const HomeView(),
               ),
               (route) => false);
-          showSnackBar(context, 'Your Profile Is Created Succesfully');
         }
       }
     } else {
@@ -85,7 +103,6 @@ class _CreateProfileState extends State<CreateProfile> {
     _cnicController.dispose();
     _phoneNumberController.dispose();
     _addressController.dispose();
-    _accountNumberController.dispose();
     super.dispose();
   }
 
@@ -95,15 +112,6 @@ class _CreateProfileState extends State<CreateProfile> {
         ? const Loader()
         : Scaffold(
             appBar: AppBar(
-              leading: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                icon: const Icon(
-                  Icons.close,
-                  size: 30,
-                ),
-              ),
               title: const Text(
                 'Create Profile',
                 style: TextStyle(
@@ -113,15 +121,6 @@ class _CreateProfileState extends State<CreateProfile> {
               ),
               centerTitle: true,
               elevation: 0.0,
-              actions: [
-                IconButton(
-                  onPressed: createProfile,
-                  icon: const Icon(
-                    Icons.done,
-                    size: 30,
-                  ),
-                ),
-              ],
             ),
             body: Container(
               // decoration: BoxDecoration(color: Colors.grey.shade300),
@@ -137,20 +136,34 @@ class _CreateProfileState extends State<CreateProfile> {
                         labelText: "Enter Name",
                         obseureText: false,
                       ),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       CustomTextField(
+                        inputType: TextInputType.number,
                         controller: _cnicController,
                         labelText: 'Enter CNIC',
                         obseureText: false,
                       ),
+                      const SizedBox(
+                        height: 15,
+                      ),
                       CustomTextField(
+                        inputType: TextInputType.number,
                         controller: _phoneNumberController,
                         labelText: 'Enter Phone NUmber',
                         obseureText: false,
+                      ),
+                      const SizedBox(
+                        height: 15,
                       ),
                       CustomTextField(
                         controller: _addressController,
                         labelText: 'Enter Address',
                         obseureText: false,
+                      ),
+                      const SizedBox(
+                        height: 15,
                       ),
                       RadioListTile(
                         activeColor: GlobalVariables.btnBackgroundColor,
@@ -185,6 +198,13 @@ class _CreateProfileState extends State<CreateProfile> {
                             });
                           }
                         },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      CustomElevatedButton(
+                        onPressed: createProfile,
+                        text: 'Create Profile',
                       ),
                       // _value == 1
                       //     ? Column(

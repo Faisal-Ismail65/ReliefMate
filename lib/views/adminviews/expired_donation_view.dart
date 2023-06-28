@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:reliefmate/models/donation.dart';
 import 'package:reliefmate/utilities/widgets/donation_card.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 
@@ -12,25 +13,28 @@ class ExpiredDonationView extends StatefulWidget {
 }
 
 class _ExpiredDonationViewState extends State<ExpiredDonationView> {
-  List donationList = [];
+  List<Donation> donationList = [];
   bool isLoading = false;
 
   @override
   void initState() {
-    getDonationList();
     super.initState();
+    getDonationList();
   }
 
   Future<void> getDonationList() async {
     setState(() {
       isLoading = true;
     });
-    QuerySnapshot snapshot = await FirebaseFirestore.instance
+    QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+        .instance
         .collection('donations')
         .where('status', isEqualTo: 'pending')
         .get();
 
-    donationList = snapshot.docs.map((e) => e.data()).toList();
+    donationList =
+        snapshot.docs.map((e) => Donation.fromMap(e.data())).toList();
+
     setState(() {
       isLoading = false;
     });
@@ -47,9 +51,9 @@ class _ExpiredDonationViewState extends State<ExpiredDonationView> {
                 itemCount: donationList.length,
                 itemBuilder: (context, index) {
                   DateTime date = DateFormat('dd-MM-yyy')
-                      .parse(donationList[index]['donationExpDate']);
+                      .parse(donationList[index].donationExpDate);
                   if (date.isBefore(DateTime.now())) {
-                    return Container();
+                    return DonationCard(donation: donationList[index]);
                   }
                   return const SizedBox();
                 },

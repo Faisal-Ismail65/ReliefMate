@@ -2,6 +2,8 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/widgets/app_bar.dart';
 import 'package:reliefmate/utilities/widgets/profile_tile.dart';
@@ -95,6 +97,42 @@ class _VictimDetailState extends State<VictimDetail> {
                 visible: widget.snap['need'] != '',
                 child: ProfileTile(
                     fieldName: 'Need', fieldValue: widget.snap['need'])),
+            const SizedBox(
+              height: 10,
+            ),
+            SizedBox(
+              height: 370,
+              width: double.infinity,
+              child: FlutterMap(
+                options: MapOptions(
+                  center:
+                      LatLng(37.4219991, -122.0840012), // London coordinates
+                  zoom: 18.0,
+                ),
+                children: [
+                  TileLayer(
+                    urlTemplate:
+                        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    subdomains: const ['a', 'b', 'c'],
+                  ),
+                  MarkerLayer(
+                    markers: [
+                      Marker(
+                        width: 40.0,
+                        height: 40.0,
+                        point: LatLng(37.4219991,
+                            -122.0840012), // Marker coordinates (same as map center in this example)
+                        builder: (ctx) => const Icon(
+                          Icons.location_on,
+                          size: 40,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

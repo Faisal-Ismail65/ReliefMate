@@ -7,10 +7,11 @@ class UserProfile {
   final String cnic;
   final String phoneNumber;
   final String address;
-  String? accountNumber;
   final String type;
-  String? need;
   final String status;
+  final String token;
+  final double latitude;
+  final double longitude;
 
   UserProfile({
     required this.uid,
@@ -19,10 +20,11 @@ class UserProfile {
     required this.cnic,
     required this.phoneNumber,
     required this.address,
-    this.accountNumber,
-    this.need,
     required this.status,
     required this.type,
+    required this.token,
+    required this.latitude,
+    required this.longitude,
   });
 
   Map<String, dynamic> toJson() => {
@@ -32,10 +34,11 @@ class UserProfile {
         'cnic': cnic,
         'phoneNumber': phoneNumber,
         'address': address,
-        'need': need,
         'status': status,
         'type': type,
-        'accountNumber': accountNumber,
+        'longitude': longitude,
+        'latitude': latitude,
+        'token': token,
       };
 
   static UserProfile fromSnap(DocumentSnapshot snap) {
@@ -47,10 +50,11 @@ class UserProfile {
       cnic: snapshot['cnic'],
       phoneNumber: snapshot['phoneNumber'],
       address: snapshot['address'],
-      need: snapshot['need'],
       status: snapshot['status'],
       type: snapshot['type'],
-      accountNumber: snapshot['accountNumber'],
+      token: snapshot['token'],
+      latitude: snapshot['latitude'],
+      longitude: snapshot['longitude'],
     );
   }
 }

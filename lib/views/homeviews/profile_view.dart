@@ -42,8 +42,19 @@ class _ProfileViewState extends State<ProfileView> {
     super.initState();
   }
 
-  void selectImage() async {
+  void selectImageFromGallery() async {
     Uint8List img = await pickImage(ImageSource.gallery);
+    if (mounted) {
+      setState(() {
+        _image = img;
+      });
+    }
+
+    uploadProfileImage();
+  }
+
+  void selectImageFromCamera() async {
+    Uint8List img = await pickImage(ImageSource.camera);
     if (mounted) {
       setState(() {
         _image = img;
@@ -139,8 +150,8 @@ class _ProfileViewState extends State<ProfileView> {
                             height: 130,
                             decoration: BoxDecoration(
                               border: Border.all(
-                                color: GlobalVariables.appBarBackgroundColor,
-                                width: 3,
+                                color: Colors.grey,
+                                width: 2,
                               ),
                               shape: BoxShape.circle,
                             ),
@@ -158,8 +169,7 @@ class _ProfileViewState extends State<ProfileView> {
                                     : const Icon(
                                         Icons.person,
                                         size: 50,
-                                        color: GlobalVariables
-                                            .appBarBackgroundColor,
+                                        color: Colors.grey,
                                       ),
                           ),
                           Positioned(
@@ -174,10 +184,87 @@ class _ProfileViewState extends State<ProfileView> {
                                   width: 4,
                                   color: Colors.white,
                                 ),
-                                color: GlobalVariables.btnBackgroundColor,
+                                color: Colors.grey.shade900,
                               ),
                               child: InkWell(
-                                onTap: selectImage,
+                                onTap: () {
+                                  showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) {
+                                        return SizedBox(
+                                          height: 100,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                InkWell(
+                                                  onTap: selectImageFromCamera,
+                                                  child: Row(
+                                                    children: const [
+                                                      Icon(
+                                                        Icons.photo_camera,
+                                                        size: 30,
+                                                      ),
+                                                      Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 10),
+                                                        child: Text('Camera',
+                                                            style: TextStyle(
+                                                                fontSize: 20)),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                InkWell(
+                                                  onTap: selectImageFromGallery,
+                                                  child: Row(
+                                                    children: const [
+                                                      Icon(Icons.photo,
+                                                          size: 30),
+                                                      Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 10),
+                                                        child: Text(
+                                                          "Gallery",
+                                                          style: TextStyle(
+                                                              fontSize: 20),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                // InkWell(
+                                                //   child: Row(
+                                                //     children: const [
+                                                //       Icon(Icons.person,
+                                                //           size: 30),
+                                                //       Padding(
+                                                //         padding: EdgeInsets
+                                                //             .symmetric(
+                                                //                 horizontal:
+                                                //                     10),
+                                                //         child: Text(
+                                                //           "Avatar",
+                                                //           style: TextStyle(
+                                                //               fontSize: 20),
+                                                //         ),
+                                                //       )
+                                                //     ],
+                                                //   ),
+                                                // ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                },
                                 child: const Icon(
                                   Icons.edit,
                                   color: Colors.white,
@@ -194,6 +281,8 @@ class _ProfileViewState extends State<ProfileView> {
                             child: Center(
                               child: Text(
                                 'Your Profile is Blocked',
+                                style:
+                                    TextStyle(fontSize: 16, color: Colors.grey),
                               ),
                             ),
                           )
@@ -203,6 +292,8 @@ class _ProfileViewState extends State<ProfileView> {
                                 child: Center(
                                   child: Text(
                                     'Your Application is Disapproved',
+                                    style: TextStyle(
+                                        fontSize: 16, color: Colors.grey),
                                   ),
                                 ),
                               )
@@ -212,6 +303,8 @@ class _ProfileViewState extends State<ProfileView> {
                                     child: Center(
                                       child: Text(
                                         'Your Application is Submitted and Will be Reviewed',
+                                        style: TextStyle(
+                                            fontSize: 16, color: Colors.grey),
                                       ),
                                     ),
                                   )

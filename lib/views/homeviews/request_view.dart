@@ -3,8 +3,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:reliefmate/services/notification/send_notification_service.dart';
 import 'package:reliefmate/services/request/request_firestore_methods.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
+import 'package:reliefmate/utilities/utils/utils.dart';
 import 'package:reliefmate/utilities/widgets/app_bar.dart';
 import 'package:reliefmate/utilities/widgets/custom_elevated_button.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_field.dart';
@@ -12,7 +14,8 @@ import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 
 class RequestView extends StatefulWidget {
-  const RequestView({super.key});
+  final user;
+  const RequestView({super.key, required this.user});
 
   @override
   State<RequestView> createState() => _RequestViewState();
@@ -26,7 +29,6 @@ class _RequestViewState extends State<RequestView> {
   final TextEditingController _messageController = TextEditingController();
 
   final _donationKey = GlobalKey<FormState>();
-  var userData = {};
   bool isLoading = false;
   DateTime selectedDate = DateTime.now();
   String category1 = '';
@@ -39,7 +41,6 @@ class _RequestViewState extends State<RequestView> {
     'Medicine',
     'Other',
   ];
-  final _userId = FirebaseAuth.instance.currentUser!.uid;
   int index = 0;
 
   @override
@@ -56,12 +57,12 @@ class _RequestViewState extends State<RequestView> {
     }
 
     try {
-      var userSnap = await FirebaseFirestore.instance
-          .collection('profiles')
-          .doc(_userId)
-          .get();
+      final location = await getUserLocation();
 
-      userData = userSnap.data() ?? {};
+      final address = await getUserAddress(
+          latitude: location.latitude, longitude: location.longitude);
+      _addressController.text = '${address.street} ${address.locality}';
+
       if (mounted) {
         setState(() {});
       }
@@ -87,11 +88,7 @@ class _RequestViewState extends State<RequestView> {
         }
 
         String res = await RequestFirestoreMethods().createRequest(
-          requesterId: userData['uid'],
-          requesterEmail: userData['email'],
-          requesterName: userData['name'],
-          requesterCnic: userData['cnic'],
-          requesterPhoneNumber: userData['phoneNumber'],
+          requesterId: widget.user['uid'],
           requestAddress: _addressController.text,
           category1: category1,
           category2: category2,
@@ -109,6 +106,10 @@ class _RequestViewState extends State<RequestView> {
         if (res == 'Success') {
           Navigator.of(context).pop();
           showSnackBar(context, 'Requested Succesfully');
+          SendNotificationService().sendNoticationToAdmin(
+              title: 'Donation Request',
+              body:
+                  '${widget.user['name']} created a donation request with category $category1 $category2 $category3');
         }
       }
     } else {

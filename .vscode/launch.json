@@ -1,10 +1,10 @@
 {
     "configurations": [
         {
-            "name": "Flutter (lib\\views\\homeviews\\donations_view.dart)",
+            "name": "Flutter (lib\\main.dart)",
             "type": "dart",
             "request": "launch",
-            "program": "lib\\views\\homeviews\\donations_view.dart"
+            "program": "lib\\main.dart"
         }
     ]
 }

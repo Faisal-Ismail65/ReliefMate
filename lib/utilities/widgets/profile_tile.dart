@@ -9,34 +9,31 @@ class ProfileTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Container(
-        padding: const EdgeInsets.only(top: 25, bottom: 5),
-        decoration: const BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: GlobalVariables.appBarColor,
-            ),
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      decoration: BoxDecoration(
+          color: Colors.grey.shade400, borderRadius: BorderRadius.circular(10)),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            fieldName,
+            style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Colors.grey.shade600),
           ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              fieldName,
-              style: const TextStyle(
-                fontSize: 15,
-              ),
-            ),
-            Text(
-              fieldValue,
-              style: const TextStyle(
-                fontSize: 15,
-              ),
-            ),
-          ],
-        ),
+          Text(
+            fieldValue,
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey.shade800),
+          ),
+        ],
       ),
     );
   }

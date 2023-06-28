@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:reliefmate/models/auth_user.dart' as model;
 import 'package:reliefmate/services/auth/auth_exceptions.dart';
+import 'package:reliefmate/utilities/utils/utils.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -24,10 +25,13 @@ class AuthMethods {
         email: email,
         password: password,
       );
+      String deviceToken = await getDeviceToken();
+      print(deviceToken);
       model.AuthUser user = model.AuthUser(
         uid: cred.user!.uid,
         email: email,
         type: 'user',
+        token: deviceToken,
       );
       await _firestore
           .collection('users')
@@ -57,10 +61,20 @@ class AuthMethods {
     String res = 'Some Error Occured';
     try {
       if (email.isNotEmpty && password.isNotEmpty) {
-        await _auth.signInWithEmailAndPassword(
+        UserCredential credential = await _auth.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
+
+        final user = credential.user;
+
+        String deviceToken = await getDeviceToken();
+        print(deviceToken);
+
+        await _firestore.collection('users').doc(user!.uid).update({
+          'token': deviceToken,
+        });
+
         res = "Success";
       } else {
         res = 'Please Enter all the Fields';

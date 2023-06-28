@@ -219,21 +219,19 @@ class _ApplicationCardState extends State<ApplicationCard> {
                   Container(
                     width: 220,
                     height: 100,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5),
-                          child: Text(
-                            ' Name : ${widget.snap['name']} ',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                            ),
+                        Text(
+                          ' Name : ${widget.snap['name']} ',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
                           ),
                         ),
                         Padding(

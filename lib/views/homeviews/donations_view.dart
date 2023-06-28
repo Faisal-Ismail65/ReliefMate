@@ -15,6 +15,7 @@ class DonationsView extends StatefulWidget {
 
 class _DonationsViewState extends State<DonationsView> {
   final _userId = FirebaseAuth.instance.currentUser!.uid;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

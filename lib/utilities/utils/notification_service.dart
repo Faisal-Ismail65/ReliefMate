@@ -7,7 +7,7 @@ class LocalNotificationService {
   static final FlutterLocalNotificationsPlugin _notificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  static void initialize(BuildContext context) async {
+  static void initialize() async {
     _notificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
@@ -30,7 +30,7 @@ class LocalNotificationService {
           requestBadgePermission: true,
           requestSoundPermission: true,
           notificationCategories: [
-            DarwinNotificationCategory('todo',
+            DarwinNotificationCategory('notifiction',
                 actions: <DarwinNotificationAction>[],
                 options: <DarwinNotificationCategoryOption>{
                   DarwinNotificationCategoryOption.hiddenPreviewShowTitle,
@@ -39,8 +39,8 @@ class LocalNotificationService {
     );
 
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
-      'todo', // id
-      'todo', // title
+      'reliefmate', // id
+      'reliefmate', // title
       importance: Importance.max,
     );
 
@@ -72,8 +72,8 @@ class LocalNotificationService {
       final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
       const NotificationDetails notificationDetails = NotificationDetails(
         android: AndroidNotificationDetails(
-          "todo",
-          "todo",
+          "reliefmate",
+          "reliefmate",
           importance: Importance.max,
           priority: Priority.high,
         ),

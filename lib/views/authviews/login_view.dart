@@ -150,6 +150,7 @@ class _LoginViewState extends State<LoginView> {
               height: 30,
             ),
             CustomTextField(
+              inputType: TextInputType.emailAddress,
               controller: _emailController,
               labelText: 'Enter Email',
               icon: const Icon(
@@ -194,7 +195,7 @@ class _LoginViewState extends State<LoginView> {
             CustomTextButton(
                 onPressed: navigateToCreateAccount,
                 text: 'Create Account',
-                underline: true),
+                underline: false),
           ],
         ),
       ),

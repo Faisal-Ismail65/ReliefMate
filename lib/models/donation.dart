@@ -4,10 +4,6 @@ import 'dart:convert';
 class Donation {
   String id;
   String donorId;
-  String donorEmail;
-  String donorName;
-  String donorCnic;
-  String donorPhoneNumber;
   String donationAddress;
   String donationMsg;
   String donationExpDate;
@@ -15,10 +11,6 @@ class Donation {
   Donation({
     required this.id,
     required this.donorId,
-    required this.donorEmail,
-    required this.donorName,
-    required this.donorCnic,
-    required this.donorPhoneNumber,
     required this.donationAddress,
     required this.donationMsg,
     required this.donationExpDate,
@@ -29,10 +21,6 @@ class Donation {
     return <String, dynamic>{
       'id': id,
       'donorId': donorId,
-      'donorEmail': donorEmail,
-      'donorName': donorName,
-      'donorCnic': donorCnic,
-      'donorPhoneNumber': donorPhoneNumber,
       'donationAddress': donationAddress,
       'donationMsg': donationMsg,
       'donationExpDate': donationExpDate,
@@ -44,10 +32,6 @@ class Donation {
     return Donation(
       id: map['id'] as String,
       donorId: map['donorId'] as String,
-      donorEmail: map['donorEmail'] as String,
-      donorName: map['donorName'] as String,
-      donorCnic: map['donorCnic'] as String,
-      donorPhoneNumber: map['donorPhoneNumber'] as String,
       donationAddress: map['donationAddress'] as String,
       donationMsg: map['donationMsg'] as String,
       donationExpDate: map['donationExpDate'] as String,

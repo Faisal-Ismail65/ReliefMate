@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -9,14 +10,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reliefmate/firebase_options.dart';
 import 'package:reliefmate/models/auth_user.dart';
+
 import 'package:reliefmate/providers/user_provider.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
-import 'package:reliefmate/utilities/utils/notification_service.dart';
 import 'package:reliefmate/utilities/utils/utils.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/views/adminviews/admin_view.dart';
 import 'package:reliefmate/views/authviews/login_view.dart';
+import 'package:reliefmate/views/homeviews/create_profile.dart';
 import 'package:reliefmate/views/homeviews/home_view.dart';
+
+import 'utilities/utils/notification_service.dart';
 
 Future<void> backgroundHandler(RemoteMessage message) async {
   print(message.data.toString());
@@ -29,6 +33,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
+
   runApp(const MyApp());
 }
 
@@ -93,20 +98,22 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   bool isLoading = false;
-  AuthUser? user;
+  late AuthUser user;
+  late DocumentSnapshot userProfile;
 
   final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
   @override
   void initState() {
+    super.initState();
     permissionHandler();
+    getUserLocation();
     addData();
     _initializeFirebaseMessaging();
-    super.initState();
   }
 
   void _initializeFirebaseMessaging() async {
-    LocalNotificationService.initialize(context);
+    LocalNotificationService.initialize();
     if (Platform.isIOS) {
       await FirebaseMessaging.instance.requestPermission();
     }
@@ -141,6 +148,7 @@ class _HomeState extends State<Home> {
         if (message.notification != null) {
           print('Got a message whilst in the foreground!');
           print('Message data: ${message.data}');
+          print(message.notification!.title);
           LocalNotificationService.createAndDisplayNotification(message);
         }
       },
@@ -169,6 +177,11 @@ class _HomeState extends State<Home> {
     UserProvider userProvider = Provider.of(context, listen: false);
     await userProvider.refreshUser();
     user = userProvider.getUser;
+    userProfile = await FirebaseFirestore.instance
+        .collection('profiles')
+        .doc(user.uid)
+        .get();
+
     if (mounted) {
       setState(() {
         isLoading = false;
@@ -181,10 +194,14 @@ class _HomeState extends State<Home> {
     if (isLoading) {
       return const Loader();
     } else {
-      if (user?.type == 'admin') {
+      if (user.type == 'admin') {
         return const AdminView();
       } else {
-        return const HomeView();
+        if (userProfile.data() == null) {
+          return const CreateProfile();
+        } else {
+          return const HomeView();
+        }
       }
     }
   }

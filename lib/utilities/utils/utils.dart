@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:geolocator/geolocator.dart';
@@ -42,7 +41,7 @@ Future<String> getDeviceToken() async {
   return '';
 }
 
-Future<String> getUserAddress({
+Future<Placemark> getUserAddress({
   required double latitude,
   required double longitude,
 }) async {
@@ -52,10 +51,7 @@ Future<String> getUserAddress({
   );
   Placemark place = placemarks[0];
 
-  String address =
-      "${place.street}, ${place.locality}, ${place.postalCode}, ${place.country}";
-
-  return address;
+  return place;
 }
 
 Future<Position> getUserLocation() async {

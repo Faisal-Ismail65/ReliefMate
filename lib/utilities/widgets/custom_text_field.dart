@@ -9,7 +9,9 @@ class CustomTextField extends StatelessWidget {
       required this.controller,
       required this.labelText,
       required this.obseureText,
+      this.inputType,
       this.icon});
+  final TextInputType? inputType;
   final TextEditingController controller;
   final String labelText;
   Icon? icon;
@@ -17,6 +19,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      keyboardType: inputType,
       enableSuggestions: false,
       autocorrect: false,
       obscureText: obseureText,

@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:reliefmate/utilities/utils/notification_service.dart';
 import 'package:reliefmate/utilities/utils/utils.dart';
 import 'package:reliefmate/utilities/widgets/app_bar.dart';
 import 'package:reliefmate/utilities/widgets/custom_text_button.dart';
@@ -69,6 +73,7 @@ class _HomeViewState extends State<HomeView> {
           .get();
 
       userData = userSnap.data() ?? {};
+
       setState(() {});
     } catch (e) {
       e.toString();
@@ -94,12 +99,34 @@ class _HomeViewState extends State<HomeView> {
                   },
                   child: Align(
                     alignment: Alignment.center,
-                    child: Badge(
-                      label: Text('5'),
-                      child: const Icon(
-                        Icons.notifications_none,
-                      ),
-                    ),
+                    child: StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection('notifications')
+                            .where('status', isEqualTo: 'unread')
+                            .where('userId',
+                                isEqualTo:
+                                    FirebaseAuth.instance.currentUser!.uid)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            final data = snapshot.data!.docs.length;
+                            if (data > 0) {
+                              return Badge(
+                                label: Text(data.toString()),
+                                child: const Icon(
+                                  Icons.notifications_none,
+                                ),
+                              );
+                            } else {
+                              return const Icon(
+                                Icons.notifications_none,
+                              );
+                            }
+                          }
+                          return const Icon(
+                            Icons.notifications_none,
+                          );
+                        }),
                   ),
                 ),
                 const SizedBox(
@@ -173,7 +200,9 @@ class _HomeViewState extends State<HomeView> {
                             ? InkWell(
                                 onTap: () {
                                   Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => const DonateView(),
+                                    builder: (context) => DonateView(
+                                      user: userData,
+                                    ),
                                   ));
                                 },
                                 child: const GridItem(
@@ -183,7 +212,9 @@ class _HomeViewState extends State<HomeView> {
                             : InkWell(
                                 onTap: () {
                                   Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => const RequestView(),
+                                    builder: (context) => RequestView(
+                                      user: userData,
+                                    ),
                                   ));
                                 },
                                 child: const GridItem(

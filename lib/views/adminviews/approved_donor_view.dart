@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:reliefmate/models/user_profile.dart';
 import 'package:reliefmate/utilities/widgets/application_card.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 
@@ -26,8 +27,10 @@ class ApproveDonorView extends StatelessWidget {
                   return ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
+                      final user =
+                          UserProfile.fromSnap(snapshot.data!.docs[index]);
                       return ApplicationCard(
-                        snap: snapshot.data!.docs[index].data(),
+                        user: user,
                       );
                     },
                   );

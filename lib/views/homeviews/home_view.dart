@@ -186,104 +186,147 @@ class _HomeViewState extends State<HomeView> {
                       ),
                     ),
                   )
-                : Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 10),
-                    child: GridView(
-                      shrinkWrap: true,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                      ),
-                      children: [
-                        userData['type'] == 'donor'
-                            ? InkWell(
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => DonateView(
-                                      user: userData,
-                                    ),
-                                  ));
-                                },
-                                child: const GridItem(
-                                  path: 'assets/images/donate.jpeg',
-                                ),
-                              )
-                            : InkWell(
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => RequestView(
-                                      user: userData,
-                                    ),
-                                  ));
-                                },
-                                child: const GridItem(
-                                  path: 'assets/images/request.jpeg',
+                : userData['status'] == 'pending'
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 20),
+                        child: Center(
+                          child: Column(
+                            children: const [
+                              Text(
+                                'Welcome',
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
                                 ),
                               ),
-                        userData['type'] == 'donor'
-                            ? InkWell(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const DonationsView(),
-                                    ),
-                                  );
-                                },
-                                child: const GridItem(
-                                  path: 'assets/images/donations.jpeg',
-                                ),
-                              )
-                            : InkWell(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const RequestsView(),
-                                    ),
-                                  );
-                                },
-                                child: const GridItem(
-                                  path: 'assets/images/123.jpg',
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                'ReliefMate is created to make sure that victims of disasters get the help they need in an emergency. Natural disasters are a major problem that the world faces today. They can strike at any time and place, without warning. And, when they do, the damage they cause can be absolutely devastating.',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black54,
                                 ),
                               ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const VictimsView(),
+                              SizedBox(
+                                height: 10,
                               ),
-                            );
-                          },
-                          child: const GridItem(
-                            path: 'assets/images/victims.jpeg',
+                              Text(
+                                'Your profile is pending and will be verified by the Admin.',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black54,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const ProfileView(),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 20, horizontal: 10),
+                        child: GridView(
+                          shrinkWrap: true,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                          ),
+                          children: [
+                            userData['type'] == 'donor'
+                                ? InkWell(
+                                    onTap: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) => DonateView(
+                                          user: userData,
+                                        ),
+                                      ));
+                                    },
+                                    child: const GridItem(
+                                      path: 'assets/images/donate.jpeg',
+                                    ),
+                                  )
+                                : InkWell(
+                                    onTap: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) => RequestView(
+                                          user: userData,
+                                        ),
+                                      ));
+                                    },
+                                    child: const GridItem(
+                                      path: 'assets/images/request.jpeg',
+                                    ),
+                                  ),
+                            userData['type'] == 'donor'
+                                ? InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const DonationsView(),
+                                        ),
+                                      );
+                                    },
+                                    child: const GridItem(
+                                      path: 'assets/images/donations.jpeg',
+                                    ),
+                                  )
+                                : InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const RequestsView(),
+                                        ),
+                                      );
+                                    },
+                                    child: const GridItem(
+                                      path: 'assets/images/123.jpg',
+                                    ),
+                                  ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const VictimsView(),
+                                  ),
+                                );
+                              },
+                              child: const GridItem(
+                                path: 'assets/images/victims.jpeg',
                               ),
-                            );
-                          },
-                          child: const GridItem(
-                            path: 'assets/images/profile.jpeg',
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const AboutView(),
-                            ));
-                          },
-                          child: const GridItem(
-                            path: 'assets/images/about_us.png',
-                          ),
-                        ),
-                      ],
-                    )),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const ProfileView(),
+                                  ),
+                                );
+                              },
+                              child: const GridItem(
+                                path: 'assets/images/profile.jpeg',
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const AboutView(),
+                                ));
+                              },
+                              child: const GridItem(
+                                path: 'assets/images/about_us.png',
+                              ),
+                            ),
+                          ],
+                        )),
           );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:reliefmate/models/user_profile.dart';
 import 'package:reliefmate/utilities/widgets/app_bar.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 
@@ -34,8 +35,10 @@ class _VictimsViewState extends State<VictimsView> {
                   return ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
+                      final user =
+                          UserProfile.fromSnap(snapshot.data!.docs[index]);
                       return ProfileCard(
-                        snap: snapshot.data!.docs[index].data(),
+                        user: user,
                       );
                     },
                   );

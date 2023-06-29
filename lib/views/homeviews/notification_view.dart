@@ -1,12 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:reliefmate/models/notification.dart' as notif;
 import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/widgets/app_bar.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 
 class NotificationView extends StatefulWidget {
@@ -21,15 +18,16 @@ class _NotificationViewState extends State<NotificationView> {
     final documents = await FirebaseFirestore.instance
         .collection('notifications')
         .where('status', isEqualTo: 'unread')
+        .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
         .get();
 
     WriteBatch batch = FirebaseFirestore.instance.batch();
 
-    documents.docs.forEach((element) {
+    for (var element in documents.docs) {
       batch.update(element.reference, {
         'status': 'read',
       });
-    });
+    }
     await batch.commit();
   }
 
@@ -46,7 +44,6 @@ class _NotificationViewState extends State<NotificationView> {
 
   @override
   Widget build(BuildContext context) {
-    print(Timestamp.fromDate(DateTime.now()));
     return Scaffold(
       appBar: const SimpleAppBar(
         text: 'Notifications',
@@ -69,23 +66,32 @@ class _NotificationViewState extends State<NotificationView> {
               );
             }
             return ListView.builder(
-              padding: const EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
               itemCount: notificationList.length,
               itemBuilder: (context, index) {
                 final notification = notif.Notification.fromMap(
                     snapshot.data!.docs[index].data());
                 return Card(
                   elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(5),
+                      bottomRight: Radius.circular(5),
+                    ),
+                  ),
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 10),
                     decoration: BoxDecoration(
-                        border: Border(
-                            left: BorderSide(
-                                width: 5,
-                                color: notification.status == 'read'
-                                    ? Colors.white
-                                    : GlobalVariables.appBarColor))),
+                      border: Border(
+                        left: BorderSide(
+                          width: 5,
+                          color: notification.status == 'read'
+                              ? Colors.white
+                              : GlobalVariables.appBarColor,
+                        ),
+                      ),
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

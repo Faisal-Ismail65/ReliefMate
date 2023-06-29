@@ -2,12 +2,13 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:reliefmate/models/user_profile.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
-import 'package:reliefmate/utilities/widgets/victim_detail.dart';
+import 'package:reliefmate/utilities/widgets/profile_detail.dart';
 
 class ProfileCard extends StatefulWidget {
-  final snap;
-  const ProfileCard({super.key, required this.snap});
+  final UserProfile user;
+  const ProfileCard({super.key, required this.user});
 
   @override
   State<ProfileCard> createState() => _ProfileCardState();
@@ -32,7 +33,7 @@ class _ProfileCardState extends State<ProfileCard> {
 
     var userProfileSnap = await FirebaseFirestore.instance
         .collection('profilePics')
-        .doc(widget.snap['uid'])
+        .doc(widget.user.uid)
         .get();
 
     userProfile = userProfileSnap.data() ?? {};
@@ -50,13 +51,13 @@ class _ProfileCardState extends State<ProfileCard> {
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => VictimDetail(
-              snap: widget.snap,
+            builder: (context) => ProfileDetail(
+              user: widget.user,
             ),
           ));
         },
         child: SizedBox(
-          height: 100,
+          height: MediaQuery.of(context).size.height * 0.12,
           child: Card(
             // color: GlobalVariables.appBarBackgroundColor,
             elevation: 2,
@@ -69,8 +70,8 @@ class _ProfileCardState extends State<ProfileCard> {
               child: Row(
                 children: [
                   Container(
-                    width: 70,
-                    height: 100,
+                    width: MediaQuery.of(context).size.width * 0.20,
+                    height: MediaQuery.of(context).size.width * 0.30,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                     ),
@@ -90,8 +91,8 @@ class _ProfileCardState extends State<ProfileCard> {
                           ),
                   ),
                   Container(
-                    width: 220,
-                    height: 100,
+                    width: MediaQuery.of(context).size.width * 0.60,
+                    height: MediaQuery.of(context).size.height * 0.20,
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
@@ -103,7 +104,7 @@ class _ProfileCardState extends State<ProfileCard> {
                         Padding(
                           padding: const EdgeInsets.only(top: 5),
                           child: Text(
-                            widget.snap['name'],
+                            widget.user.name,
                             style: TextStyle(
                               color: Colors.grey.shade800,
                               fontWeight: FontWeight.w600,
@@ -114,7 +115,7 @@ class _ProfileCardState extends State<ProfileCard> {
                         Padding(
                           padding: const EdgeInsets.only(top: 5),
                           child: Text(
-                            widget.snap['address'],
+                            widget.user.address,
                             style: TextStyle(
                               color: Colors.grey.shade800,
                               fontWeight: FontWeight.w600,

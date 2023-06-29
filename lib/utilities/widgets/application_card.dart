@@ -2,14 +2,15 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:reliefmate/models/user_profile.dart';
 import 'package:reliefmate/services/admin/admin_firestore_methods.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
-import 'package:reliefmate/utilities/widgets/victim_detail.dart';
+import 'package:reliefmate/utilities/widgets/profile_detail.dart';
 
 class ApplicationCard extends StatefulWidget {
-  final snap;
-  const ApplicationCard({super.key, this.snap});
+  final UserProfile user;
+  const ApplicationCard({super.key, required this.user});
 
   @override
   State<ApplicationCard> createState() => _ApplicationCardState();
@@ -35,7 +36,7 @@ class _ApplicationCardState extends State<ApplicationCard> {
 
     var userProfileSnap = await FirebaseFirestore.instance
         .collection('profilePics')
-        .doc(widget.snap['uid'])
+        .doc(widget.user.uid)
         .get();
 
     userProfile = userProfileSnap.data() ?? {};
@@ -53,8 +54,8 @@ class _ApplicationCardState extends State<ApplicationCard> {
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => VictimDetail(
-              snap: widget.snap,
+            builder: (context) => ProfileDetail(
+              user: widget.user,
             ),
           ));
         },
@@ -63,15 +64,15 @@ class _ApplicationCardState extends State<ApplicationCard> {
             context: context,
             builder: (context) {
               return Dialog(
-                child: widget.snap['type'] == 'victim'
+                child: widget.user.type == 'victim'
                     ? ListView(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         shrinkWrap: true,
                         children: [
-                          widget.snap['status'] == 'pending'
+                          widget.user.status == 'pending'
                               ? 'Approve'
                               : 'Move to Pending List',
-                          widget.snap['status'] == 'approved'
+                          widget.user.status == 'approved'
                               ? 'Block'
                               : 'Disapprove',
                         ]
@@ -84,32 +85,32 @@ class _ApplicationCardState extends State<ApplicationCard> {
                                     onTap: () {
                                       if (e == 'Approve') {
                                         adminFirestoreMethods.editProfile(
-                                          uid: widget.snap['uid'],
+                                          uid: widget.user.uid,
                                           status: 'approved',
                                         );
                                         showSnackBar(context,
-                                            '${widget.snap['name']}\'s Profile is Approved');
+                                            '${widget.user.name}\'s Profile is Approved');
                                       } else if (e == 'Move to Pending List') {
                                         adminFirestoreMethods.editProfile(
-                                          uid: widget.snap['uid'],
+                                          uid: widget.user.uid,
                                           status: 'pending',
                                         );
                                         showSnackBar(context,
-                                            '${widget.snap['name']}\'s Profile is moved to Pending List');
+                                            '${widget.user.name}\'s Profile is moved to Pending List');
                                       } else if (e == 'Disapprove') {
                                         adminFirestoreMethods.editProfile(
-                                          uid: widget.snap['uid'],
+                                          uid: widget.user.uid,
                                           status: 'disapproved',
                                         );
                                         showSnackBar(context,
-                                            '${widget.snap['name']}\'s Profile is Disapproved');
+                                            '${widget.user.name}\'s Profile is Disapproved');
                                       } else if (e == 'Block') {
                                         adminFirestoreMethods.editProfile(
-                                          uid: widget.snap['uid'],
+                                          uid: widget.user.uid,
                                           status: 'blocked',
                                         );
                                         showSnackBar(context,
-                                            '${widget.snap['name']}\'s Profile is Blocked');
+                                            '${widget.user.name}\'s Profile is Blocked');
                                       }
                                       Navigator.of(context).pop();
                                     },
@@ -130,7 +131,7 @@ class _ApplicationCardState extends State<ApplicationCard> {
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         shrinkWrap: true,
                         children: [
-                          widget.snap['status'] == 'approved'
+                          widget.user.status == 'approved'
                               ? 'Disapprove'
                               : 'Approve',
                         ]
@@ -143,25 +144,25 @@ class _ApplicationCardState extends State<ApplicationCard> {
                                     onTap: () {
                                       if (e == 'Approve') {
                                         adminFirestoreMethods.editProfile(
-                                          uid: widget.snap['uid'],
+                                          uid: widget.user.uid,
                                           status: 'approved',
                                         );
                                         showSnackBar(context,
-                                            '${widget.snap['name']}\'s Profile is Approved');
+                                            '${widget.user.name}\'s Profile is Approved');
                                       } else if (e == 'Disapprove') {
                                         adminFirestoreMethods.editProfile(
-                                          uid: widget.snap['uid'],
+                                          uid: widget.user.uid,
                                           status: 'disapproved',
                                         );
                                         showSnackBar(context,
-                                            '${widget.snap['name']}\'s Profile is Disapproved');
+                                            '${widget.user.name}\'s Profile is Disapproved');
                                       } else if (e == 'Block') {
                                         adminFirestoreMethods.editProfile(
-                                          uid: widget.snap['uid'],
+                                          uid: widget.user.uid,
                                           status: 'blocked',
                                         );
                                         showSnackBar(context,
-                                            '${widget.snap['name']}\'s Profile is Blocked');
+                                            '${widget.user.name}\'s Profile is Blocked');
                                       }
                                       Navigator.of(context).pop();
                                     },
@@ -228,7 +229,7 @@ class _ApplicationCardState extends State<ApplicationCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          ' Name : ${widget.snap['name']} ',
+                          ' Name : ${widget.user.name} ',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 15,
@@ -237,7 +238,7 @@ class _ApplicationCardState extends State<ApplicationCard> {
                         Padding(
                           padding: const EdgeInsets.only(top: 5),
                           child: Text(
-                            'Address :  ${widget.snap['address']} ',
+                            'Address :  ${widget.user.address} ',
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 15,

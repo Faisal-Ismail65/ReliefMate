@@ -76,216 +76,201 @@ class _StockViewState extends State<StockView> {
           ? const Loader()
           : GridView(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2),
+                  crossAxisCount: 3),
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => StockDetailView(
-                            stockItems: edibles, title: 'Edibles'),
-                      ));
-                    },
-                    child: Card(
-                      elevation: 70,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: GlobalVariables.btnBackgroundColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              edibles.length.toString(),
-                              style: const TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                              ),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => StockDetailView(
+                          stockItems: edibles, title: 'Edibles'),
+                    ));
+                  },
+                  child: Card(
+                    elevation: 6,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: GlobalVariables.btnBackgroundColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            edibles.length.toString(),
+                            style: const TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
                             ),
-                            const SizedBox(
-                              height: 5,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          const Text(
+                            'Edibles',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
                             ),
-                            const Text(
-                              'Edibles',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => StockDetailView(
-                            stockItems: medicine, title: 'Medicines'),
-                      ));
-                    },
-                    child: Card(
-                      elevation: 70,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: GlobalVariables.btnBackgroundColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              medicine.length.toString(),
-                              style: const TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                              ),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => StockDetailView(
+                          stockItems: medicine, title: 'Medicines'),
+                    ));
+                  },
+                  child: Card(
+                    elevation: 70,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: GlobalVariables.btnBackgroundColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            medicine.length.toString(),
+                            style: const TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
                             ),
-                            const SizedBox(
-                              height: 5,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          const Text(
+                            'Medicine',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
                             ),
-                            const Text(
-                              'Medicine',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => StockDetailView(
-                            stockItems: wearables, title: 'Wearables'),
-                      ));
-                    },
-                    child: Card(
-                      elevation: 70,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: GlobalVariables.btnBackgroundColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              wearables.length.toString(),
-                              style: const TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                              ),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => StockDetailView(
+                          stockItems: wearables, title: 'Wearables'),
+                    ));
+                  },
+                  child: Card(
+                    elevation: 70,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: GlobalVariables.btnBackgroundColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            wearables.length.toString(),
+                            style: const TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
                             ),
-                            const SizedBox(
-                              height: 5,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          const Text(
+                            'Wearables',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
                             ),
-                            const Text(
-                              'Wearables',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => StockDetailView(
-                            stockItems: residence, title: 'Residence'),
-                      ));
-                    },
-                    child: Card(
-                      elevation: 70,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: GlobalVariables.btnBackgroundColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              residence.length.toString(),
-                              style: const TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                              ),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => StockDetailView(
+                          stockItems: residence, title: 'Residence'),
+                    ));
+                  },
+                  child: Card(
+                    elevation: 70,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: GlobalVariables.btnBackgroundColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            residence.length.toString(),
+                            style: const TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
                             ),
-                            const SizedBox(
-                              height: 5,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          const Text(
+                            'Residence',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
                             ),
-                            const Text(
-                              'Residence',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => StockDetailView(
-                          stockItems: other,
-                          title: 'Others',
-                        ),
-                      ));
-                    },
-                    child: Card(
-                      elevation: 70,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: GlobalVariables.btnBackgroundColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              other.length.toString(),
-                              style: const TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                              ),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => StockDetailView(
+                        stockItems: other,
+                        title: 'Others',
+                      ),
+                    ));
+                  },
+                  child: Card(
+                    elevation: 5,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: GlobalVariables.btnBackgroundColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            other.length.toString(),
+                            style: const TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
                             ),
-                            const SizedBox(
-                              height: 5,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          const Text(
+                            'Other',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
                             ),
-                            const Text(
-                              'Other',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

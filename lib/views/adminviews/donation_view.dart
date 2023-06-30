@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
+import 'package:reliefmate/views/adminviews/approved_donation_view.dart';
 import 'package:reliefmate/views/adminviews/completed_donation_view.dart';
+import 'package:reliefmate/views/adminviews/disapproved_donation_view.dart';
 import 'package:reliefmate/views/adminviews/expired_donation_view.dart';
 import 'package:reliefmate/views/adminviews/pending_donations_view.dart';
 
@@ -10,7 +12,7 @@ class DonationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 3,
+        length: 5,
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Donations'),
@@ -28,6 +30,7 @@ class DonationView extends StatelessWidget {
                       topRight: Radius.circular(8.0)),
                 ),
                 child: const TabBar(
+                  isScrollable: true,
                   indicatorColor: GlobalVariables.appBarColor,
                   indicator: BoxDecoration(
                       borderRadius: BorderRadius.only(
@@ -41,7 +44,13 @@ class DonationView extends StatelessWidget {
                       text: 'Pending',
                     ),
                     Tab(
+                      text: 'Approved',
+                    ),
+                    Tab(
                       text: 'Completed',
+                    ),
+                    Tab(
+                      text: 'Disapproved',
                     ),
                     Tab(
                       text: 'Expired',
@@ -54,7 +63,9 @@ class DonationView extends StatelessWidget {
           body: const TabBarView(
             children: [
               PendingDonationView(),
+              ApprovedDonationView(),
               CompletedDonationView(),
+              DisapprovedDonationView(),
               ExpiredDonationView(),
             ],
           ),

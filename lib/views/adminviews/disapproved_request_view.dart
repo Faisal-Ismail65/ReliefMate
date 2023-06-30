@@ -1,42 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:reliefmate/models/request.dart';
-import 'package:reliefmate/utilities/widgets/donation_card.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/utilities/widgets/request_card.dart';
 
-class PendingRequestView extends StatefulWidget {
-  const PendingRequestView({super.key});
+class DisapprovedRequestView extends StatefulWidget {
+  const DisapprovedRequestView({super.key});
 
   @override
-  State<PendingRequestView> createState() => _PendingRequestViewState();
+  State<DisapprovedRequestView> createState() => _DisapprovedRequestViewState();
 }
 
-class _PendingRequestViewState extends State<PendingRequestView> {
-  List<Request> requestList = [];
-  bool isLoading = false;
-
-  @override
-  void initState() {
-    getRequestList();
-    super.initState();
-  }
-
-  Future<void> getRequestList() async {
-    setState(() {
-      isLoading = true;
-    });
-    final snapshot = await FirebaseFirestore.instance
-        .collection('requests')
-        .where('status', isEqualTo: 'pending')
-        .get();
-
-    requestList = snapshot.docs.map((e) => Request.fromSnap(e)).toList();
-    setState(() {
-      isLoading = false;
-    });
-  }
-
+class _DisapprovedRequestViewState extends State<DisapprovedRequestView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +20,7 @@ class _PendingRequestViewState extends State<PendingRequestView> {
         child: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('requests')
-              .where('status', isEqualTo: 'pending')
+              .where('status', isEqualTo: 'disapproved')
               .snapshots(),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {

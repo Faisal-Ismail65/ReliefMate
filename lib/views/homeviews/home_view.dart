@@ -322,7 +322,7 @@ class _HomeViewState extends State<HomeView> {
                                 ));
                               },
                               child: const GridItem(
-                                path: 'assets/images/about_us.png',
+                                path: 'assets/images/about.jpg',
                               ),
                             ),
                           ],

@@ -1,11 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:reliefmate/utilities/widgets/donation_card.dart';
+import 'package:reliefmate/models/request.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
+import 'package:reliefmate/utilities/widgets/request_card.dart';
 
-class CompletedRequestView extends StatelessWidget {
+class CompletedRequestView extends StatefulWidget {
   const CompletedRequestView({super.key});
 
+  @override
+  State<CompletedRequestView> createState() => _CompletedRequestViewState();
+}
+
+class _CompletedRequestViewState extends State<CompletedRequestView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +31,9 @@ class CompletedRequestView extends StatelessWidget {
                   return ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
-                      return Container();
+                      final request =
+                          Request.fromSnap(snapshot.data!.docs[index]);
+                      return RequestCard(request: request);
                     },
                   );
                 } else {

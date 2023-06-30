@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:reliefmate/models/user_profile.dart';
 import 'package:reliefmate/services/admin/admin_firestore_methods.dart';
+import 'package:reliefmate/services/notification/send_notification_service.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 import 'package:reliefmate/utilities/widgets/profile_detail.dart';
@@ -60,135 +61,138 @@ class _ApplicationCardState extends State<ApplicationCard> {
           ));
         },
         onLongPress: () {
-          showDialog(
+          showModalBottomSheet(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+            )),
             context: context,
             builder: (context) {
-              return Dialog(
-                child: widget.user.type == 'victim'
-                    ? ListView(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        shrinkWrap: true,
-                        children: [
-                          widget.user.status == 'pending'
-                              ? 'Approve'
-                              : 'Move to Pending List',
-                          widget.user.status == 'approved'
-                              ? 'Block'
-                              : 'Disapprove',
-                        ]
-                            .map(
-                              (e) => Container(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 20),
-                                child: Center(
-                                  child: InkWell(
-                                    onTap: () {
-                                      if (e == 'Approve') {
-                                        adminFirestoreMethods.editProfile(
-                                          uid: widget.user.uid,
-                                          status: 'approved',
-                                        );
-                                        showSnackBar(context,
-                                            '${widget.user.name}\'s Profile is Approved');
-                                      } else if (e == 'Move to Pending List') {
-                                        adminFirestoreMethods.editProfile(
-                                          uid: widget.user.uid,
-                                          status: 'pending',
-                                        );
-                                        showSnackBar(context,
-                                            '${widget.user.name}\'s Profile is moved to Pending List');
-                                      } else if (e == 'Disapprove') {
-                                        adminFirestoreMethods.editProfile(
-                                          uid: widget.user.uid,
-                                          status: 'disapproved',
-                                        );
-                                        showSnackBar(context,
-                                            '${widget.user.name}\'s Profile is Disapproved');
-                                      } else if (e == 'Block') {
-                                        adminFirestoreMethods.editProfile(
-                                          uid: widget.user.uid,
-                                          status: 'blocked',
-                                        );
-                                        showSnackBar(context,
-                                            '${widget.user.name}\'s Profile is Blocked');
-                                      }
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text(
-                                      e,
-                                      style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500,
-                                          color: GlobalVariables.appBarColor),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                      )
-                    : ListView(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        shrinkWrap: true,
-                        children: [
-                          widget.user.status == 'approved'
-                              ? 'Disapprove'
-                              : 'Approve',
-                        ]
-                            .map(
-                              (e) => Container(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 20),
-                                child: Center(
-                                  child: InkWell(
-                                    onTap: () {
-                                      if (e == 'Approve') {
-                                        adminFirestoreMethods.editProfile(
-                                          uid: widget.user.uid,
-                                          status: 'approved',
-                                        );
-                                        showSnackBar(context,
-                                            '${widget.user.name}\'s Profile is Approved');
-                                      } else if (e == 'Disapprove') {
-                                        adminFirestoreMethods.editProfile(
-                                          uid: widget.user.uid,
-                                          status: 'disapproved',
-                                        );
-                                        showSnackBar(context,
-                                            '${widget.user.name}\'s Profile is Disapproved');
-                                      } else if (e == 'Block') {
-                                        adminFirestoreMethods.editProfile(
-                                          uid: widget.user.uid,
-                                          status: 'blocked',
-                                        );
-                                        showSnackBar(context,
-                                            '${widget.user.name}\'s Profile is Blocked');
-                                      }
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text(
-                                      e,
-                                      style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500,
-                                          color: GlobalVariables.appBarColor),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                            .toList(),
+              return SizedBox(
+                height: 200,
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      'Change Profile Status',
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.grey.shade800,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    widget.user.status == 'pending' ||
+                            widget.user.type == 'donor'
+                        ? const SizedBox()
+                        : InkWell(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              adminFirestoreMethods.editProfile(
+                                uid: widget.user.uid,
+                                status: 'pending',
+                              );
+                              showSnackBar(context,
+                                  '${widget.user.name}\'s Profile is moved to Pending List');
+                              SendNotificationService().sendNotificationToUser(
+                                  userId: widget.user.uid,
+                                  title: 'Profile Status',
+                                  body:
+                                      'Your Profile status is Changed to Pending.');
+                              setState(() {});
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 5),
+                              child: Text('Pending',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700)),
+                            ),
+                          ),
+                    widget.user.status == 'approved'
+                        ? const SizedBox()
+                        : InkWell(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              adminFirestoreMethods.editProfile(
+                                uid: widget.user.uid,
+                                status: 'approved',
+                              );
+                              showSnackBar(context,
+                                  '${widget.user.name}\'s Profile is moved to Approved List');
+                              SendNotificationService().sendNotificationToUser(
+                                  userId: widget.user.uid,
+                                  title: 'Profile Status',
+                                  body: 'Your Profile is Approved.');
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 5),
+                              child: Text('Approve',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700)),
+                            )),
+                    widget.user.status == 'disapproved'
+                        ? const SizedBox()
+                        : InkWell(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              adminFirestoreMethods.editProfile(
+                                uid: widget.user.uid,
+                                status: 'disapproved',
+                              );
+                              showSnackBar(context,
+                                  '${widget.user.name}\'s Profile is moved to Disapproved List');
+                              SendNotificationService().sendNotificationToUser(
+                                  userId: widget.user.uid,
+                                  title: 'Profile Status',
+                                  body: 'Your Profile status is Disapproved');
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 5),
+                              child: Text('Disapprove',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700)),
+                            ),
+                          ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        adminFirestoreMethods.editProfile(
+                          uid: widget.user.uid,
+                          status: 'blocked',
+                        );
+                        showSnackBar(context,
+                            '${widget.user.name}\'s Profile is Blocked');
+                        SendNotificationService().sendNotificationToUser(
+                            userId: widget.user.uid,
+                            title: 'Profile Status',
+                            body: 'Your Profile status is Blocked');
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        child: Text('Block',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w700)),
                       ),
+                    ),
+                  ],
+                ),
               );
             },
           );
         },
         child: SizedBox(
-          height: 100,
+          height: MediaQuery.of(context).size.height * 0.12,
           child: Card(
-            color: GlobalVariables.appBarBackgroundColor,
-            elevation: 6,
-            shadowColor: GlobalVariables.btnBackgroundColor,
+            // color: GlobalVariables.appBarBackgroundColor,
+            elevation: 2,
+            // shadowColor: GlobalVariables.appBarColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
@@ -197,19 +201,19 @@ class _ApplicationCardState extends State<ApplicationCard> {
               child: Row(
                 children: [
                   Container(
-                    width: 70,
-                    height: 100,
+                    width: MediaQuery.of(context).size.width * 0.20,
+                    height: MediaQuery.of(context).size.width * 0.30,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: userProfile['photoUrl'] == null
                         ? const CircleAvatar(
                             radius: 20,
-                            backgroundColor: Colors.white,
+                            backgroundColor: GlobalVariables.appBarColor,
                             child: Icon(
                               Icons.person,
                               size: 30,
-                              color: GlobalVariables.btnBackgroundColor,
+                              color: GlobalVariables.appBarBackgroundColor,
                             ),
                           )
                         : CircleAvatar(
@@ -218,9 +222,9 @@ class _ApplicationCardState extends State<ApplicationCard> {
                           ),
                   ),
                   Container(
-                    width: 220,
-                    height: 100,
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    width: MediaQuery.of(context).size.width * 0.60,
+                    height: MediaQuery.of(context).size.height * 0.20,
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                     ),
@@ -228,19 +232,24 @@ class _ApplicationCardState extends State<ApplicationCard> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          ' Name : ${widget.user.name} ',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: Text(
+                            widget.user.name,
+                            style: TextStyle(
+                              color: Colors.grey.shade800,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20,
+                            ),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 5),
                           child: Text(
-                            'Address :  ${widget.user.address} ',
-                            style: const TextStyle(
-                              color: Colors.white,
+                            widget.user.address,
+                            style: TextStyle(
+                              color: Colors.grey.shade800,
+                              fontWeight: FontWeight.w600,
                               fontSize: 15,
                             ),
                           ),

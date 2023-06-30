@@ -1,7 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:reliefmate/services/notification/send_notification_service.dart';
 import 'package:reliefmate/services/request/request_firestore_methods.dart';
@@ -107,7 +105,7 @@ class _RequestViewState extends State<RequestView> {
           Navigator.of(context).pop();
           showSnackBar(context, 'Requested Succesfully');
           SendNotificationService().sendNoticationToAdmin(
-              title: 'Donation Request',
+              title: 'Request',
               body:
                   '${widget.user['name']} created a donation request with category $category1 $category2 $category3');
         }

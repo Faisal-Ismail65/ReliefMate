@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:reliefmate/utilities/utils/global_variables.dart';
 
 class GridItem extends StatelessWidget {
   const GridItem({super.key, required this.path});
@@ -15,6 +14,7 @@ class GridItem extends StatelessWidget {
         ),
         elevation: 5,
         child: Container(
+          padding: const EdgeInsets.all(15),
           decoration: BoxDecoration(
             image: DecorationImage(
                 image: AssetImage(

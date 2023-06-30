@@ -21,13 +21,13 @@ class DonationFirestoreMethods {
     try {
       final id = const Uuid().v4();
       Donation donation = Donation(
-        id: id,
-        donorId: donorid,
-        donationAddress: donationAddress,
-        donationMsg: donationMsg,
-        donationExpDate: donationExpDate,
-        status: 'pending',
-      );
+          id: id,
+          donorId: donorid,
+          donationAddress: donationAddress,
+          donationMsg: donationMsg,
+          donationExpDate: donationExpDate,
+          status: 'pending',
+          createdAt: DateTime.now().toIso8601String());
 
       var category = {
         category1: description1,

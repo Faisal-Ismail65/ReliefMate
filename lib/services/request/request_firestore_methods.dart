@@ -20,12 +20,12 @@ class RequestFirestoreMethods {
     try {
       final id = const Uuid().v4();
       Request request = Request(
-        id: id,
-        requesterId: requesterId,
-        requestAddress: requestAddress,
-        requestMsg: requestMsg,
-        status: 'pending',
-      );
+          id: id,
+          requesterId: requesterId,
+          requestAddress: requestAddress,
+          requestMsg: requestMsg,
+          status: 'pending',
+          createdAt: DateTime.now().toIso8601String());
 
       var category = {
         category1: description1,

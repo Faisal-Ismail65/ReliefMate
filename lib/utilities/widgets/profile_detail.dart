@@ -65,8 +65,8 @@ class _ProfileDetailState extends State<ProfileDetail> {
                   width: double.infinity,
                   child: FlutterMap(
                     options: MapOptions(
-                      center: LatLng(
-                          37.4219991, -122.0840012), // London coordinates
+                      center: LatLng(widget.user.latitude,
+                          widget.user.longitude), // London coordinates
                       zoom: 18.0,
                     ),
                     children: [
@@ -80,8 +80,10 @@ class _ProfileDetailState extends State<ProfileDetail> {
                           Marker(
                             width: 40.0,
                             height: 40.0,
-                            point: LatLng(37.4219991,
-                                -122.0840012), // Marker coordinates (same as map center in this example)
+                            point: LatLng(
+                                widget.user.latitude,
+                                widget.user
+                                    .longitude), // Marker coordinates (same as map center in this example)
                             builder: (ctx) => const Icon(
                               Icons.location_on,
                               size: 40,

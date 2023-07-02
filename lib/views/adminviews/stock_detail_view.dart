@@ -21,6 +21,9 @@ class StockDetailView extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
             child: ListTile(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
               tileColor: GlobalVariables.appBarBackgroundColor,
               title: Text(
                 stockItems[index]!,

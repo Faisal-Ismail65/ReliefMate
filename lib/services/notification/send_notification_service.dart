@@ -62,7 +62,7 @@ class SendNotificationService {
         title: title,
         body: body,
         userId: admin.uid,
-        createdAt: DateTime.now().toIso8601String(),
+        createdAt: DateTime.now().millisecondsSinceEpoch,
         status: 'unread',
       );
 
@@ -104,7 +104,7 @@ class SendNotificationService {
         title: title,
         body: body,
         userId: userId,
-        createdAt: DateTime.now().toIso8601String(),
+        createdAt: DateTime.now().millisecondsSinceEpoch,
         status: 'unread',
       );
 

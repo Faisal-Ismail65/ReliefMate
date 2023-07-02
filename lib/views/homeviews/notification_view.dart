@@ -52,7 +52,7 @@ class _NotificationViewState extends State<NotificationView> {
         stream: FirebaseFirestore.instance
             .collection('notifications')
             .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-            // .orderBy('createdAt', descending: true)
+            .orderBy('createdAt', descending: true)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -73,7 +73,7 @@ class _NotificationViewState extends State<NotificationView> {
                     snapshot.data!.docs[index].data());
                 return Card(
                   elevation: 5,
-                  shape: RoundedRectangleBorder(
+                  shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
                       topRight: Radius.circular(5),
                       bottomRight: Radius.circular(5),
@@ -114,30 +114,34 @@ class _NotificationViewState extends State<NotificationView> {
                         ),
                         Text(
                           (DateTime.now()
-                                      .difference(DateTime.parse(
-                                          notification.createdAt))
+                                      .difference(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                              notification.createdAt))
                                       .inMilliseconds <
                                   1000
                               ? 'Now'
                               : DateTime.now()
-                                          .difference(DateTime.parse(
-                                              notification.createdAt))
+                                          .difference(
+                                              DateTime.fromMillisecondsSinceEpoch(
+                                                  notification.createdAt))
                                           .inSeconds <
                                       60
-                                  ? '${DateTime.now().difference(DateTime.parse(notification.createdAt)).inSeconds}s ago'
+                                  ? '${DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(notification.createdAt)).inSeconds}s ago'
                                   : DateTime.now()
-                                              .difference(DateTime.parse(
-                                                  notification.createdAt))
+                                              .difference(DateTime
+                                                  .fromMillisecondsSinceEpoch(
+                                                      notification.createdAt))
                                               .inMinutes <
                                           60
-                                      ? '${DateTime.now().difference(DateTime.parse(notification.createdAt)).inMinutes}m   ${DateTime.now().difference(DateTime.parse(notification.createdAt)).inSeconds % 60}s ago'
+                                      ? '${DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(notification.createdAt)).inMinutes}m   ${DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(notification.createdAt)).inSeconds % 60}s ago'
                                       : DateTime.now()
-                                                  .difference(DateTime.parse(
-                                                      notification.createdAt))
+                                                  .difference(DateTime
+                                                      .fromMillisecondsSinceEpoch(
+                                                          notification.createdAt))
                                                   .inHours <
                                               24
-                                          ? '${DateTime.now().difference(DateTime.parse(notification.createdAt)).inHours}h ${DateTime.now().difference(DateTime.parse(notification.createdAt)).inMinutes % 60}m ago'
-                                          : '${DateTime.now().difference(DateTime.parse(notification.createdAt)).inDays}d ${DateTime.now().difference(DateTime.parse(notification.createdAt)).inHours % 24}h ago'),
+                                          ? '${DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(notification.createdAt)).inHours}h ${DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(notification.createdAt)).inMinutes % 60}m ago'
+                                          : '${DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(notification.createdAt)).inDays}d ${DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(notification.createdAt)).inHours % 24}h ago'),
                           style: const TextStyle(fontSize: 12),
                         ),
                       ],

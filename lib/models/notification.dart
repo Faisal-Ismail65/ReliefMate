@@ -6,7 +6,7 @@ class Notification {
   final String title;
   final String body;
   final String userId;
-  final String createdAt;
+  final int createdAt;
   final String status;
   Notification({
     required this.id,
@@ -34,7 +34,7 @@ class Notification {
       title: map['title'] as String,
       body: map['body'] as String,
       userId: map['userId'] as String,
-      createdAt: map['createdAt'] as String,
+      createdAt: map['createdAt'] as int,
       status: map['status'] as String,
     );
   }

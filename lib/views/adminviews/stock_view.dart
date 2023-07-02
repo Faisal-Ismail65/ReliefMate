@@ -86,7 +86,7 @@ class _StockViewState extends State<StockView> {
                     ));
                   },
                   child: Card(
-                    elevation: 6,
+                    elevation: 3,
                     child: Container(
                       decoration: BoxDecoration(
                         color: GlobalVariables.btnBackgroundColor,

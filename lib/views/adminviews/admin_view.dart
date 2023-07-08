@@ -107,11 +107,11 @@ class _AdminViewState extends State<AdminView> {
                 ),
               ),
             ),
-            DrawerMenuTile(
-              text: 'Setting',
-              icon: const Icon(Icons.settings),
-              onPressed: () {},
-            ),
+            // DrawerMenuTile(
+            //   text: 'Setting',
+            //   icon: const Icon(Icons.settings),
+            //   onPressed: () {},
+            // ),
             DrawerMenuTile(
               text: 'About',
               icon: const Icon(Icons.info),
@@ -193,7 +193,7 @@ class _AdminViewState extends State<AdminView> {
               ));
             },
             child: const GridItem(
-              path: 'assets/images/stock.png',
+              path: 'assets/images/download.jpg',
             ),
           ),
         ],

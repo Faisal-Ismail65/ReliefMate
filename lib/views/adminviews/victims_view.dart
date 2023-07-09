@@ -4,9 +4,14 @@ import 'package:reliefmate/views/adminviews/approved_victims_view.dart';
 import 'package:reliefmate/views/adminviews/disapproved_victims_view.dart';
 import 'package:reliefmate/views/adminviews/pending_victims_view.dart';
 
-class VictimsView extends StatelessWidget {
+class VictimsView extends StatefulWidget {
   const VictimsView({super.key});
 
+  @override
+  State<VictimsView> createState() => _VictimsViewState();
+}
+
+class _VictimsViewState extends State<VictimsView> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

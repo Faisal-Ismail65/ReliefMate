@@ -51,7 +51,7 @@ class _ApplicationCardState extends State<ApplicationCard> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(

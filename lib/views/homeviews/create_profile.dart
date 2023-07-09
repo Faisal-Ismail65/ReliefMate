@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:reliefmate/services/notification/send_notification_service.dart';
 import 'package:reliefmate/services/profile/profile_firestore_methods.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
 import 'package:reliefmate/utilities/utils/utils.dart';
@@ -85,11 +86,16 @@ class _CreateProfileState extends State<CreateProfile> {
           });
         }
         if (res == 'Success') {
+          SendNotificationService().sendNoticationToAdmin(
+              title: 'Profile',
+              body:
+                  '${_nameController.text} Created Profile as a ${_value == 0 ? 'donor' : 'victim'}');
           Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => const HomeView(),
-              ),
-              (route) => false);
+            MaterialPageRoute(
+              builder: (context) => const HomeView(),
+            ),
+            (route) => false,
+          );
         }
       }
     } else {

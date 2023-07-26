@@ -13,14 +13,13 @@ import 'package:reliefmate/models/auth_user.dart';
 
 import 'package:reliefmate/providers/user_provider.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
+import 'package:reliefmate/utilities/utils/notification_service.dart';
 import 'package:reliefmate/utilities/utils/utils.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/views/adminviews/admin_view.dart';
 import 'package:reliefmate/views/authviews/login_view.dart';
 import 'package:reliefmate/views/homeviews/create_profile.dart';
 import 'package:reliefmate/views/homeviews/home_view.dart';
-
-import 'utilities/utils/notification_service.dart';
 
 Future<void> backgroundHandler(RemoteMessage message) async {
   print(message.data.toString());

@@ -59,7 +59,8 @@ class _RequestViewState extends State<RequestView> {
 
       final address = await getUserAddress(
           latitude: location.latitude, longitude: location.longitude);
-      _addressController.text = '${address.street} ${address.locality}';
+      _addressController.text =
+          '${address.subLocality}, ${address.locality}, ${address.administrativeArea} ,${address.country}';
 
       if (mounted) {
         setState(() {});

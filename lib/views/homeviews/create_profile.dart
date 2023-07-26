@@ -48,7 +48,8 @@ class _CreateProfileState extends State<CreateProfile> {
     if (location != null) {
       final address = await getUserAddress(
           latitude: location!.latitude, longitude: location!.longitude);
-      _addressController.text = '${address.street} ${address.locality}';
+      _addressController.text =
+          '${address.subLocality}, ${address.locality}, ${address.administrativeArea} ,${address.country}';
     }
     setState(() {
       isLoading = false;

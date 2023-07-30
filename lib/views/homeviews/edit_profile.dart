@@ -136,20 +136,32 @@ class _EditProfileState extends State<EditProfile> {
                   key: _editProfileKey,
                   child: Column(
                     children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
                       CustomTextField(
                         controller: _nameController,
                         labelText: "Enter Name",
                         obseureText: false,
+                      ),
+                      const SizedBox(
+                        height: 15,
                       ),
                       CustomTextField(
                         controller: _cnicController,
                         labelText: 'Enter CNIC',
                         obseureText: false,
                       ),
+                      const SizedBox(
+                        height: 15,
+                      ),
                       CustomTextField(
                         controller: _phoneNumberController,
                         labelText: 'Enter Phone NUmber',
                         obseureText: false,
+                      ),
+                      const SizedBox(
+                        height: 15,
                       ),
                       CustomTextField(
                         controller: _addressController,

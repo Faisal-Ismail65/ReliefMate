@@ -152,7 +152,7 @@ class _AdminViewState extends State<AdminView> {
               ));
             },
             child: const GridItem(
-              path: 'assets/images/donate.jpeg',
+              path: 'assets/images/donors.jpeg',
             ),
           ),
           InkWell(
@@ -162,7 +162,7 @@ class _AdminViewState extends State<AdminView> {
               ));
             },
             child: const GridItem(
-              path: 'assets/images/victims.jpeg',
+              path: 'assets/images/victims1.png',
             ),
           ),
           InkWell(
@@ -182,7 +182,7 @@ class _AdminViewState extends State<AdminView> {
               ));
             },
             child: const GridItem(
-              path: 'assets/images/donations.jpeg',
+              path: 'assets/images/donations1.png',
             ),
           ),
           InkWell(
@@ -192,7 +192,7 @@ class _AdminViewState extends State<AdminView> {
               ));
             },
             child: const GridItem(
-              path: 'assets/images/download.jpg',
+              path: 'assets/images/stock.jpeg',
             ),
           ),
         ],

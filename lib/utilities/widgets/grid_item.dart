@@ -16,6 +16,7 @@ class GridItem extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(15),
           decoration: BoxDecoration(
+            color: Colors.white,
             image: DecorationImage(
                 image: AssetImage(
                   path,

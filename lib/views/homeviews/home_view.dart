@@ -249,6 +249,7 @@ class _HomeViewState extends State<HomeView> {
                                     },
                                     child: const GridItem(
                                       path: 'assets/images/donate.jpeg',
+                                      label: 'Donate',
                                     ),
                                   )
                                 : InkWell(
@@ -262,6 +263,7 @@ class _HomeViewState extends State<HomeView> {
                                     },
                                     child: const GridItem(
                                       path: 'assets/images/request.jpeg',
+                                      label: 'Request',
                                     ),
                                   ),
                             userData['type'] == 'donor'
@@ -276,6 +278,7 @@ class _HomeViewState extends State<HomeView> {
                                     },
                                     child: const GridItem(
                                       path: 'assets/images/donations1.png',
+                                      label: 'Donations',
                                     ),
                                   )
                                 : InkWell(
@@ -289,6 +292,7 @@ class _HomeViewState extends State<HomeView> {
                                     },
                                     child: const GridItem(
                                       path: 'assets/images/123.jpg',
+                                      label: 'Requests',
                                     ),
                                   ),
                             InkWell(
@@ -301,6 +305,7 @@ class _HomeViewState extends State<HomeView> {
                               },
                               child: const GridItem(
                                 path: 'assets/images/victims1.png',
+                                label: 'Victims',
                               ),
                             ),
                             InkWell(
@@ -312,7 +317,8 @@ class _HomeViewState extends State<HomeView> {
                                 );
                               },
                               child: const GridItem(
-                                path: 'assets/images/profile.png',
+                                path: 'assets/images/profile.jpeg',
+                                label: 'Profile',
                               ),
                             ),
                             InkWell(
@@ -323,6 +329,7 @@ class _HomeViewState extends State<HomeView> {
                               },
                               child: const GridItem(
                                 path: 'assets/images/about.jpg',
+                                label: 'About',
                               ),
                             ),
                           ],

@@ -152,8 +152,7 @@ class _AdminViewState extends State<AdminView> {
               ));
             },
             child: const GridItem(
-              path: 'assets/images/donors.jpeg',
-            ),
+                path: 'assets/images/donors.jpeg', label: 'Donors'),
           ),
           InkWell(
             onTap: () {
@@ -163,6 +162,7 @@ class _AdminViewState extends State<AdminView> {
             },
             child: const GridItem(
               path: 'assets/images/victims1.png',
+              label: 'Victims',
             ),
           ),
           InkWell(
@@ -173,6 +173,7 @@ class _AdminViewState extends State<AdminView> {
             },
             child: const GridItem(
               path: 'assets/images/requests.jpeg',
+              label: 'Requests',
             ),
           ),
           InkWell(
@@ -183,6 +184,7 @@ class _AdminViewState extends State<AdminView> {
             },
             child: const GridItem(
               path: 'assets/images/donations1.png',
+              label: 'Donations',
             ),
           ),
           InkWell(
@@ -193,6 +195,7 @@ class _AdminViewState extends State<AdminView> {
             },
             child: const GridItem(
               path: 'assets/images/stock.jpeg',
+              label: 'Stock',
             ),
           ),
         ],

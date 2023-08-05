@@ -9,6 +9,7 @@ import 'package:reliefmate/providers/user_provider.dart';
 import 'package:reliefmate/services/admin/admin_firestore_methods.dart';
 import 'package:reliefmate/services/notification/send_notification_service.dart';
 import 'package:reliefmate/utilities/utils/global_variables.dart';
+import 'package:reliefmate/utilities/widgets/request_detail_view.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 
 class RequestCard extends StatefulWidget {
@@ -51,6 +52,13 @@ class _RequestCardState extends State<RequestCard> {
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context).getUser;
     return InkWell(
+      onTap: () {
+        if (user.type == 'admin') {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => RequestDetailView(request: widget.request),
+          ));
+        }
+      },
       onLongPress: () {
         if (user.type == 'admin') {
           showModalBottomSheet(
@@ -234,8 +242,7 @@ class _RequestCardState extends State<RequestCard> {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        DateFormat('dd-MM-yyy')
-                            .format(DateTime.parse(widget.request.createdAt)),
+                        'Request Date: ${DateFormat('dd-MM-yyy').format(DateTime.parse(widget.request.createdAt))}',
                         style: GoogleFonts.lato(
                           textStyle:
                               TextStyle(fontSize: 13, color: Colors.grey[100]),

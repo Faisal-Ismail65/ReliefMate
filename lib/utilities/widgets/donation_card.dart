@@ -55,9 +55,11 @@ class _DonationCardState extends State<DonationCard> {
     final user = Provider.of<UserProvider>(context).getUser;
     return InkWell(
       onTap: () {
-        // Navigator.of(context).push(MaterialPageRoute(
-        //   builder: (context) => DonationDetailView(donation: widget.donation),
-        // ));
+        if (user.type == 'admin') {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => DonationDetailView(donation: widget.donation),
+          ));
+        }
       },
       onLongPress: () {
         if (user.type == 'admin' ||
@@ -245,7 +247,7 @@ class _DonationCardState extends State<DonationCard> {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        widget.donation.donationExpDate,
+                        "End Date: ${widget.donation.donationExpDate}",
                         style: GoogleFonts.lato(
                           textStyle:
                               TextStyle(fontSize: 13, color: Colors.grey[100]),

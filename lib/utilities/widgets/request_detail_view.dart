@@ -4,21 +4,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:reliefmate/models/donation.dart';
+import 'package:reliefmate/models/request.dart';
 import 'package:reliefmate/models/user_profile.dart';
 import 'package:reliefmate/utilities/widgets/app_bar.dart';
 import 'package:reliefmate/utilities/widgets/donation_detail_tile.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 
-class DonationDetailView extends StatefulWidget {
-  final Donation donation;
-  const DonationDetailView({super.key, required this.donation});
+class RequestDetailView extends StatefulWidget {
+  final Request request;
+  const RequestDetailView({super.key, required this.request});
 
   @override
-  State<DonationDetailView> createState() => _DonationDetailViewState();
+  State<RequestDetailView> createState() => _RequestDetailViewState();
 }
 
-class _DonationDetailViewState extends State<DonationDetailView> {
+class _RequestDetailViewState extends State<RequestDetailView> {
   bool isLoading = false;
   var categories = {};
   UserProfile? user;
@@ -29,7 +29,7 @@ class _DonationDetailViewState extends State<DonationDetailView> {
     });
     final snapshot = await FirebaseFirestore.instance
         .collection('profiles')
-        .doc(widget.donation.donorId)
+        .doc(widget.request.requesterId)
         .get();
 
     user = UserProfile.fromSnap(snapshot);
@@ -43,8 +43,8 @@ class _DonationDetailViewState extends State<DonationDetailView> {
       isLoading = true;
     });
     final categorySnap = await FirebaseFirestore.instance
-        .collection('donations')
-        .doc(widget.donation.id)
+        .collection('requests')
+        .doc(widget.request.id)
         .collection('category')
         .get();
 
@@ -65,7 +65,7 @@ class _DonationDetailViewState extends State<DonationDetailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const SimpleAppBar(text: 'Donation Detail'),
+      appBar: const SimpleAppBar(text: 'Request Detail'),
       body: isLoading
           ? const Loader()
           : Padding(
@@ -73,34 +73,30 @@ class _DonationDetailViewState extends State<DonationDetailView> {
               child: Column(
                 children: [
                   DonationDetailTile(
-                    name: 'Donor Name',
+                    name: 'Requester Name',
                     value: user?.name ?? '',
                   ),
                   DonationDetailTile(
-                    name: 'Donor Email',
+                    name: 'Requester Email',
                     value: user?.email ?? '',
                   ),
                   DonationDetailTile(
-                    name: 'Donor Phone Number',
+                    name: 'Requester Phone Number',
                     value: user?.phoneNumber ?? '',
                   ),
                   DonationDetailTile(
-                    name: 'Donation Address',
-                    value: widget.donation.donationAddress,
+                    name: 'Request Address',
+                    value: widget.request.requestAddress,
                   ),
-                  if (widget.donation.donationMsg != '')
+                  if (widget.request.requestMsg != '')
                     DonationDetailTile(
                       name: 'Donation Message',
-                      value: widget.donation.donationMsg,
+                      value: widget.request.requestMsg,
                     ),
                   DonationDetailTile(
                     name: 'Created At',
                     value: DateFormat('dd-MM-yyy')
-                        .format(DateTime.parse(widget.donation.createdAt)),
-                  ),
-                  DonationDetailTile(
-                    name: 'Expiration date',
-                    value: widget.donation.donationExpDate,
+                        .format(DateTime.parse(widget.request.createdAt)),
                   ),
                   isLoading
                       ? SizedBox(
@@ -111,29 +107,9 @@ class _DonationDetailViewState extends State<DonationDetailView> {
                           ),
                         )
                       : DonationDetailTile(
-                          name: 'Donation Categories',
+                          name: 'Request Categories',
                           value: categories.keys.join(', '),
                         ),
-                  // DonationDetailTile(
-                  //   name: 'Donor Email',
-                  //   value: widget.snap['donorEmail'] ?? '',
-                  // ),
-                  // DonationDetailTile(
-                  //   name: 'Donor Phone Number',
-                  //   value: widget.snap['donorPhoneNumber'] ?? '',
-                  // ),
-                  // DonationDetailTile(
-                  //   name: 'Address',
-                  //   value: widget.snap['donationAddress'] ?? '',
-                  // ),
-                  // DonationDetailTile(
-                  //     name: 'Message',
-                  //     value: widget.snap['donationMsg'] == ''
-                  //         ? 'No Message'
-                  //         : widget.snap['donationMsg']),
-                  // DonationDetailTile(
-                  //     name: 'Expiration Date',
-                  //     value: widget.snap['donationExpDate'] ?? 'not '),
                 ],
               ),
             ),

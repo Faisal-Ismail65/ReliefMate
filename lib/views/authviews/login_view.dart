@@ -13,6 +13,7 @@ import 'package:reliefmate/utilities/widgets/custom_text_field.dart';
 import 'package:reliefmate/utilities/widgets/loader.dart';
 import 'package:reliefmate/utilities/widgets/snack_bar.dart';
 import 'package:reliefmate/views/adminviews/admin_view.dart';
+import 'package:reliefmate/views/authviews/forget_password_view.dart';
 import 'package:reliefmate/views/authviews/register_view.dart';
 import 'package:reliefmate/views/homeviews/bottom_bar_view.dart';
 
@@ -189,9 +190,35 @@ class _LoginViewState extends State<LoginView> {
                 ),
               ],
             ),
+            const SizedBox(
+              height: 10,
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const ForgetPasswordView(),
+                  ));
+                },
+                child: Text(
+                  'Forget Password?',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      color: GlobalVariables.appBarColor),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             isLoading
                 ? const Loader()
                 : CustomElevatedButton(onPressed: loginUser, text: 'Login'),
+            const SizedBox(
+              height: 20,
+            ),
             CustomTextButton(
                 onPressed: navigateToCreateAccount,
                 text: 'Create Account',
